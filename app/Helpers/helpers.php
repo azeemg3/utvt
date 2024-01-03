@@ -1,0 +1,109 @@
+<?php
+use App\Models\Lms\SourceQuery;
+use App\Models\Lms\SService;
+use Spatie\Permission\Models\Role;
+class Helpers{
+    /**create function lead format */
+    public static function leadId_fromat($id){
+        if($id<10){
+            return '0'.$id;
+        }else{
+            return $id;
+        }
+    }
+    /**LeadID */
+    public static function create_lead_code($id){
+        return date('dmy').'-'.self::leadId_fromat($id);
+    }
+    /**Lead status */
+    public static function lead_status($status=''){
+        $array=[1=>'Pending',2=>'Taken Over',3=>'In Process',4=>'Successfull',5=>'Unsuccessfull'];
+        foreach($array as $k=>$v){
+           if($k==$status){
+                return $v;
+           }
+        }
+    }
+    /**status badges */
+    public static function lead_status_badge($status= ''){
+        if($status==1){
+            return '<span class="badge badge-pill badge-secondary">Pending</span>';
+        }
+        elseif($status==2){
+            return '<span class="badge badge-pill bg-primary">Takenover</span>';
+        }
+        elseif($status==3){
+            return '<span class="badge badge-pill bg-info">In Process</span>';
+        }
+        elseif($status==4){
+            return '<span class="badge badge-pill bg-success">Successfull</span>';
+        }
+        elseif($status==5){
+            return '<span class="badge badge-pill bg-danger">UnSuccessfull</span>';
+        }
+        else{
+            return 'N/A';
+        }
+    }
+    //get services naem against array
+    public static function lead_services(array $ids){
+        $res=SService::whereIn('id',$ids)->pluck('name');
+        $res=json_decode($res);
+        $html='';
+        foreach($res as $item){
+            $html.= '<span class="badge badge-info">'.$item.'</span> ';
+        }
+        return $html;
+    }
+    /**date format in day-month-year */
+    public static function date_format($date){
+        return date('d-m-Y',strtotime($date));
+    }
+    /**days in string */
+    public static function string_day($date){
+        return date('d M Y',strtotime($date));
+    }
+    /**Fetch only time from date  */
+    public static function fetch_time($time=''){
+        return date('h:i:s',strtotime($time));
+    }
+    /**calculate time difference between two dates */
+    public static function calculateDateTimeDifference($startDateTime, $endDateTime) {
+        $start = new DateTime($startDateTime);
+        $end = new DateTime($endDateTime);
+
+        $interval = $start->diff($end);
+
+        $days = $interval->format('%a');
+        $hours = $interval->format('%h');
+        $minutes = $interval->format('%i');
+        $seconds = $interval->format('%s');
+
+        return "$days days, $hours hours, $minutes minutes";
+    }
+    /**Fetch Lead source */
+    public static function fetch_lead_source($source){
+        if(!empty($source)){
+            return SourceQuery::find($source)->first()->name;
+        }
+    }
+    public static function helper_dropdown($id=''){
+        $list='';
+        $res=Role::all();
+        foreach($res as $item){
+            $list.='<option '.($id==$item->id?"selected":"").' value="'.$item->id.'">'.$item->name.'</option>';
+        }
+        return $list;
+    }
+    /**Lead Closed Reason */
+    public static function closed_reason(){
+        $list='';
+        $array=[1=>'Client not Intersted',2=>'Client Avail Service from somewhere',3=>'Fake Lead',
+        4=>'Without Info',5=>'Other'];
+        foreach($array as $key=>$val){
+            $list.='<option value="'.$key.'">'.$val.'</option>';
+        }
+        return $list;
+    }
+
+}

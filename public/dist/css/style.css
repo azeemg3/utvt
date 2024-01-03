@@ -1,0 +1,9 @@
+.modal-header{
+    padding: 0.3rem !important;
+}
+.modal-content{
+    border: none !important;
+}
+label:not(.form-check-label):not(.custom-file-label){
+    font-weight: 500 !important;
+}
