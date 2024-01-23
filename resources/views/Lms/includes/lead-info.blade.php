@@ -41,11 +41,11 @@
                     <table>
                         <tr>
                             <th>{{ __('lms.service_date_from') }}:</th>
-                            <td>{{ $data->service_date_from }}</td>
+                            <td>{{ Helpers::date_format($data->service_date_from) }}</td>
                         </tr>
                         <tr>
                             <th>{{ __('lms.service_date_to') }}:</th>
-                            <td>{{ $data->service_date_to }}</td>
+                            <td>{{ Helpers::date_format($data->service_date_to) }}</td>
                         </tr>
                         <tr>
                             <th>{{ __('settings.source_of_query') }}:</th>
@@ -77,7 +77,7 @@
                         <th>{{ __('lms.takenover_by') }}:</th>
                         <td>{{ $data->leadSpo->name??"" }}</td>
                     </tr>
-                    @if($data->status!=5){
+                    @if($data->status!=5)
                     <tr>
                         <th>Change Manual Status:</th>
                         <td>

@@ -18,7 +18,6 @@ class SService extends Model
     protected static function boot()
     {
         parent::boot();
-
         static::creating(function ($SourceQuery) {
             if (auth()->check()) {
                 $SourceQuery->created_by =Auth::user()->id;
@@ -26,11 +25,11 @@ class SService extends Model
         });
     }
 
-    public static function dropdown($id=0){
+    public static function dropdown($ids=[]){
         $res=self::all();
         $list='';
         foreach ($res as $item){
-            $list.='<option value="'.$item->id.'">'.$item->name.'</option>';
+            $list.='<option '.(in_array($item->id,json_decode($ids,true))?'selected':'').' value="'.$item->id.'">'.$item->name.'</option>';
         }
         return $list;
     }

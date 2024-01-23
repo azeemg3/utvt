@@ -19,6 +19,7 @@
                 alert_success('Operation Successfully..!!');
                 $("#lead-form").trigger("reset");
                 $("#loader").hide();
+                $(".select2").val('').trigger('change');
             },
             error: function(ajaxcontent) {
                 vali = ajaxcontent.responseJSON.errors;

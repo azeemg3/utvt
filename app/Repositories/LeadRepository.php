@@ -29,7 +29,14 @@ class LeadRepository implements LeadRepositoryInterface
     {
         DB::beginTransaction();
         $mobile=$data['mobile'];
+        $mobile=$data['mobile'];
+        $service_date_from=Helpers::db_date_format($data['service_date_from']);
+        $service_date_to=Helpers::db_date_format($data['service_date_to']);
+        $data['service_date_from']=$service_date_from;
+        $data['service_date_to']=$service_date_to;
         $data['services'] = json_encode($data['services']);
+        $data['sectors'] = json_encode($data['sectors']);
+        $data['airlines'] = json_encode($data['airline']);
         if ($data['type'] == 1) {
             $SPO = Auth::user()->id;
             $data['status'] = '2';
@@ -61,7 +68,7 @@ class LeadRepository implements LeadRepositoryInterface
                     'body' => 'This is for testing email usign smtp',
                 ];
                 $message="Thanks You ".strtoupper($data['contact_name']).",\nTour Vision Travel thankfull and appreciates your support and trust on us.\nYou can be confident that we are committed to your satisfaction. For further details & query please do'nt hesitate to call 03111381888 or visit www.toursvision.com";
-                $this->notificationService->send_sms4_connect($mobile, $message);
+                //$this->notificationService->send_sms4_connect($mobile, $message);
                 mail::to('azeemkhalidg3@gmail.com')->send(new LeadWelcomeEmail($mailData));
                 $this->twilioServices->whatsapp_message($data['mobile'], "Lead Created Successfully..");
 
@@ -153,5 +160,9 @@ class LeadRepository implements LeadRepositoryInterface
             LeadActivity::create($data);
             return $ret;
         }
+    }
+    /**edit leads */
+    public function edit($id){
+        return Lead::find($id);
     }
 }

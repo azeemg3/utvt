@@ -27,6 +27,7 @@
                 success: function(data) {
                     alert_success('Operation Successfully..!!');
                     $("#form").trigger("reset");
+                    $("#add-new").modal('hide');
                     $('.data-table').DataTable().ajax.reload();
                 },
                 error: function(ajaxcontent) {

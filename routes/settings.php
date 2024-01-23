@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Settings\AirlineController;
 use App\Http\Controllers\Settings\PermissionController;
 use App\Http\Controllers\Settings\RoleController;
+use App\Http\Controllers\Settings\SectorController;
 use App\Http\Controllers\Settings\ServiceController;
 use App\Http\Controllers\Settings\SourceController;
 use App\Http\Controllers\Settings\UserController;
@@ -33,5 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('business', \App\Http\Controllers\Settings\BusinessSettingController::class);
         Route::resource('country', \App\Http\Controllers\Settings\CountryController::class);
         Route::resource('city', \App\Http\Controllers\Settings\CityController::class);
+        Route::resource('sector', SectorController::class);
+        Route::resource('airline',AirlineController::class);
     });
 });

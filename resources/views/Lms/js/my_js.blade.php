@@ -9,7 +9,7 @@
         table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('lead.all_leads') }}",
+            ajax: "{{ route('lead.my_leads') }}",
             columns: [{
                     render: function(data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;

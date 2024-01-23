@@ -71,7 +71,7 @@ $usf=App\Models\Lead::recent_action($data->id,5);
         <div>
             <i class="fas fa-comment bg-info"></i>
             <div class="timeline-item">
-                <span class="time"><i class="far fa-clock"></i> Helpers::fetch_time($ip->created_at)</span>
+                <span class="time"><i class="far fa-clock"></i> {{ Helpers::fetch_time($ip->created_at) }}</span>
                 <h3 class="timeline-header">
                     <a class="text-info" href="#">Inprocess</a>
                 </h3>

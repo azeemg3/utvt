@@ -1,4 +1,4 @@
-@php $settings=['business','country','city','source','service','user','role','permission'];
+@php $settings=['business','country','city','source','service','user','role','permission','airline','sector'];
 @endphp
 <li class="nav-item has-treeview @if(in_array(Request::segment(2),$settings)) menu-open @endif
 @if(in_array(Request::segment(3),$settings)) menu-open @endif">
@@ -63,6 +63,18 @@
     <a href="{{ route('source.index') }}" class="nav-link @if(Request::segment(2)=='source') active @endif">
         <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
         <p>{{ trans('settings.source_of_query') }}</p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('sector.index') }}" class="nav-link @if(Request::segment(2)=='sector') active @endif">
+        <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
+        <p>{{ trans('settings.sector_list') }}</p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="{{ route('airline.index') }}" class="nav-link @if(Request::segment(2)=='airline') active @endif">
+        <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
+        <p>{{ trans('settings.airline_list') }}</p>
     </a>
 </li>
 <li class="nav-item">

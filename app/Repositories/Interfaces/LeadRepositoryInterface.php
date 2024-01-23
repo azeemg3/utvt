@@ -5,6 +5,7 @@ namespace App\Repositories\Interfaces;
 interface LeadRepositoryInterface
 {
     public function store($data);
+    public function edit($id);
     public function check_lead($mobile_number);
     public function lead_boxes($status);
     public function show($id);

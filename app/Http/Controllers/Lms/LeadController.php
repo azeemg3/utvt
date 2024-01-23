@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Helpers;
 use Twilio\Rest\Client;
+use Auth;
 
 class LeadController extends Controller
 {
@@ -65,7 +66,8 @@ class LeadController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data=$this->leadInterface->edit($id);
+        return view('Lms.edit',compact('data'));
     }
 
     /**
@@ -113,7 +115,7 @@ class LeadController extends Controller
                                 Action
                               <span class="sr-only">Toggle Dropdown</span></button>
                               <div class="dropdown-menu" role="menu" style="">
-                                <a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>
+                                <a class="dropdown-item" href="' . route('lead.edit', $row->id) . '"><i class="fas fa-edit"></i> Edit</a>
                                 <a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
                                 '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>
@@ -138,7 +140,7 @@ class LeadController extends Controller
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
         if ($request->ajax()) {
-            $res = Lead::select('*')->with(['leadSpo'])->orderBy('id','DESC');
+            $res = Lead::select('*')->with(['leadSpo'])->where('spo',Auth::user()->id)->orderBy('id','DESC');
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {

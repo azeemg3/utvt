@@ -1,21 +1,15 @@
 <?php
 
-namespace App\Models\Lms;
+namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
-class SourceQuery extends Model
+class Airline extends Model
 {
     use HasFactory;
-    protected $guarded = [''];
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
+    protected $guarded=[];
     protected static function boot()
     {
         parent::boot();
@@ -27,11 +21,11 @@ class SourceQuery extends Model
         });
     }
 
-    public static function dropdown($id=0){
+    public static function dropdown($ids=[]){
         $res=self::all();
         $list='';
         foreach ($res as $item){
-            $list.='<option '.($id==$item->id?'selected':'').' value="'.$item->id.'">'.$item->name.'</option>';
+            $list.='<option '.(in_array($item->id,json_decode($ids,true))?'selected':'').' value="'.$item->id.'">'.$item->name.'</option>';
         }
         return $list;
     }

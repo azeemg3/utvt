@@ -20,4 +20,9 @@ return [
     'modules'=>'Modules',
     'select_all'=>'Select All',
     'user'=>'User',
+    'sector_list'=>'Sector List',
+    'airline_list'=>'Airline List',
+    'airline_detail'=>'Airline Detail',
+    'sector_details'=>'Sector Details',
+    'sector'=>'Sector',
 ];

@@ -27,7 +27,7 @@ class CreateLeadRequest extends FormRequest
             'contact_name' => 'required',
             'email' => 'required',
             'CID' => 'required',
-            'source_of_query' => 'required',
+            'source_id' => 'required',
         ];
         if($this->input('type')==2){
             $array1=['spo' => 'required'];

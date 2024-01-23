@@ -105,5 +105,9 @@ class Helpers{
         }
         return $list;
     }
-
+    /**db date format */
+    public static function db_date_format($date=''){
+        $date=date('Y-m-d',strtotime($date));
+        return $date;
+    }
 }
