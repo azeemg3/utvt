@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('lead-conversation/{id}',[LeadController::class,'lead_conversation']);
         Route::get('change-status/{id}/{status}',[LeadController::class,'change_status']);
         Route::post("lead-reason",[LeadController::class,'lead_reason'])->name('lead.lead_reason');
+        Route::get('reopen/{id}',[LeadController::class,'reopen_lead']);
+        Route::put('lead_reopen',[LeadController::class,'lead_reopen']);
     });
 });
 

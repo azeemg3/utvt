@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Lms;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Lms\CreateLeadRequest;
 use App\Models\Lead;
+use App\Models\LeadActivity;
 use App\Models\Lms\LeadConversation;
 use App\Repositories\Interfaces\LeadRepositoryInterface;
 use Illuminate\Http\Request;
@@ -53,12 +54,13 @@ class LeadController extends Controller
     {
         $data=$this->leadInterface->show($id);
         $lead_conversation=LeadConversation::where('leadId',$id)->latest()->first();
+        $lead_activity=LeadActivity::where("LID",$id)->orderBy('id','DESC')->get();
         if($lead_conversation){
             $conversation=$lead_conversation;
         }else{
             $conversation='';
         }
-        return view('Lms.show',compact('data','conversation'));
+        return view('Lms.show',compact('data','conversation','lead_activity'));
     }
 
     /**
@@ -75,7 +77,7 @@ class LeadController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->leadInterface->update($request,$id);
     }
 
     /**
@@ -213,5 +215,12 @@ class LeadController extends Controller
     }
     public function lead_reason(Request $request){
         return $this->leadInterface->lead_reason($request);
+    }
+    public function reopen_lead($id){
+        $data=$this->leadInterface->reopen_lead($id);
+        return view('Lms.reopen',compact('data'));
+    }
+    public function lead_reopen(Request $request){
+        $this->leadInterface->lead_reopen($request);
     }
 }

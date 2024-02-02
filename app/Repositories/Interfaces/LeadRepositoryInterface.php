@@ -6,6 +6,7 @@ interface LeadRepositoryInterface
 {
     public function store($data);
     public function edit($id);
+    public function update($data,$id);
     public function check_lead($mobile_number);
     public function lead_boxes($status);
     public function show($id);
@@ -14,4 +15,6 @@ interface LeadRepositoryInterface
     public function lead_conversation($data,$id);
     public function change_status($id,$status);
     public function lead_reason($data);
+    public function reopen_lead($id);
+    public function lead_reopen($data);
 }

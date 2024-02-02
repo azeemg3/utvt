@@ -25,11 +25,16 @@ class SService extends Model
         });
     }
 
-    public static function dropdown($ids=[]){
+    public static function dropdown($ids=''){
+        $ids=json_decode($ids,true);
         $res=self::all();
         $list='';
         foreach ($res as $item){
-            $list.='<option '.(in_array($item->id,json_decode($ids,true))?'selected':'').' value="'.$item->id.'">'.$item->name.'</option>';
+            if(is_array($ids) && count($ids)>0){
+                $list.='<option '.(in_array($item->id,$ids)?'selected':'').' value="'.$item->id.'">'.$item->name.'</option>';
+            }else{
+                $list.='<option  value="'.$item->id.'">'.$item->name.'</option>';
+            }
         }
         return $list;
     }

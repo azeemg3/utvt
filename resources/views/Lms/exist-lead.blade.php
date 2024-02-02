@@ -26,8 +26,8 @@
                     <!--row-->
                 </div>
                 <div class="modal-footer justify-content-between">
-                    {{--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  --}}
-                    <button type="submit" class="btn btn-primary save">Continue..</button>
+                    <a href="" class="btn btn-info" id="reopen-lead" style="display: none">Reopen Lead</a>
+                    <a type="submit" class="btn btn-primary save" id="lead_view">Continue..</a>
                 </div>
             </form>
         </div>

@@ -30,12 +30,20 @@
                 <div class="card-body">
                     <div class="row">
                         <form id="lead-form">
+                            <input type="hidden" id="leadId" name="id" value="{{ $data->id }}">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-3">
                                     <div class="form-group">
                                         <label>Mobile:<span class="text-danger">*</span></label>
                                         <input id="phone" name="mobile" class="form-control form-control-sm"
                                             type="tel" name="phone" value="{{ $data->mobile }}" placeholder="e.g. +923244659501" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>Secondary Mobile:</label>
+                                        <input name="secondary_mobile" class="form-control form-control-sm"
+                                            type="tel" placeholder="e.g. +923244659501" />
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3">
@@ -203,10 +211,8 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 col-md-12 float-right">
-                                    <button class="btn btn-success btn-flat float-right create_lead" data-spo="1"
-                                        type="button">Create &amp; Takeover</button>
-                                    <button class="btn btn-primary btn-flat float-right create_lead" data-spo="2"
-                                        type="button">Create for Others</button>
+                                    <button class="btn btn-success btn-flat float-right update_lead"
+                                        type="button">Update</button>
                                 </div>
                                 <!--end-column-->
                             </div>

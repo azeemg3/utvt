@@ -49,4 +49,7 @@ class Lead extends Model
         $res=LeadActivity::with(['user'])->where(['LID'=>$leadId,'action_status'=>$status])->orderBy('id','DESC')->first();
         return $res;
     }
+    public function reopen_lead_by(){
+        return $this->belongsTo(User::class,'reopen_by','id');
+    }
 }

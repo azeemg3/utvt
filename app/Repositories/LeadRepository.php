@@ -29,7 +29,6 @@ class LeadRepository implements LeadRepositoryInterface
     {
         DB::beginTransaction();
         $mobile=$data['mobile'];
-        $mobile=$data['mobile'];
         $service_date_from=Helpers::db_date_format($data['service_date_from']);
         $service_date_to=Helpers::db_date_format($data['service_date_to']);
         $data['service_date_from']=$service_date_from;
@@ -52,16 +51,17 @@ class LeadRepository implements LeadRepositoryInterface
                 $leadAc['LID'] = $ret->id;
                 $leadAc['action_by'] = Auth::user()->id;
                 $leadAc['action_status'] = '1';
-                LeadActivity::create($leadAc);
-                $leadAc['action_status'] = '2';
-                LeadActivity::create($leadAc);
                 if ($data['type'] == '2') {
-                    $leadAc['action_by'] = $SPO;
-                    $leadAc['action_status'] = '2';
+                    $leadAc['action_by'] = Auth::user()->id;
+                    $leadAc['action_status'] = '1';
                     LeadActivity::create($leadAc);
                     $notiArray=["title"=>'New Lead','body'=>'You have Assigned New Lead'];
                     $this->notificationService->send_notification($notiArray,$SPO);
                     User::find($SPO)->notify(new PushNotification());
+                }else{
+                    LeadActivity::create($leadAc);
+                    $leadAc['action_status'] = '2';
+                    LeadActivity::create($leadAc);
                 }
                 $mailData = [
                     'title' => 'Mail from Webappfix',
@@ -98,10 +98,11 @@ class LeadRepository implements LeadRepositoryInterface
     }
     public function show($id)
     {
-        return $lead = Lead::with(['country', 'source', 'createdBy', 'leadSpo'])->find($id);
+        return $lead = Lead::with(['country', 'source', 'createdBy', 'leadSpo','reopen_lead_by'])->find($id);
     }
     public function destroy($id)
     {
+        LeadActivity::where('LID',$id)->delete();
         return Lead::destroy($id);
     }
     public function takeover_lead($data)
@@ -164,5 +165,54 @@ class LeadRepository implements LeadRepositoryInterface
     /**edit leads */
     public function edit($id){
         return Lead::find($id);
+    }
+    public function update($data,$id){
+        DB::beginTransaction();
+        $mobile=$data->mobile;
+        $service_date_from=Helpers::db_date_format($data->service_date_from);
+        $service_date_to=Helpers::db_date_format($data->service_date_to);
+        $data['service_date_from']=$service_date_from;
+        $data['service_date_to']=$service_date_to;
+        $data['services'] = json_encode($data->services);
+        $data['sectors'] = json_encode($data->sectors);
+        $data['airlines'] = json_encode($data->airline);
+        $SPO = $data['spo'];
+        $data['spo'] = $SPO;
+        $data=$data->except(['airline']);
+        try {
+            $ret = Lead::where('id',$id)->update($data);
+            DB::commit();
+            return $ret;
+        } catch (QueryException $e) {
+            DB::rollBack();
+            dd($e);
+        }
+    }
+    public function reopen_lead($id){
+        return Lead::find($id);
+    }
+    public function lead_reopen($data){
+        DB::beginTransaction();
+        $id=$data->id;
+        $service_date_from=Helpers::db_date_format($data->service_date_from);
+        $service_date_to=Helpers::db_date_format($data->service_date_to);
+        $data['service_date_from']=$service_date_from;
+        $data['service_date_to']=$service_date_to;
+        $data['services'] = json_encode($data->services);
+        $data['sectors'] = json_encode($data->sectors);
+        $data['airlines'] = json_encode($data->airline);
+        $SPO = $data['spo'];
+        $data['spo'] = $SPO;
+        $data['status'] = '1';
+        $data['reopen_by']=Auth::user()->id;
+        $data=$data->except(['airline']);
+        try {
+            $ret = Lead::where('id',$id)->update($data);
+            DB::commit();
+            return $ret;
+        } catch (QueryException $e) {
+            DB::rollBack();
+            dd($e);
+        }
     }
 }

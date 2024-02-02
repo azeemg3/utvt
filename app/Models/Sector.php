@@ -9,11 +9,16 @@ class Sector extends Model
 {
     use HasFactory;
     protected $guarded=[];
-    public static function dropdown($ids=[]){
+    public static function dropdown($ids=''){
         $list='';
+        $ids=json_decode($ids,true);
         $data=self::all();
         foreach($data as $item){
-            $list.='<option '.(in_array($item->sector,json_decode($ids,true))?'selected':'').' value="'.$item->sector.'">'.$item->sector.'</option>';
+            if(is_array($ids) && count($ids)>0){
+                $list.='<option '.(in_array($item->sector,$ids)?'selected':'').' value="'.$item->sector.'">'.$item->sector.'</option>';
+            }else{
+                $list.='<option  value="'.$item->sector.'">'.$item->sector.'</option>';
+            }
         }
         return $list;
     }
