@@ -140,13 +140,13 @@
                                             <td>
                                                 <div class="form-group clearfix selected_all">
                                                     <div class="icheck-primary d-inline">
-                                                        <input name="permission[]" type="checkbox" id="lms_dashboard" value="lms_dashboard" @if(in_array('role_assign_permission',$permissions)) checked @endif>
+                                                        <input name="permission[]" type="checkbox" id="lms_dashboard" value="lms_dashboard" @if(in_array('lms_dashboard',$permissions)) checked @endif>
                                                         <label for="lms_dashboard">{{ __('lms.lms_dashboard') }}</label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group clearfix selected_all">
                                                     <div class="icheck-primary d-inline">
-                                                        <input name="permission[]" type="checkbox" id="lms_my_leads" value="lms_my_leads" @if(in_array('role_assign_permission',$permissions)) checked @endif>
+                                                        <input name="permission[]" type="checkbox" id="lms_my_leads" value="lms_my_leads" @if(in_array('lms_my_leads',$permissions)) checked @endif>
                                                         <label for="lms_my_leads">{{ __('lms.my_leads') }}</label>
                                                     </div>
                                                 </div>

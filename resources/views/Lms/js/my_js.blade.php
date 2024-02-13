@@ -48,4 +48,23 @@
             ]
         });
     });
+     /*Lead Takeover*/
+     $(document).on("click", "#lead-takeover", function() {
+        $("#lead-details-modal").modal();
+        var thisVal = $(this).data('id');
+        $.ajax({
+            url: "{{ url('lms/check-lead') }}/" + thisVal,
+            type: "GET",
+            success: function(data) {
+                if (data != '') {
+                    $("#id").val(data.id);
+                    $("#leadId").text(data.id);
+                    $("#contact_name").text(data.contact_name);
+                    $("#mobile").text(data.mobile);
+                } else {
+
+                }
+            }
+        });
+    });
 </script>

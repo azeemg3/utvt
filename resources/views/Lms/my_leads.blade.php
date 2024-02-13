@@ -7,6 +7,7 @@
         $breadcrumb[] = ['title' => __('lms.my_leads')];
     @endphp
     <x-content-header :breadcrumb="$breadcrumb" />
+    @include('Lms.modals.lead-details-modal')
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary card-outline">

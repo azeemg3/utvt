@@ -51,7 +51,6 @@ $settings = ['business', 'country', 'city', 'source', 'service', 'user', 'role',
 
     </ul>
 </li>
-@endcan
 <li class="nav-item">
     <a href="{{ route('business.index') }}" class="nav-link @if (Request::segment(2) == 'business') active @endif">
         <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
@@ -94,3 +93,4 @@ $settings = ['business', 'country', 'city', 'source', 'service', 'user', 'role',
         <p>{{ trans('settings.service_list') }}</p>
     </a>
 </li>
+@endcan

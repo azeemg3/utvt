@@ -205,6 +205,7 @@ class LeadRepository implements LeadRepositoryInterface
         $data['spo'] = $SPO;
         $data['status'] = '1';
         $data['reopen_by']=Auth::user()->id;
+        $data['reopen_at']=date('Y-m-d h:i:s');
         $data=$data->except(['airline']);
         try {
             $ret = Lead::where('id',$id)->update($data);

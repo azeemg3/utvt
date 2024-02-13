@@ -23,18 +23,22 @@ $lms=['lead','my_leads','all_leads'];
                 <p>{{ __('lms.create_lead') }}</p>
             </a>
         </li>
+        @can('lms_my_leads')
         <li class="nav-item">
             <a href="{{ route('lead.my_leads') }}" class="nav-link @if(Request::segment(2)=='my_leads') active @endif">
                 <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
                 <p>{{ __('lms.my_leads') }}</p>
             </a>
         </li>
+        @endcan
+        @can('lms_all_leads')
         <li class="nav-item">
             <a href="{{ route('lead.all_leads') }}" class="nav-link @if(Request::segment(2)=='all_leads') active @endif">
                 <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
                 <p>{{ __('lms.all_leads') }}</p>
             </a>
         </li>
+        @endcan
         <li class="nav-item">
             <a href="pages/layout/fixed-footer.html" class="nav-link">
                 <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
