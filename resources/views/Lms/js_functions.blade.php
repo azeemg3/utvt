@@ -10,7 +10,7 @@
         });
         $.ajax({
             type: 'POST',
-            url: '{{ route('lead.store') }}/',
+            url: '{{ route('lead.store') }}',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -21,6 +21,9 @@
                 $("#loader").hide();
                 $(".select2").val('').trigger('change');
             },
+            complete: function (data) {
+                queue_jobs();
+               },
             error: function(ajaxcontent) {
                 vali = ajaxcontent.responseJSON.errors;
                 var errors = '';
@@ -118,4 +121,12 @@
             }
         });
     });
+    function queue_jobs(){
+        $.ajax({
+            url:"{{ url('queue_run') }}",
+            success:function(data){
+
+            }
+        })
+    }
 </script>

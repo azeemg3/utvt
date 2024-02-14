@@ -37,4 +37,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/send-web-notification', [UserController::class, 'sendNotification'])->name('send.web-notification');
     Route::get('/send-whatsapp', [UserController::class, 'sendWhatsAppMessage']);
     Route::resource('fetch-notification',NotificaitonController::class);
+    Route::get('queue_run',function(){
+        Artisan::call('queue:listen');
+        dd('done');
+    });
 });

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\SendLeadEmail;
 use App\Mail\LeadWelcomeEmail;
 use App\Models\Lead;
 use App\Models\LeadActivity;
@@ -63,14 +64,14 @@ class LeadRepository implements LeadRepositoryInterface
                     $leadAc['action_status'] = '2';
                     LeadActivity::create($leadAc);
                 }
+                $message="Thanks You ".strtoupper($data['contact_name']).",\nTour Vision Travel thankfull and appreciates your support and trust on us.\nYou can be confident that we are committed to your satisfaction. For further details & query please do'nt hesitate to call 03111381888 or visit www.toursvision.com";
                 $mailData = [
                     'title' => 'Mail from Webappfix',
                     'body' => 'This is for testing email usign smtp',
+                    'mobile' =>$data['mobile'],
+                    'message' =>$message,
                 ];
-                $message="Thanks You ".strtoupper($data['contact_name']).",\nTour Vision Travel thankfull and appreciates your support and trust on us.\nYou can be confident that we are committed to your satisfaction. For further details & query please do'nt hesitate to call 03111381888 or visit www.toursvision.com";
-                //$this->notificationService->send_sms4_connect($mobile, $message);
-                mail::to('azeemkhalidg3@gmail.com')->send(new LeadWelcomeEmail($mailData));
-                $this->twilioServices->whatsapp_message($data['mobile'], "Lead Created Successfully..");
+                dispatch(new SendLeadEmail($mailData))->delay(now()->addSeconds(30));
 
             }
             DB::commit();
