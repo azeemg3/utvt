@@ -38,7 +38,7 @@ class SendLeadEmail implements ShouldQueue
     {
         mail::to('azeemkhalidg3@gmail.com')->send(new LeadWelcomeEmail($this->details));
        $this->notificationService->send_sms4_connect($this->details['mobile'], $this->details['message']);
-       $this->twilioServices->whatsapp_message($this->details['mobile'], "Lead Created Successfully..");
+    //    $this->twilioServices->whatsapp_message($this->details['mobile'], "Lead Created Successfully..");
 
     }
 }

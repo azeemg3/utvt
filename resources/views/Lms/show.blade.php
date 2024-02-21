@@ -26,7 +26,7 @@
                     <!--row-->
                 </div>
                 <!--card-header-->
-                @if($data->status!=5 || Auth::user()->role->name === 'Admin')
+                @if($data->status!=5 && $data->status!=1 || Auth::user()->role->name === 'Admin')
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">

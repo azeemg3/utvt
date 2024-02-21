@@ -11,13 +11,14 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 class PushNotification extends Notification
 {
     use Queueable;
+    protected $details;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($details)
     {
-
+        $this->details=$details;
     }
 
     /**

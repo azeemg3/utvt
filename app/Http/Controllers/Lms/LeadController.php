@@ -16,18 +16,25 @@ use Auth;
 
 class LeadController extends Controller
 {
-
     private $leadInterface;
     public function __construct(LeadRepositoryInterface $leadInterface)
     {
         $this->leadInterface = $leadInterface;
+        $this->middleware('permission:lead_add|lead_edit', ['only' => ['my_leads']]);
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('Lms.index');
+        $pending_leads=$this->leadInterface->lead_boxes(1);
+        $takenover_leads=$this->leadInterface->lead_boxes(2);
+        $inprocess_leads=$this->leadInterface->lead_boxes(3);
+        $successfull_leads=$this->leadInterface->lead_boxes(4);
+        $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
+        $all_leads=$this->leadInterface->lead_boxes(0);
+        return view('Lms.index',compact('pending_leads','takenover_leads',
+        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads'));
     }
 
     /**
@@ -116,9 +123,11 @@ class LeadController extends Controller
                             <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 Action
                               <span class="sr-only">Toggle Dropdown</span></button>
-                              <div class="dropdown-menu" role="menu" style="">
-                                <a class="dropdown-item" href="' . route('lead.edit', $row->id) . '"><i class="fas fa-edit"></i> Edit</a>
-                                <a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
+                              <div class="dropdown-menu" role="menu" style="">';
+                              if (auth()->user()->can('lead_edit')){
+                                $btn.='<a class="dropdown-item" href="' . route('lead.edit', $row->id) . '"><i class="fas fa-edit"></i> Edit</a>';
+                            }
+                    $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
                                 '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>
                               </div>
@@ -142,7 +151,7 @@ class LeadController extends Controller
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
         if ($request->ajax()) {
-            $res = Lead::select('*')->with(['leadSpo'])->where('spo',Auth::user()->id)->orderBy('id','DESC');
+            $res = Lead::select('*')->with(['leadSpo'])->where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->orderBy('id','DESC');
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {
@@ -160,14 +169,20 @@ class LeadController extends Controller
                     $btn = '<div class="btn-group">
                             <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 Action
-                              <span class="sr-only">Toggle Dropdown</span></button>
-                              <div class="dropdown-menu" role="menu" style="">
-                                <a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>
-                                <a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
+                              <span class="sr-only">Toggle Dropdown</span></button>';
+                              $btn.='
+                              <div class="dropdown-menu" role="menu" style="">';
+                              if(auth()->user()->can('lead_edit')){
+                                $btn.='<a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>';
+                              }
+                            $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
+                            $btn.='
                                 '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
-                                <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>
-                              </div>
-
+                                ';
+                            if(auth()->user()->can('lead_delete')){
+                                $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';
+                            }
+                              $btn.='</div>
                           </div>';
                     return $btn;
                 })

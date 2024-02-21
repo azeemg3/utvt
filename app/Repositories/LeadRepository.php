@@ -114,6 +114,10 @@ class LeadRepository implements LeadRepositoryInterface
             if ($lead) {
                 LeadActivity::create(['LID' => $leadId, 'action_by' => Auth::user()->id, 'action_status' => 2]);
             }
+            $lead=Lead::find($leadId);
+            $notiArray=["title"=>'Lead Takenover','body'=>'Lead Takenover by'];
+            $this->notificationService->send_notification($notiArray,$lead->created_by);
+            User::find($lead->created_by)->notify(new PushNotification($notiArray));
             return redirect('lms/lead/' . $leadId . '')->with('message', 'Lead Takenover Successfully..!!');
         }
     }
@@ -134,6 +138,14 @@ class LeadRepository implements LeadRepositoryInterface
                 $rem['reminder_date']=date('Y-m-d',strtotime($data->reminder_date));
                 $rem['reminder_time']=date('h:i:s',strtotime($data->reminder_time));
                 LeadReminder::create($rem);
+                // Given timestamp
+                $given_timestamp = strtotime("2024-02-20 09:10:10");
+                    // Current timestamp
+                $current_timestamp = time();
+                    // Calculate the difference
+                $difference_in_seconds = $current_timestamp - $given_timestamp;
+                dispatch(new \App\Jobs\LeadReminder())->delay($difference_in_seconds);
+                // dispatch(new SendLeadEmail($mailData))->delay(now()->addSeconds(30));
             }
             $ret->user;
             return $ret;

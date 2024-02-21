@@ -87,7 +87,7 @@ $usf=App\Models\Lead::recent_action($data->id,5);
         </div>
         <!-- END timeline item -->
         @endif
-        @if($tob->created_at>=$time)
+        @if(isset($tob->created_at) && $tob->created_at>=$time)
         <!-- timeline time label -->
         <div class="time-label">
             <span class="bg-primary">

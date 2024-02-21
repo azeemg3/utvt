@@ -18,7 +18,7 @@
                         <x-lead-box :lead="[$inprocess_leads, 'bg-info', 'In Process Leads','fas fa-sync-alt fa-spin']" />
                         <x-lead-box :lead="[$successfull_leads, 'bg-success', 'Successfull Leads','far fa-thumbs-up']" />
                         <x-lead-box :lead="[$unSuccessfull_leads, 'bg-danger', 'UnSuccessfull Leads','far fa-thumbs-down']" />
-                        <x-lead-box :lead="[$pending_leads, 'bg-yellow', 'All Leads','fas fa-shopping-cart']" />
+                        <x-lead-box :lead="[$all_leads, 'bg-yellow', 'All Leads','fas fa-shopping-cart']" />
                     </div>
                     <!--row-->
                 </div>

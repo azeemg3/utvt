@@ -25,7 +25,6 @@ class CreateLeadRequest extends FormRequest
         $array= [
             'mobile' => 'required|min:9',
             'contact_name' => 'required',
-            'email' => 'required',
             'CID' => 'required',
             'source_id' => 'required',
         ];

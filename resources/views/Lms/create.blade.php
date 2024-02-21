@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3">
                                     <div class="form-group">
-                                        <label>Email:<span class="text-danger">*</span></label>
+                                        <label>Email:</label>
                                         <input type="text" class="form-control form-control-sm" name="email"
                                             placeholder="Email">
                                     </div>

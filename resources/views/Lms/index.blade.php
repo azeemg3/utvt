@@ -16,7 +16,7 @@
                             <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
-                                    <h3>41</h3>
+                                    <h3>{{ $pending_leads }}</h3>
 
                                     <p>Pending Leads</p>
                                 </div>
@@ -31,7 +31,7 @@
                             <!-- small box -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    <h3>30</h3>
+                                    <h3>{{ $takenover_leads }}</h3>
 
                                     <p>Takenover Leads</p>
                                 </div>
@@ -46,7 +46,7 @@
                             <!-- small box -->
                             <div class="small-box bg-blue">
                                 <div class="inner">
-                                    <h3>207</h3>
+                                    <h3>{{ $inprocess_leads }}</h3>
 
                                     <p>In Process Leads</p>
                                 </div>
@@ -61,7 +61,7 @@
                             <!-- small box -->
                             <div class="small-box bg-success">
                                 <div class="inner">
-                                    <h3>000</h3>
+                                    <h3>{{ $successfull_leads }}</h3>
 
                                     <p>Successfull Leads</p>
                                 </div>
@@ -76,7 +76,7 @@
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3>000</h3>
+                                    <h3>{{ $unSuccessfull_leads }}</h3>
 
                                     <p>Unsuccessfull Leads</p>
                                 </div>
@@ -91,7 +91,7 @@
                             <!-- small box -->
                             <div class="small-box bg-gradient-maroon">
                                 <div class="inner">
-                                    <h3>278</h3>
+                                    <h3>{{ $all_leads }}</h3>
 
                                     <p>Total Leads</p>
                                 </div>
