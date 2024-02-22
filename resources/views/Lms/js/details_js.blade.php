@@ -136,4 +136,36 @@
             $(".reminder").hide();
           }
     });
+    $(document).on("change","#lead-transfer",function(){
+        var spo=$(this).val();
+        var leadId=$(this).data("leadid");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You are going to Transfering lead",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Transfer it!"
+        }).then((result) => {
+            if (result) {
+                $.ajax({
+                    url:"{{ route('lead.lead_transfer') }}",
+                    data:{leadId:leadId,spo:spo},
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+
+                    },
+                });
+                Swal.fire({
+                    title: "Transfered!",
+                    text: "Lead has been transfered.",
+                    icon: "success"
+                });
+            }
+        });
+    });
 </script>

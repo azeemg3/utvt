@@ -90,6 +90,15 @@
                         </td>
                     </tr>
                     @endif
+                    <tr>
+                        <th>Transfer To:</th>
+                        <td>
+                            <select class="form-control form-control-sm" id="lead-transfer" data-leadid="{{ $data->id }}">
+                                <option value="">Select Spo</option>
+                                {!! App\Models\User::dropdown() !!}
+                            </select>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <!-- /.col -->

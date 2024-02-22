@@ -238,4 +238,8 @@ class LeadController extends Controller
     public function lead_reopen(Request $request){
         $this->leadInterface->lead_reopen($request);
     }
+    public function transfer_lead(Request $request){
+    $this->leadInterface->transfer_lead($request);
+    }
+
 }

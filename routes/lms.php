@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post("lead-reason",[LeadController::class,'lead_reason'])->name('lead.lead_reason');
         Route::get('reopen/{id}',[LeadController::class,'reopen_lead']);
         Route::put('lead_reopen',[LeadController::class,'lead_reopen']);
+        Route::post('transfer_lead',[LeadController::class,'transfer_lead'])->name('lead.lead_transfer');
     });
 });
 

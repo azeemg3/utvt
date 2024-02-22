@@ -17,4 +17,5 @@ interface LeadRepositoryInterface
     public function lead_reason($data);
     public function reopen_lead($id);
     public function lead_reopen($data);
+    public function transfer_lead($data);
 }

@@ -229,4 +229,9 @@ class LeadRepository implements LeadRepositoryInterface
             dd($e);
         }
     }
+    public function transfer_lead($data){
+        $leadId=$data->leadId;
+        $spo=$data->spo;
+        Lead::where('id',$leadId)->update(['spo'=>$spo]);
+    }
 }
