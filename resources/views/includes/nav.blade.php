@@ -78,7 +78,7 @@
                 <span class="dropdown-item dropdown-header"><span class="count_notify">0</span> Notifications</span>
                 <div id="lead-notification"></div>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                <a href="{{ route('all-notifications')}}" class="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
         </li>
         <li class="nav-item">

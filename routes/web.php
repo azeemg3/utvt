@@ -4,6 +4,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Settings\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificaitonController;
+use App\Models\User;
+use App\Notifications\PushNotification;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +43,5 @@ Route::group(['middleware' => ['auth']], function () {
         Artisan::call('queue:listen');
         dd('done');
     });
+    Route::get('all-notifications',[NotificaitonController::class,'all_notifications'])->name('all-notifications');
 });

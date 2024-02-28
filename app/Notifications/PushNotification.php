@@ -56,14 +56,14 @@ class PushNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'data' =>' Your deposit of  was successful'
+            'data' =>$this->details['message'],
         ];
     }
     public function toBroadcast($notifiable)
     {
 
         return [
-            'data' =>' Your deposit of  was successful'
+            'data' =>$this->details['message'],
         ];
     }
     public function broadcastOn(){

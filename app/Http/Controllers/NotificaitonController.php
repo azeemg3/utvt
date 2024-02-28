@@ -65,4 +65,9 @@ class NotificaitonController extends Controller
     {
         //
     }
+    public function all_notifications(Request $request){
+        $notify_data=auth()->user()->unreadNotifications()->where('type','App\Notifications\PushNotification')->get();
+        $notify_data->markAsRead();
+        return view('all-notifications',compact('notify_data'));
+    }
 }

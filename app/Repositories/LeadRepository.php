@@ -58,7 +58,7 @@ class LeadRepository implements LeadRepositoryInterface
                     LeadActivity::create($leadAc);
                     $notiArray=["title"=>'New Lead','body'=>'You have Assigned New Lead'];
                     $this->notificationService->send_notification($notiArray,$SPO);
-                    User::find($SPO)->notify(new PushNotification());
+                    User::find($SPO)->notify(new PushNotification(['message'=>'Lead Assigned You']));
                 }else{
                     LeadActivity::create($leadAc);
                     $leadAc['action_status'] = '2';
@@ -115,9 +115,9 @@ class LeadRepository implements LeadRepositoryInterface
                 LeadActivity::create(['LID' => $leadId, 'action_by' => Auth::user()->id, 'action_status' => 2]);
             }
             $lead=Lead::find($leadId);
-            $notiArray=["title"=>'Lead Takenover','body'=>'Lead Takenover by'];
+            $notiArray=["title"=>'Lead Takenover','body'=>'Lead Takenover by '.Auth::user()->name.''];
             $this->notificationService->send_notification($notiArray,$lead->created_by);
-            User::find($lead->created_by)->notify(new PushNotification($notiArray));
+            User::find($lead->created_by)->notify(new PushNotification(['message'=>$notiArray['body']]));
             return redirect('lms/lead/' . $leadId . '')->with('message', 'Lead Takenover Successfully..!!');
         }
     }
