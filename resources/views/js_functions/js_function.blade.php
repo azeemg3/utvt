@@ -223,6 +223,24 @@
                         </a>`;
                     }
                     $("#lead-notification").html(lead_notify);
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-bottom-left",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "3000000",
+                        "hideDuration": "10000000",
+                        "timeOut": "250000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn"
+                    };
+                    if(data.count_notify>0)
+                    toastr.success('<a href="{{ route('all-notifications')}}">You have ' + data.count_notify + ' Notifications!</a>');
+
                 }
             });
         });

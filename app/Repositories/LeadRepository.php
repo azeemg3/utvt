@@ -14,6 +14,7 @@ use App\Repositories\Interfaces\LeadRepositoryInterface;
 use App\Services\NotificationService;
 use App\Services\TwilioServices;
 use Auth;
+use Carbon\Carbon;
 use DB;
 use Helpers;
 use Illuminate\Database\QueryException;
@@ -139,11 +140,11 @@ class LeadRepository implements LeadRepositoryInterface
                 $rem['reminder_time']=date('h:i:s',strtotime($data->reminder_time));
                 LeadReminder::create($rem);
                 // Given timestamp
-                $given_timestamp = strtotime("2024-02-20 09:10:10");
+                $given_timestamp = strtotime("2024-02-39 09:10:10");
                     // Current timestamp
                 $current_timestamp = time();
                     // Calculate the difference
-                $difference_in_seconds = $current_timestamp - $given_timestamp;
+                $difference_in_seconds =Carbon::createFromFormat('Y-m-d', '2020-02-02');
                 dispatch(new \App\Jobs\LeadReminder())->delay($difference_in_seconds);
                 // dispatch(new SendLeadEmail($mailData))->delay(now()->addSeconds(30));
             }
