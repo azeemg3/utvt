@@ -213,7 +213,12 @@ class LeadController extends Controller
     }
     /**Client conversation as client asking about requirements */
     public function lead_conversation(Request $request,$id=''){
-        if($request->message!=''){
+        if($request->method()=="POST"){
+            $validatedData = $request->validate([
+                'message' => 'required',
+            ], [
+                'message.required' => 'Conversation required',
+            ]);
             return $this->leadInterface->lead_conversation($request,$id);
         }else{
             if( $request->method()=="GET"){

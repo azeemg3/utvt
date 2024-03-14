@@ -55,6 +55,10 @@
                             <th>{{ __('settings.services') }}:</th>
                             <td>{!! Helpers::lead_services(json_decode($data->services)) !!}</td>
                         </tr>
+                        <tr>
+                            <th>{{ __('settings.sector') }}:</th>
+                            <td>{!! Helpers::sectors(json_decode($data->sectors)) !!}</td>
+                        </tr>
                     </table>
                 </address>
             </div>

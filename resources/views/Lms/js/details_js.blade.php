@@ -1,6 +1,7 @@
 <script>
     /*Client conversation*/
     function lead_conversation() {
+        $("#loader").show();
         $.ajax({
             url: "{{ route('lead.conversation') }}",
             type: "POST",
@@ -14,8 +15,37 @@
                 $("#conversation-by").text(data.user.name);
                 $("#conversation-time").text(data.created_at);
                 $("#conversation-message").html(data.conversation);
-            }
-        })
+                $("#loader").hide();
+                $('.textarea').summernote('code', '');
+            },error: function(ajaxcontent) {
+                    vali = ajaxcontent.responseJSON.errors;
+                    var errors = '';
+                    $.each(vali, function(index, value) {
+                        $("#lead-conversation-form textarea[name~='" + index + "']").css('border',
+                            '1px solid red');
+                        errors += '&#187;' + value + '<br><br>';
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                    };
+                        toastr.error(value);
+
+                    });
+                    $("#loader").hide();
+                }
+        });
     }
     /*Change manual status*/
     $(document).on("change", "#manual-status", function(e) {

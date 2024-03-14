@@ -84,7 +84,7 @@ class Helpers{
     /**Fetch Lead source */
     public static function fetch_lead_source($source){
         if(!empty($source)){
-            return SourceQuery::find($source)->first()->name;
+            return SourceQuery::find($source)->name;
         }
     }
     public static function helper_dropdown($id=''){
@@ -109,5 +109,10 @@ class Helpers{
     public static function db_date_format($date=''){
         $date=date('Y-m-d',strtotime($date));
         return $date;
+    }
+    //convert sectors to string
+    public static function sectors($sectors=''){
+        $string = implode("-", $sectors);
+        return $string;
     }
 }
