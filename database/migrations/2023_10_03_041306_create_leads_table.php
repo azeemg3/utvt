@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->string('contact_name');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('mobile');
             $table->string('cnic')->nullable();
             $table->unsignedBigInteger('spo')->nullable();

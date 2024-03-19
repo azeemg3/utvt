@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -57,5 +59,12 @@ class User extends Authenticatable
             $list.='<option '.($id==$item->id?'selected':'').' value="'.$item->id.'">'.$item->name.'</option>';
         }
         return $list;
+    }
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp(strtotime($value))
+            ->timezone('Asia/Karachi')
+            ->toDateTimeString()
+        ;
     }
 }

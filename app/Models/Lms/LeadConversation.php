@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use App\Models\User;
+use Carbon\Carbon;
 
 class LeadConversation extends Model
 {
@@ -31,5 +32,12 @@ class LeadConversation extends Model
                 $SourceQuery->created_by = Auth::user()->id;
             }
         });
+    }
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp(strtotime($value))
+            ->timezone('Asia/Karachi')
+            ->toDateTimeString()
+        ;
     }
 }

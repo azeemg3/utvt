@@ -7,6 +7,7 @@ use App\Models\Lms\SService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Carbon\Carbon;
 
 class Lead extends Model
 {
@@ -51,5 +52,13 @@ class Lead extends Model
     }
     public function reopen_lead_by(){
         return $this->belongsTo(User::class,'reopen_by','id');
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimestamp(strtotime($value))
+            ->timezone('Asia/Karachi')
+            ->toDateTimeString()
+        ;
     }
 }
