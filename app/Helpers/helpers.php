@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\Airline;
 use App\Models\Lms\SourceQuery;
 use App\Models\Lms\SService;
 use Spatie\Permission\Models\Role;
@@ -48,6 +50,15 @@ class Helpers{
     //get services naem against array
     public static function lead_services(array $ids){
         $res=SService::whereIn('id',$ids)->pluck('name');
+        $res=json_decode($res);
+        $html='';
+        foreach($res as $item){
+            $html.= '<span class="badge badge-info">'.$item.'</span> ';
+        }
+        return $html;
+    }
+    public static function airlines(array $ids){
+        $res=Airline::whereIn('id',$ids)->pluck('name');
         $res=json_decode($res);
         $html='';
         foreach($res as $item){
@@ -112,7 +123,11 @@ class Helpers{
     }
     //convert sectors to string
     public static function sectors($sectors=''){
+        if(isset($sectors)){
         $string = implode("-", $sectors);
         return $string;
+        }else{
+            return "";
+        }
     }
 }

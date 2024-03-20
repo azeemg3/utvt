@@ -56,6 +56,10 @@
                             <td>{!! Helpers::lead_services(json_decode($data->services)) !!}</td>
                         </tr>
                         <tr>
+                            <th>Airlines:</th>
+                            <td>{!! Helpers::airlines(json_decode($data->airlines)) !!}</td>
+                        </tr>
+                        <tr>
                             <th>{{ __('settings.sector') }}:</th>
                             <td>{!! Helpers::sectors(json_decode($data->sectors)) !!}-{!! Helpers::sectors(json_decode($data->sectorss)) !!}</td>
                         </tr>
