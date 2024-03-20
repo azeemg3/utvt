@@ -153,10 +153,19 @@
                                     </div>
                                 </div>
                                 <!--end-column-->
-                                <div class="col-xs-12 col-sm-12 col-md-6">
+                                <div class="col-xs-12 col-sm-12 col-md-3">
                                     <div class="form-group">
                                         <label>Sector:</label>
                                         <select class="form-control form-control-sm select2" name="sectors[]" multiple>
+                                            {!! App\Models\Sector::dropdown() !!}
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end-columns-->
+                                <div class="col-xs-12 col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>Sector:</label>
+                                        <select class="form-control form-control-sm select2" name="sectorss[]" multiple>
                                             {!! App\Models\Sector::dropdown() !!}
                                         </select>
                                     </div>

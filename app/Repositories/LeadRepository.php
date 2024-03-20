@@ -37,6 +37,7 @@ class LeadRepository implements LeadRepositoryInterface
         $data['service_date_to']=$service_date_to;
         $data['services'] = json_encode($data['services']);
         $data['sectors'] = json_encode($data['sectors']);
+        $data['sectorss'] = json_encode($data['sectorss']);
         $data['airlines'] = json_encode($data['airline']);
         if ($data['type'] == 1) {
             $SPO = Auth::user()->id;
