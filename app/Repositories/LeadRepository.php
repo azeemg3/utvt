@@ -234,6 +234,11 @@ class LeadRepository implements LeadRepositoryInterface
     public function transfer_lead($data){
         $leadId=$data->leadId;
         $spo=$data->spo;
-        Lead::where('id',$leadId)->update(['spo'=>$spo]);
+        Lead::where('id',$leadId)->update(['spo'=>$spo,'status'=>'1']);
+        $dataa['LID'] = $leadId;
+        $dataa['action_status'] =1;
+        $dataa['comments']="Lead Transfer";
+        $dataa['action_by'] = Auth::user()->id;
+        LeadActivity::create($dataa);
     }
 }
