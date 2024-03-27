@@ -25,4 +25,5 @@ return [
     'airline_detail'=>'Airline Detail',
     'sector_details'=>'Sector Details',
     'sector'=>'Sector',
+    'update'=>'Update',
 ];

@@ -130,4 +130,12 @@ class Helpers{
             return "";
         }
     }
+    public static function status($status=''){
+        $array=[0=>'Inactive',1=>'Active'];
+        $list='';
+        foreach($array as $key=>$val){
+            $list.='<option '.($status==$key?'selected':'').' value="'.$key.'">'.$val.'</option>';
+        }
+        return $list;
+    }
 }

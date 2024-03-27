@@ -14,6 +14,8 @@ use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use DB;
+use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     /**
@@ -40,7 +42,7 @@ class UserController extends Controller
                                 Action
                               <span class="sr-only">Toggle Dropdown</span></button>
                               <div class="dropdown-menu" role="menu" style="">
-                              <a class="dropdown-item" onClick="edit_rec(this)" data-action="'.route('role.edit',$row->id).'" href="#" data-modal="add-new" data-id="'.$row->id.'"><i class="fas fa-edit"></i> Edit</a>
+                              <a class="dropdown-item" href="'.route('user.edit',$row->id).'"><i class="fas fa-edit"></i> Edit</a>
                               <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('settings/user-management/user').'"><i class="fas fa-trash"></i> Delete</a>
                               </div>
 
@@ -83,7 +85,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $result= User::find($id);
+        return view('settings.users.edit',compact('result'));
     }
 
     /**
@@ -91,7 +94,29 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'role_id' => ['required','int'],
+        ]);
+        $data=$request->except(['_token','_method','password_confirmation']);
+        if(!empty($data['password'])){
+            $data['password'] = Hash::make($data['password']);
+        }
+        DB::beginTransaction();
+        try{
+            $user=User::where('id',$request->id)->update($data);
+            $role=Role::find($request->input('role_id'));
+            $user=User::where('id',$request->id)->first();
+            $user->assignRole($role->name);
+            DB::commit();
+
+            $request->session()->flash('message', "User Created Successfully..!!");
+            return redirect()->back();
+        }catch(QueryException $e){
+                DB::rollBack();
+                dd($e);
+        }
     }
 
     /**
