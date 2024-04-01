@@ -196,7 +196,7 @@
                                     <div class="form-group">
                                         <div class="custom-control custom-radio">
                                             <input class="custom-control-input" type="radio" id="customRadio2"
-                                                name="priority" value="2">
+                                                name="priority" checked value="2">
                                             <label for="customRadio2" class="custom-control-label">Medium</label>
                                         </div>
                                     </div>
