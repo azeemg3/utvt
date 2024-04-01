@@ -5,5 +5,8 @@
     border: none !important;
 }
 label:not(.form-check-label):not(.custom-file-label){
-    font-weight: 500 !important;
+    /* font-weight: 700 !important; */
+}
+.form-control{
+    color:black !important;
 }
