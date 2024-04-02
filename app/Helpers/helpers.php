@@ -57,7 +57,8 @@ class Helpers{
         }
         return $html;
     }
-    public static function airlines(array $ids){
+    public static function airlines($ids=""){
+        if(!empty($ids)){
         $res=Airline::whereIn('id',$ids)->pluck('name');
         $res=json_decode($res);
         $html='';
@@ -65,6 +66,9 @@ class Helpers{
             $html.= '<span class="badge badge-info">'.$item.'</span> ';
         }
         return $html;
+        }else{
+            return "";
+        }
     }
     /**date format in day-month-year */
     public static function date_format($date){

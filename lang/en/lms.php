@@ -25,5 +25,6 @@ return [
     'closed_reason'=>'Closed Reason',
     'select_reason'=>'Select Reason',
     'close_lead'=>'Close Lead',
-    'reopen_lead'=>'Reopen Lead'
+    'reopen_lead'=>'Reopen Lead',
+    'lead_reminder'=>'Lead Reminders',
 ];

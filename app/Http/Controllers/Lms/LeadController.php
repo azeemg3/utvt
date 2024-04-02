@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Lms\CreateLeadRequest;
 use App\Models\Lead;
 use App\Models\LeadActivity;
+use App\Models\LeadReminder;
 use App\Models\Lms\LeadConversation;
 use App\Repositories\Interfaces\LeadRepositoryInterface;
 use Illuminate\Http\Request;
@@ -246,5 +247,41 @@ class LeadController extends Controller
     public function transfer_lead(Request $request){
     $this->leadInterface->transfer_lead($request);
     }
-
+    public function lead_reminder(Request $request){
+        if ($request->ajax()) {
+            $res = LeadReminder::select('*')->orderBy('id','DESC');
+            return DataTables::of($res)
+                ->addIndexColumn()
+               ->addColumn('status', function ($row) {
+                    return ($row->status==0?"pending":"read");
+                })
+                ->addColumn('reminder_date', function ($row) {
+                    return (date('d-m-Y',strtotime($row->reminder_date))." ".$row->reminder_time);
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                Action
+                              <span class="sr-only">Toggle Dropdown</span></button>';
+                              $btn.='
+                              <div class="dropdown-menu" role="menu" style="">';
+                              if(auth()->user()->can('lead_edit')){
+                                $btn.='<a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>';
+                              }
+                            $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
+                            $btn.='
+                                '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                ';
+                            if(auth()->user()->can('lead_delete')){
+                                $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';
+                            }
+                              $btn.='</div>
+                          </div>';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'spo_name','lead_status'])
+                ->make(true);
+        }
+        return view('Lms.lead_reminder');
+    }
 }
