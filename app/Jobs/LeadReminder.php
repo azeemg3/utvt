@@ -26,6 +26,6 @@ class LeadReminder implements ShouldQueue
      */
     public function handle(): void
     {
-        dd('azeem');
+        
     }
 }
