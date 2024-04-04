@@ -214,6 +214,16 @@
                                     </div>
                                 </div>
                                 <!--end-column-->
+                                <div class="col-xs-12 col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>Class Of Travel:</label>
+                                        <select class="form-control form-control-sm" name="class_travel">
+                                            <option value="1">Economy</option>
+                                            <option value="2">Business</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end-columns-->
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <textarea rows="20" class="form-control textarea" placeholder="Other Details" name="other_details">{{ $data->other_details }}</textarea>
