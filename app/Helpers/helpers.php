@@ -72,7 +72,7 @@ class Helpers{
     }
     /**date format in day-month-year */
     public static function date_format($date){
-        if($date!=null && !is_numeric($date)) {
+        if($date!=null && !is_numeric($date) && $date!='01-01-1970') {
         return date('d-m-Y',strtotime($date));
         }else{
             return "N/A";
