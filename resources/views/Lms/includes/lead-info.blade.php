@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <th>{{ __('settings.route') }}:</th>
-                            <td>{{ ($data->service_date_to=="" || $data->service_date_to="1970-01-01" ?"One Way":"Multi Way") }}</td>
+                            <td>{{ ($data->service_date_to=="" || $data->service_date_to=="1970-01-01" ?"One Way":"Multi Way") }}</td>
                         </tr>
                     </table>
                 </address>
