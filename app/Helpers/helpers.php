@@ -72,7 +72,11 @@ class Helpers{
     }
     /**date format in day-month-year */
     public static function date_format($date){
+        if($date!=null && !is_numeric($date)) {
         return date('d-m-Y',strtotime($date));
+        }else{
+            return "N/A";
+        }
     }
     /**days in string */
     public static function string_day($date){

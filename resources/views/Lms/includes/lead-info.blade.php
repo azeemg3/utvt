@@ -63,6 +63,10 @@
                             <th>{{ __('settings.sector') }}:</th>
                             <td>{!! Helpers::sectors(json_decode($data->sectors)) !!}-{!! Helpers::sectors(json_decode($data->sectorss)) !!}</td>
                         </tr>
+                        <tr>
+                            <th>{{ __('settings.route') }}:</th>
+                            <td>{{ ($data->service_date_to==""?"One Way":"Multi Way") }}</td>
+                        </tr>
                     </table>
                 </address>
             </div>

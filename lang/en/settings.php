@@ -26,4 +26,5 @@ return [
     'sector_details'=>'Sector Details',
     'sector'=>'Sector',
     'update'=>'Update',
+    'route'=>'Route',
 ];
