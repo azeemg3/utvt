@@ -146,4 +146,17 @@ class Helpers{
         }
         return $list;
     }
+    public static function lead_priority($p){
+        if($p==1){
+            return '<span class="badge badge-info">This is Low priority Lead</span>';
+        }
+        elseif($p==2){
+            return '<span class="badge badge-warning">This is Medium priority Lead</span>';
+        }
+        elseif($p==3){
+            return '<span class="badge badge-danger">This is High priority Lead</spa>';
+        }else{
+            return 'N/A';
+        }
+    }
 }

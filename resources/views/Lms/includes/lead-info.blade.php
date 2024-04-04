@@ -65,7 +65,7 @@
                         </tr>
                         <tr>
                             <th>{{ __('settings.route') }}:</th>
-                            <td>{{ ($data->service_date_to=="" || $data->service_date_to=="1970-01-01" ?"One Way":"Multi Way") }}</td>
+                            <td>{{ ($data->service_date_to=="" || $data->service_date_to=="1970-01-01" ?"One Way":"Return") }}</td>
                         </tr>
                     </table>
                 </address>
@@ -110,6 +110,14 @@
                                 {!! App\Models\User::dropdown() !!}
                             </select>
                         </td>
+                    </tr>
+                    <tr>
+                        <th>Priority:</th>
+                        <td>{!! Helpers::lead_priority($data->priority)!!}</td>
+                    </tr>
+                    <tr>
+                        <th>Class of Travel:</th>
+                        <td>{{($data->class_travel==1?"Economy":"Business")}}</td>
                     </tr>
                 </table>
             </div>
