@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Helpers;
 use Notification;
 
 class NotificaitonController extends Controller
@@ -13,9 +14,10 @@ class NotificaitonController extends Controller
      */
     public function index()
     {
+        $reminder_count=Helpers::fetch_reminder_notification();
         $count_notify=auth()->user()->unreadNotifications()->count();
         $notify_data=auth()->user()->unreadNotifications()->where('type','App\Notifications\PushNotification')->get();
-        return compact('count_notify','notify_data');
+        return compact('count_notify','notify_data','reminder_count');
     }
 
     /**

@@ -34,6 +34,7 @@
             <!-- /.card -->
         </div>
         <!-- /.container-fluid -->
+        @include('Lms.modals.lead-reminder')
     </section>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
@@ -42,7 +43,7 @@
     <script type="text/javascript">
     var table;
     $(function () {
-    table = $('.data-table').DataTable({
+    var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: "{{ route('lead.lead_reminder') }}",
@@ -60,7 +61,49 @@
         ]
     });
 });
-
+$(document).on("click",".reminder-read",function(){
+        id=$(this).data("id");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Mark as read!"
+        }).then((result) => {
+            console.log(result.value);
+            if (result.value==true) {
+                $.ajax({
+                    url:"{{route('lead.reminder_read')}}",
+                    type: 'GET',
+                    data:{id:id},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        $('.data-table').DataTable().ajax.reload();
+                    },
+                });
+            }
+        });
+    });
+    $(document).on("click",".lead-reminder-update",function () {
+        $("#lead-reminder-modal").modal("show");
+        id=$(this).data("id");
+        $.ajax({
+                    url:"{{route('lead.edit_reminder')}}",
+                    type: 'GET',
+                    data:{id:id},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        $("#lead-reminder-modal input[name~='reminder_date']").val(data.reminder_date);
+                        $("#lead-reminder-modal input[name~='reminder_time']").val(data.reminder_time);
+                    },
+                });
+    });
 
   </script>
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class LeadReminder extends Model
 {
@@ -19,5 +20,19 @@ class LeadReminder extends Model
             ->timezone('Asia/Karachi')
             ->toDateTimeString()
         ;
+    }
+    public function getReminderDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($SourceQuery) {
+            if (auth()->check()) {
+                $SourceQuery->created_by = Auth::user()->id;
+            }
+        });
     }
 }

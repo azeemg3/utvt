@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::put('lead_reopen',[LeadController::class,'lead_reopen']);
         Route::post('transfer_lead',[LeadController::class,'transfer_lead'])->name('lead.lead_transfer');
         Route::get("lead-reminder",[LeadController::class,'lead_reminder'])->name('lead.lead_reminder');
+        Route::get("reminder-read",[LeadController::class,'reminder_read'])->name('lead.reminder_read');
+        Route::get("edit-reminder",[LeadController::class,'edit_reminder'])->name('lead.edit_reminder');
     });
 });
 

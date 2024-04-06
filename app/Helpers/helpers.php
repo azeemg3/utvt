@@ -1,8 +1,12 @@
 <?php
 
 use App\Models\Airline;
+use App\Models\Lead;
+use App\Models\LeadReminder;
 use App\Models\Lms\SourceQuery;
 use App\Models\Lms\SService;
+use App\Models\User;
+use App\Notifications\PushNotification;
 use Spatie\Permission\Models\Role;
 class Helpers{
     /**create function lead format */
@@ -158,5 +162,19 @@ class Helpers{
         }else{
             return 'N/A';
         }
+    }
+    //fetch Reminder notifications
+    public static function fetch_reminder_notification(){
+        $current_date=date("Y-m-d");
+        $count=LeadReminder::where("status",0)->whereDate("reminder_date",$current_date)->count();
+        // foreach($result as $item){
+        //     $current_date=date("Y-m-d");
+        //     $current_time=date("h:i:00");
+        //     $spo=Lead::find($item->leadId)->spo;
+        //     if($current_date>=$item->reminder_date ){
+        //         User::find($spo)->notify(new PushNotification(['message'=>$item->message." (Lead No.".$item->leadId.")"]));
+        //     }
+        // }
+        return $count;
     }
 }

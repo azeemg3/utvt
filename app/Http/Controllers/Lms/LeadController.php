@@ -249,7 +249,7 @@ class LeadController extends Controller
     }
     public function lead_reminder(Request $request){
         if ($request->ajax()) {
-            $res = LeadReminder::select('*')->orderBy('id','DESC');
+            $res = LeadReminder::select('*')->where("created_by",Auth::user()->id)->orderBy('id','DESC');
             return DataTables::of($res)
                 ->addIndexColumn()
                ->addColumn('status', function ($row) {
@@ -265,15 +265,9 @@ class LeadController extends Controller
                               <span class="sr-only">Toggle Dropdown</span></button>';
                               $btn.='
                               <div class="dropdown-menu" role="menu" style="">';
-                              if(auth()->user()->can('lead_edit')){
-                                $btn.='<a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>';
-                              }
-                            $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
-                            $btn.='
-                                '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
-                                ';
-                            if(auth()->user()->can('lead_delete')){
-                                $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';
+                            $btn.='<a class="dropdown-item lead-reminder-update" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Update</a>';
+                            if($row->status==0){
+                                $btn.='<a class="dropdown-item reminder-read"  tabindex="-1" class="disabled" data-id="' . $row->id . '"><i class="fas fa-check"></i> Mark As Read</a>';
                             }
                               $btn.='</div>
                           </div>';
@@ -283,5 +277,13 @@ class LeadController extends Controller
                 ->make(true);
         }
         return view('Lms.lead_reminder');
+    }
+    public function reminder_read(Request $request){
+        $id=$request->id;
+        LeadReminder::where("id",$id)->update(['status'=>1]);
+    }
+    public function edit_reminder(Request $request){
+        $id=$request->id;
+        return LeadReminder::find($id);
     }
 }
