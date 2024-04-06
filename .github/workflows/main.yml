@@ -16,6 +16,6 @@ jobs:
     - name: Deploy to FTP
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: ftp.saudivipcar.com
+        server: 192.185.48.227
         username: tvt@gulfdrives.com
         password: ${{ secrets.password }}
