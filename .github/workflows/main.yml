@@ -20,4 +20,3 @@ jobs:
         username: ${{ FTP_USERNAME }}
         password: ${{ FTP_PASSWORD }}
         local-dir: ./your_local_directory_to_deploy
-        args: --overwrite
