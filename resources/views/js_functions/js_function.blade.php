@@ -241,7 +241,7 @@
                     if(data.count_notify>0)
                     toastr.success('<a href="{{ route('all-notifications')}}">You have ' + data.count_notify + ' Notifications!</a>');
                     if(data.reminder_count>0)
-                    toastr.warning('<a href="{{ route('lead.lead_reminder')}}">You have ' + data.reminder_count + ' Unread Reminder!</a>');
+                    toastr.warning('<a href="{{ route('lead.lead_reminder',1)}}">You have ' + data.reminder_count + ' Unread Reminder!</a>');
                 }
             });
         });

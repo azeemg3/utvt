@@ -7,6 +7,7 @@ use App\Models\Lms\SourceQuery;
 use App\Models\Lms\SService;
 use App\Models\User;
 use App\Notifications\PushNotification;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 class Helpers{
     /**create function lead format */
@@ -166,15 +167,9 @@ class Helpers{
     //fetch Reminder notifications
     public static function fetch_reminder_notification(){
         $current_date=date("Y-m-d");
-        $count=LeadReminder::where("status",0)->whereDate("reminder_date",$current_date)->count();
-        // foreach($result as $item){
-        //     $current_date=date("Y-m-d");
-        //     $current_time=date("h:i:00");
-        //     $spo=Lead::find($item->leadId)->spo;
-        //     if($current_date>=$item->reminder_date ){
-        //         User::find($spo)->notify(new PushNotification(['message'=>$item->message." (Lead No.".$item->leadId.")"]));
-        //     }
-        // }
+        DB::connection()->enableQueryLog();
+        $count=LeadReminder::where("status",0)->where("created_by",Auth::user()->id)->whereDate("reminder_date",$current_date)
+        ->whereRaw('HOUR(reminder_time) = ? AND MINUTE(reminder_time)<=?', [date('h'),date('m')])->count();
         return $count;
     }
 }

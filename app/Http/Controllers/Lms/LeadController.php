@@ -247,9 +247,12 @@ class LeadController extends Controller
     public function transfer_lead(Request $request){
     $this->leadInterface->transfer_lead($request);
     }
-    public function lead_reminder(Request $request){
+    public function lead_reminder(Request $request,$type=null){
         if ($request->ajax()) {
             $res = LeadReminder::select('*')->where("created_by",Auth::user()->id)->orderBy('id','DESC');
+            if($request->type==1){
+                $res=$res->where("status",0);
+            }
             return DataTables::of($res)
                 ->addIndexColumn()
                ->addColumn('status', function ($row) {
@@ -276,7 +279,7 @@ class LeadController extends Controller
                 ->rawColumns(['action', 'spo_name','lead_status'])
                 ->make(true);
         }
-        return view('Lms.lead_reminder');
+        return view('Lms.lead_reminder',compact('type'));
     }
     public function reminder_read(Request $request){
         $id=$request->id;
