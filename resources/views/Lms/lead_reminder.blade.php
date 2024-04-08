@@ -46,7 +46,11 @@
     var table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('lead.lead_reminder') }}",
+        ajax:{
+            url:"{{ route('lead.lead_reminder') }}",
+            data:{type:{{$type??"0"}}
+        },
+        },
         "dataSrc": "",
         columns: [
             {data: 'leadId', name: 'leadId'},
