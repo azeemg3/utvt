@@ -5,12 +5,12 @@
 <script type="text/javascript">
     var table;
     $(function() {
-        var i = 0;
         table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('lead.all_leads') }}",
-            columns: [{
+            columns: [
+            {
                     render: function(data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
@@ -45,7 +45,13 @@
                     orderable: false,
                     searchable: false
                 },
-            ]
+            ],
+            format: function ( row, index ) {
+                alert(index);
+            var rowData = row.data();
+            var childRow = '<tr><td colspan="4">Child row content goes here</td></tr>';
+            return childRow;
+        }
         });
     });
 

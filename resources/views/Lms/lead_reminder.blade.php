@@ -19,6 +19,7 @@
                                 <thead>
                                 <tr>
                                     <th>#leadId</th>
+                                    <th>Contact Name</th>
                                     <th>Message</th>
                                     <th>Reminder Time</th>
                                     <th>Status</th>
@@ -54,6 +55,7 @@
         "dataSrc": "",
         columns: [
             {data: 'leadId', name: 'leadId'},
+            {data: 'lead.contact_name', name: 'lead.contact_name'},
             {data: 'message',
              render: function(data, type, row) {
                  return $('<div/>').html(data).text();

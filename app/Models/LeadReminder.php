@@ -11,6 +11,9 @@ class LeadReminder extends Model
 {
     use HasFactory;
     protected $guarded=[''];
+    public function lead(){
+        return $this->belongsTo(Lead::class,'leadId','id');
+    }
     protected $casts = [
         'created_at' => "datetime:d-m-Y h:i:s",
     ];
