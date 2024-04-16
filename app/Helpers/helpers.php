@@ -166,6 +166,7 @@ class Helpers{
     }
     //fetch Reminder notifications
     public static function fetch_reminder_notification(){
+        date_default_timezone_set("Asia/Karachi");
         $current_date=date("Y-m-d");
         DB::connection()->enableQueryLog();
         $count=LeadReminder::where("status",0)->where("created_by",Auth::user()->id)->whereDate("reminder_date",$current_date)
