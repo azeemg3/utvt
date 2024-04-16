@@ -30,6 +30,10 @@
                                 <th>Address:</th>
                                 <td>{{ $data->city->name }} {{ $data->country->name }}</td>
                             </tr>
+                            <tr>
+                                <th>Customer Type:</th>
+                                <td> @if(!empty($data->reopen_at)) Repeat @else Fresh @endif</td>
+                            </tr>
                         </thead>
                     </table>
                 </address>

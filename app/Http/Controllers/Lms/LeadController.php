@@ -249,7 +249,7 @@ class LeadController extends Controller
     }
     public function lead_reminder(Request $request,$type=null){
         if ($request->ajax()) {
-            $res = LeadReminder::select('*')->where("created_by",Auth::user()->id)->orderBy('id','DESC');
+            $res = LeadReminder::with("lead")->select('*')->where("created_by",Auth::user()->id)->orderBy('id','DESC');
             if($request->type==1){
                 $res=$res->where("status",0);
             }

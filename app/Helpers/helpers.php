@@ -169,7 +169,7 @@ class Helpers{
         $current_date=date("Y-m-d");
         DB::connection()->enableQueryLog();
         $count=LeadReminder::where("status",0)->where("created_by",Auth::user()->id)->whereDate("reminder_date",$current_date)
-        ->whereRaw('HOUR(reminder_time) = ? AND MINUTE(reminder_time)<=?', [date('h'),date('m')])->count();
+        ->whereRaw('HOUR(reminder_time) = ? AND MINUTE(reminder_time)<=?', [date('h'),date('i')])->count();
         return $count;
     }
 }
