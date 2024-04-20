@@ -14,6 +14,7 @@ use Yajra\DataTables\DataTables;
 use Helpers;
 use Twilio\Rest\Client;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class LeadController extends Controller
 {
@@ -104,6 +105,8 @@ class LeadController extends Controller
         $successfull_leads=$this->leadInterface->lead_boxes(4);
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
+        $boxCounts = Lead::select('BOXID', DB::raw('count(*) as count'))
+                ->groupBy('BOXID')->get();
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo'])->orderBy('id','DESC');
             return DataTables::of($res)
@@ -140,7 +143,7 @@ class LeadController extends Controller
                 ->make(true);
         }
         return view('Lms.all_leads',compact('pending_leads','takenover_leads',
-        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads'));
+        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads','boxCounts'));
     }
     //my Leads
     public function my_leads(Request $request)
