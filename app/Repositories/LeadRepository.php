@@ -140,6 +140,9 @@ class LeadRepository implements LeadRepositoryInterface
             $con['conversation'] = $data->message;
             $con['contact_via'] = $data->contact_via;
             $ret = LeadConversation::create($con);
+            if($ret){
+                Lead::where("id",$data->leadId)->update(['BOXID'=>$data->BOXID]);
+            }
             if($ret && !empty($data->reminder_date)){
                 $rem['leadId']=$data->leadId;
                 $rem['message']=$data->message;

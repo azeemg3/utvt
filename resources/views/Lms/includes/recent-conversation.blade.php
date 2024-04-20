@@ -43,6 +43,17 @@
                     </div>
                 </div>
                 <!--col-->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Add in Box</label>
+                        <select class="form-control form-control-sm select2" name="BOXID">
+                            @foreach (Helpers::lead_boxes() as $key=>$val)
+                                <option value="{{$key}}">{{strtoupper($val)}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <!--col-->
                 <div class="col-md-2">
                     <div class="form-group">
                         <div class="custom-control custom-switch">

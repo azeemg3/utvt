@@ -173,4 +173,8 @@ class Helpers{
         ->whereRaw('HOUR(reminder_time) = ? AND MINUTE(reminder_time)<=?', [date('h'),date('i')])->count();
         return $count;
     }
+    public static function lead_boxes(){
+        $boxes=config('constant.lead_boxes');
+        return $boxes;
+    }
 }
