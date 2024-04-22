@@ -11,7 +11,7 @@
 </div>
 <!--col--> --}}
 <div class="col-md-3 col-sm-6 col-12">
-    <a class="btn btn-app
+    <a data-id="{{$lead['key']}}" class="btn lead_action btn-app
     @if($lead['key']==1) bg-info @endif
     @if($lead['key']==2) bg-primary @endif
     @if($lead['key']==3) bg-dark @endif

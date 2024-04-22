@@ -109,6 +109,9 @@ class LeadController extends Controller
                 ->groupBy('BOXID')->get();
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo'])->orderBy('id','DESC');
+            if(isset($request->BOXID)){
+                $res->where("BOXID",$request->BOXID);
+            }
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {

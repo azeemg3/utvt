@@ -8,7 +8,12 @@
         table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('lead.all_leads') }}",
+            ajax: {
+                url: "{{ route('lead.all_leads') }}",
+                data: function (d) {
+                d.BOXID = $(".selected").data("id");
+                }
+            },
             columns: [
             {
                     render: function(data, type, row, meta) {
@@ -47,14 +52,17 @@
                 },
             ],
             format: function ( row, index ) {
-                alert(index);
             var rowData = row.data();
             var childRow = '<tr><td colspan="4">Child row content goes here</td></tr>';
             return childRow;
         }
         });
     });
-
+    $(".lead_action").on("click",function(){
+            $(".lead_action").removeClass("selected");
+            $(this).addClass("selected");
+            table.ajax.reload();
+        });
     /*Lead Takeover*/
     $(document).on("click", "#lead-takeover", function() {
         $("#lead-details-modal").modal();
