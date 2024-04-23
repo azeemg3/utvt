@@ -157,6 +157,8 @@ class LeadController extends Controller
         $successfull_leads=$this->leadInterface->lead_boxes(4);
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
+        $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->select('BOXID', DB::raw('count(*) as count'))
+                ->groupBy('BOXID')->get();
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo'])->where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->orderBy('id','DESC');
             return DataTables::of($res)
@@ -197,7 +199,7 @@ class LeadController extends Controller
                 ->make(true);
         }
         return view('Lms.my_leads',compact('pending_leads','takenover_leads',
-        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads'));
+        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads','boxCounts'));
     }
     /**
      * show all lead activity

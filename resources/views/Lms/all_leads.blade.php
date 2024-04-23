@@ -8,52 +8,52 @@
         $box1=$box2=$box3=$box4=$box5=$box6=$box7=$box8=$box9=$box10=$box11=$box12=$box13=$box14=$box15=$box16=0;
     @endphp
     @foreach ($boxCounts as $boxID=>$boxVal)
-        @if($boxID==1)
+        @if($boxVal->BOXID==1)
             @php $box1=$boxVal->count; @endphp
         @endif
-        @if($boxID==2)
+        @if($boxVal->BOXID==2)
             @php $box2=$boxVal->count; @endphp
         @endif
-        @if($boxID==3)
+        @if($boxVal->BOXID==3)
             @php $box3=$boxVal->count; @endphp
         @endif
-        @if($boxID==4)
+        @if($boxVal->BOXID==4)
             @php $box4=$boxVal->count; @endphp
         @endif
-        @if($boxID==5)
+        @if($boxVal->BOXID==5)
             @php $box5=$boxVal->count; @endphp
         @endif
-        @if($boxID==6)
+        @if($boxVal->BOXID==6)
             @php $box6=$boxVal->count; @endphp
         @endif
-        @if($boxID==7)
+        @if($boxVal->BOXID==7)
             @php $box7=$boxVal->count; @endphp
         @endif
-        @if($boxID==8)
+        @if($boxVal->BOXID==8)
             @php $box8=$boxVal->count; @endphp
         @endif
-        @if($boxID==9)
+        @if($boxVal->BOXID==9)
             @php $box9=$boxVal->count; @endphp
         @endif
-        @if($boxID==10)
+        @if($boxVal->BOXID==10)
             @php $box10=$boxVal->count; @endphp
         @endif
-        @if($boxID==11)
+        @if($boxVal->BOXID==11)
             @php $box11=$boxVal->count; @endphp
         @endif
-        @if($boxID==12)
+        @if($boxVal->BOXID==12)
             @php $box12=$boxVal->count; @endphp
         @endif
-        @if($boxID==13)
+        @if($boxVal->BOXID==13)
             @php $box13=$boxVal->count; @endphp
         @endif
-        @if($boxID==14)
+        @if($boxVal->BOXID==14)
             @php $box14=$boxVal->count; @endphp
         @endif
-        @if($boxID==15)
+        @if($boxVal->BOXID==15)
             @php $box16=$boxVal->count; @endphp
         @endif
-        @if($boxID==16)
+        @if($boxVal->BOXID==16)
             @php $box16=$boxVal->count; @endphp
         @endif
     @endforeach
