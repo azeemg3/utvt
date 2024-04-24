@@ -9,7 +9,12 @@
         table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('lead.my_leads') }}",
+            ajax: {
+            url: "{{ route('lead.my_leads') }}",
+            data: function (d) {
+                d.BOXID = $(".selected").data("id");
+            }
+        },
             columns: [{
                     render: function(data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
@@ -48,6 +53,11 @@
             ]
         });
     });
+    $(".lead_action").on("click",function(){
+            $(".lead_action").removeClass("selected");
+            $(this).addClass("selected");
+            table.ajax.reload();
+        });
      /*Lead Takeover*/
      $(document).on("click", "#lead-takeover", function() {
         $("#lead-details-modal").modal();

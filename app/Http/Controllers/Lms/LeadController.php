@@ -160,7 +160,11 @@ class LeadController extends Controller
         $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->select('BOXID', DB::raw('count(*) as count'))
                 ->groupBy('BOXID')->get();
         if ($request->ajax()) {
-            $res = Lead::select('*')->with(['leadSpo'])->where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->orderBy('id','DESC');
+            $res = Lead::select('*')->with(['leadSpo'])->where('spo',Auth::user()->id)
+            ->orWhere('created_by',Auth::user()->id)->orderBy('id','DESC');
+            if(isset($request->BOXID)){
+                $res->where("BOXID",$request->BOXID);
+            }
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {
