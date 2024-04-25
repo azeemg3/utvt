@@ -18,7 +18,11 @@ $(function() {
             {
                 render: function(data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
-                }
+                },
+                className: 'dt-control',
+            orderable: false,
+            data: null,
+            defaultContent: ''
             },
             {
                 data: 'leadId',

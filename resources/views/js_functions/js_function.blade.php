@@ -213,8 +213,15 @@
                 url:"{{ route('fetch-notification.index') }}",
                 dataType:"JSON",
                 success:function(data){
-                    $(".count_notify").text(data.count_notify);
+                    $(".count_notify").text(Number(data.count_notify)+Number(data.reminder_count));
                     var lead_notify='';
+                    if(data.reminder_count>0){
+                    lead_notify+=`<div class="dropdown-divider"></div>
+                        <a href="{{url('lms/lead-reminder')}}" class="dropdown-item">
+                            <i class="fas fa-bullhorn mr-2"></i> Please click here for reminders
+                            <span class="float-right text-muted text-sm"></span>
+                        </a>`;
+                    }
                     for(i in data.notify_data){
                         lead_notify+=`<div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
