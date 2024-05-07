@@ -29,14 +29,19 @@ class LeadController extends Controller
      */
     public function index()
     {
+        $leadsCountByMonth = DB::table('leads')
+    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+    ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+    ->get();
         $pending_leads=$this->leadInterface->lead_boxes(1);
         $takenover_leads=$this->leadInterface->lead_boxes(2);
         $inprocess_leads=$this->leadInterface->lead_boxes(3);
         $successfull_leads=$this->leadInterface->lead_boxes(4);
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
+        // dd($leadsCountByMonth);
         return view('Lms.index',compact('pending_leads','takenover_leads',
-        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads'));
+        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads','leadsCountByMonth'));
     }
 
     /**
@@ -108,7 +113,7 @@ class LeadController extends Controller
         $boxCounts = Lead::select('BOXID', DB::raw('count(*) as count'))
                 ->groupBy('BOXID')->get();
         if ($request->ajax()) {
-            $res = Lead::select('*')->with(['leadSpo'])->orderBy('id','DESC');
+            $res = Lead::select('*')->with(['leadSpo','latestConversation'])->orderBy('id','DESC');
             if(isset($request->BOXID)){
                 $res->where("BOXID",$request->BOXID);
             }
@@ -121,7 +126,7 @@ class LeadController extends Controller
                         return 'N/A';
                     }
                 })->addColumn('leadId', function ($row) {
-                    return Helpers::leadId_fromat($row->id);
+                    return '<button  data-conversation="'.$row->latestConversation->conversation.'" class="lead-remarks btn btn-link">'.Helpers::leadId_fromat($row->id).'</button>';
                 })->addColumn('lead_status', function ($row) {
                     return Helpers::lead_status_badge($row->status);
                 })
@@ -142,7 +147,7 @@ class LeadController extends Controller
                           </div>';
                     return $btn;
                 })
-                ->rawColumns(['action', 'spo_name','lead_status'])
+                ->rawColumns(['action', 'spo_name','lead_status','leadId'])
                 ->make(true);
         }
         return view('Lms.all_leads',compact('pending_leads','takenover_leads',

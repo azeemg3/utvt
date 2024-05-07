@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Lms\LeadConversation;
 use App\Models\Lms\SourceQuery;
 use App\Models\Lms\SService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,5 +61,9 @@ class Lead extends Model
             ->timezone('Asia/Karachi')
             ->toDateTimeString()
         ;
+    }
+    public function latestConversation()
+    {
+        return $this->hasOne(LeadConversation::class,'leadId','id')->latest();
     }
 }

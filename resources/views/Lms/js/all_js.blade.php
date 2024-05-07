@@ -96,4 +96,9 @@ function customRowCallback(row, data, dataIndex) {
             }
         });
     });
+    $(document).on("click", ".lead-remarks", function() {
+        $("#lead-remarks-modal").modal();
+        var remarks=$(this).data("conversation");
+        $("#lead-remarks-conversation").html(remarks);
+    });
 </script>

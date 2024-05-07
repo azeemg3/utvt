@@ -121,4 +121,5 @@
         <!-- /.container-fluid -->
     </section>
     @include('Lms.js.all_js')
+    @include('Lms.modals.lead-remarks')
 @endsection
