@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        dd('azeem');
+
     }
 
     /**
@@ -96,13 +96,15 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'mobile' => ['required', 'string', 'max:16'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'role_id' => ['required','int'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
         $data=$request->except(['_token','_method','password_confirmation']);
-        if(!empty($data['password'])){
-            $data['password'] = Hash::make($data['password']);
-        }
+        // if(!empty($data['password'])){
+        //     $data['password'] = Hash::make($data['password']);
+        // }
         DB::beginTransaction();
         try{
             $user=User::where('id',$request->id)->update($data);
@@ -145,6 +147,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role_id' => ['required','int'],
+            'mobile' => ['required', 'string', 'max:16'],
         ]);
         $data=$request->all();
         DB::beginTransaction();

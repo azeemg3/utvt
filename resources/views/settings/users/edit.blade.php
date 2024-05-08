@@ -44,6 +44,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3">
                                     <div class="form-group">
+                                        <label>Mobile <span class="text-danger">*</span></label>
+                                        <input placeholder="Enter Mobile Number" class="form-control form-control-sm" name="mobile"
+                                            type="text" required value="{{$result->mobile}}">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3">
+                                    <div class="form-group">
                                         <label>Email</label>
                                         <input placeholder="Email" class="form-control form-control-sm" name="email"
                                             type="text" required value="{{$result->email}}">

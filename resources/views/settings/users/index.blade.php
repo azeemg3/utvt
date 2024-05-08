@@ -18,6 +18,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Mobile</th>
                                         <th>Email</th>
                                         <th>Roles</th>
                                         <th>Created Date</th>

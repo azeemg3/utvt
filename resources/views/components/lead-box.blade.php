@@ -28,6 +28,7 @@
     @if($lead['key']==14) bg-danger @endif
     @if($lead['key']==15) bg-primary @endif
     @if($lead['key']==16) bg-success @endif
+    @if($lead['key']==17) bg-success @endif
     " style="width: 100%">
         <span class="badge bg-teal">
             @if($lead['key']==1) {{$lead['box1']}}
@@ -46,6 +47,7 @@
             @elseif($lead['key']==14) {{$lead['box14']}}
             @elseif($lead['key']==15) {{$lead['box15']}}
             @elseif($lead['key']==16) {{$lead['box16']}}
+            @elseif($lead['key']==17) {{$lead['box17']}}
             @else 0
             @endif
         </span>

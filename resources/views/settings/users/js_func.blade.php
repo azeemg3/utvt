@@ -17,6 +17,7 @@
                 }
             },
               {data: 'name', name: 'name'},
+              {data: 'mobile', name: 'mobile'},
               {data: 'email', name: 'email'},
               {data: 'role', name: 'role'},
               {data: 'created_at', name: 'created_at'},

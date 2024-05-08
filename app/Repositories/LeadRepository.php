@@ -126,6 +126,9 @@ class LeadRepository implements LeadRepositoryInterface
             $notiArray=["title"=>'Lead Takenover','body'=>'Lead Takenover by '.Auth::user()->name.''];
             $this->notificationService->send_notification($notiArray,$lead->created_by);
             User::find($lead->created_by)->notify(new PushNotification(['message'=>$notiArray['body']]));
+            $message='Dear '.$lead->contact_name.' Your Sale Person is '.Auth::user()->name.'
+            .Email:'.Auth::user()->email.' Mobile:'.Auth::user()->mobile.' Details and feedbacks call 03111381888. Thanks and Regards: Tourvision Travel Pvt Ltd.';
+            $this->notificationService->send_sms4_connect($lead->mobile, $message);
             return redirect('lms/lead/' . $leadId . '')->with('message', 'Lead Takenover Successfully..!!');
         }
     }

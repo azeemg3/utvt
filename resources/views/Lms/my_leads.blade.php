@@ -5,7 +5,7 @@
         $breadcrumb[] = ['title' => 'Home'];
         $breadcrumb[] = ['title' => 'Lms'];
         $breadcrumb[] = ['title' => __('lms.my_leads')];
-        $box1=$box2=$box3=$box4=$box5=$box6=$box7=$box8=$box9=$box10=$box11=$box12=$box13=$box14=$box15=$box16=0;
+        $box1=$box2=$box3=$box4=$box5=$box6=$box7=$box8=$box9=$box10=$box11=$box12=$box13=$box14=$box15=$box16=$box17=0;
     @endphp
     @foreach ($boxCounts as $boxID=>$boxVal)
     @if($boxVal->BOXID==1)
@@ -56,6 +56,9 @@
     @if($boxVal->BOXID==16)
         @php $box16=$boxVal->count; @endphp
     @endif
+    @if($boxVal->BOXID==17)
+        @php $box17=$boxVal->count; @endphp
+    @endif
 @endforeach
     <x-content-header :breadcrumb="$breadcrumb" />
     @include('Lms.modals.lead-details-modal')
@@ -88,6 +91,7 @@
                             'box14'=>Helpers::leadId_fromat($box14),
                             'box15'=>Helpers::leadId_fromat($box15),
                             'box16'=>Helpers::leadId_fromat($box16),
+                            'box17'=>Helpers::leadId_fromat($box17),
                             ]" />
                         @endforeach
                     </div>
