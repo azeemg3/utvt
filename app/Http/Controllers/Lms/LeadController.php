@@ -126,7 +126,7 @@ class LeadController extends Controller
                         return 'N/A';
                     }
                 })->addColumn('leadId', function ($row) {
-                    return '<button  data-conversation="'.($row->latestConversation->conversation??"").'" class="lead-remarks btn btn-link">'.Helpers::leadId_fromat($row->id).'</button>';
+                    return '<button  data-conversation="'.htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES).'" class="lead-remarks btn btn-link">'.Helpers::leadId_fromat($row->id).'</button>';
                 })->addColumn('lead_status', function ($row) {
                     return Helpers::lead_status_badge($row->status);
                 })
