@@ -167,7 +167,11 @@ class LeadRepository implements LeadRepositoryInterface
     }
     public function change_status($id, $status)
     {
-        $ret = Lead::where('id', $id)->update(['status'=>$status]);
+        if($status=='4' || $status=='5'){
+            $ret = Lead::where('id', $id)->update(['status'=>$status,'BOXID'=>'18']);
+        }else{
+            $ret = Lead::where('id', $id)->update(['status'=>$status]);
+        }
         if ($ret) {
             $data['LID'] = $id;
             $data['action_status'] = $status;

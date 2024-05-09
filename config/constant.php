@@ -17,7 +17,8 @@ return [
         14=>'suggestion & complaint',
         15=>'User not attended/agent hangup',
         16=>'ticket issued & processing',
-        17=>'Umrah Lead',
+        17=>'Umrah Leads',
+        18=>'Closed Leads',
     ]
 ];
 ?>

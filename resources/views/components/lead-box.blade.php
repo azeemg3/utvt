@@ -29,6 +29,7 @@
     @if($lead['key']==15) bg-primary @endif
     @if($lead['key']==16) bg-success @endif
     @if($lead['key']==17) bg-success @endif
+    @if($lead['key']==18) bg-gradient-maroon @endif
     " style="width: 100%">
         <span class="badge bg-teal">
             @if($lead['key']==1) {{$lead['box1']}}
@@ -48,6 +49,7 @@
             @elseif($lead['key']==15) {{$lead['box15']}}
             @elseif($lead['key']==16) {{$lead['box16']}}
             @elseif($lead['key']==17) {{$lead['box17']}}
+            @elseif($lead['key']==18) {{$lead['box18']}}
             @else 0
             @endif
         </span>

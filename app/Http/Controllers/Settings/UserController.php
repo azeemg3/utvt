@@ -102,9 +102,9 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
         $data=$request->except(['_token','_method','password_confirmation']);
-        // if(!empty($data['password'])){
-        //     $data['password'] = Hash::make($data['password']);
-        // }
+        if(!empty($data['password'])){
+            $data['password'] = Hash::make($data['password']);
+        }
         DB::beginTransaction();
         try{
             $user=User::where('id',$request->id)->update($data);
