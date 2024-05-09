@@ -17,6 +17,9 @@
         .iti--separate-dial-code input[type=tel] {
             padding-right: 40px !important;
         }
+        .box-primary{
+            width: 1100% !important;
+        }
     </style>
     <x-content-header :breadcrumb="$breadcrumb" />
     <section class="content">
