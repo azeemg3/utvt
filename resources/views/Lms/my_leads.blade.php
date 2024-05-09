@@ -1,5 +1,6 @@
 @extends('layout.master')
 @section('mytitle', __('lms.my_leads'))
+
 @section('content')
     @php
         $breadcrumb[] = ['title' => 'Home'];
