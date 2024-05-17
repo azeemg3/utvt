@@ -33,20 +33,51 @@ class Helpers{
     }
     /**status badges */
     public static function lead_status_badge($status= ''){
-        if($status==1){
+        if($status==0){
             return '<span class="badge badge-pill badge-secondary">Pending</span>';
         }
+        elseif($status==1){
+            return '<span class="badge badge-pill bg-info">Working Leads</span>';
+        }
         elseif($status==2){
-            return '<span class="badge badge-pill bg-primary">Takenover</span>';
+            return '<span class="badge badge-pill bg-primary">Working Leads WhatsApp</span>';
         }
         elseif($status==3){
-            return '<span class="badge badge-pill bg-info">In Process</span>';
+            return '<span class="badge badge-pill bg-success">Pax Confirm Call Later</span>';
         }
         elseif($status==4){
-            return '<span class="badge badge-pill bg-success">Successfull</span>';
+            return '<span class="badge badge-pill bg-danger">Booking Confirm Pax Confirm Soon</span>';
         }
         elseif($status==5){
-            return '<span class="badge badge-pill bg-danger">UnSuccessfull</span>';
+            return '<span class="badge badge-pill bg-danger">Pax Confirm Working for Low Fares</span>';
+        }
+        elseif($status==6){
+            return '<span class="badge badge-pill bg-danger">Pax will Visit branch</span>';
+        }
+        elseif($status==7){
+            return '<span class="badge badge-pill bg-danger">waitig for special fares</span>';
+        }elseif($status==8){
+            return '<span class="badge badge-pill bg-danger">Plan delay call later</span>';
+        }elseif($status==9){
+            return '<span class="badge badge-pill bg-danger">Travel Document/issue/exipire/renew</span>';
+        }elseif($status==10){
+            return '<span class="badge badge-pill bg-danger">Fare & flight information share</span>';
+        }elseif($status==11){
+            return '<span class="badge badge-pill bg-danger">Date change/refund issue</span>';
+        }elseif($status==12){
+            return '<span class="badge badge-pill bg-danger">Already buy ticket by us/need flight info</span>';
+        }elseif($status==13){
+            return '<span class="badge badge-pill bg-danger">Duplicate lead or engage with other spo</span>';
+        }elseif($status==14){
+            return '<span class="badge badge-pill bg-danger">suggestion & complaint</span>';
+        }elseif($status==15){
+            return '<span class="badge badge-pill bg-danger">User not attended/agent hangup</span>';
+        }elseif($status==16){
+            return '<span class="badge badge-pill bg-danger">ticket issued & processing</span>';
+        }elseif($status==17){
+            return '<span class="badge badge-pill bg-danger">Umrah Leads</span>';
+        }elseif($status==18 || $status==19){
+            return '<span class="badge badge-pill bg-danger">Closed Leads</span>';
         }
         else{
             return 'N/A';

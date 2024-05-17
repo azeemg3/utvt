@@ -118,7 +118,7 @@ class LeadRepository implements LeadRepositoryInterface
     {
         if (isset($data['id'])) {
             $leadId = $data['id'];
-            $lead = Lead::where('id', $leadId)->update(['status' => 2, 'spo' => Auth::user()->id]);
+            $lead = Lead::where('id', $leadId)->update(['status' => 2,'BOXID' => 1, 'spo' => Auth::user()->id]);
             if ($lead) {
                 LeadActivity::create(['LID' => $leadId, 'action_by' => Auth::user()->id, 'action_status' => 2]);
             }

@@ -10,3 +10,6 @@ label:not(.form-check-label):not(.custom-file-label){
 .form-control{
     color:black !important;
 }
+.lead_action > .bg-teal {
+    font-size: 15px !important; /* Adjust the font-size value as needed */
+}
