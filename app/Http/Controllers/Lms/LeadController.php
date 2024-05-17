@@ -114,8 +114,12 @@ class LeadController extends Controller
                 ->groupBy('BOXID')->get();
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo','latestConversation'])->orderBy('id','DESC');
-            if(isset($request->BOXID)){
-                $res->where("BOXID",$request->BOXID);
+            if(isset($request->BOXID) && $request->BOXID=='18'){
+                $res->whereIn("BOXID",['18','19']);
+            }else{
+                if(isset($request->BOXID)){
+                    $res->where("BOXID",$request->BOXID);
+                }
             }
             return DataTables::of($res)
                 ->addIndexColumn()
@@ -128,7 +132,7 @@ class LeadController extends Controller
                 })->addColumn('leadId', function ($row) {
                     return '<button  data-conversation="'.htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES).'" class="lead-remarks btn btn-link">'.Helpers::leadId_fromat($row->id).'</button>';
                 })->addColumn('lead_status', function ($row) {
-                    return Helpers::lead_status_badge($row->status);
+                    return Helpers::lead_status_badge($row->BOXID);
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group">
@@ -172,9 +176,10 @@ class LeadController extends Controller
               ->orWhere('created_by', Auth::user()->id);
     })
     ->where(function($query) use ($request) {
-        if(isset($request->BOXID)) {
-            // Additional condition if BOXID is set in the request
-            $query->where('BOXID', $request->BOXID);
+        if(isset($request->BOXID) && $request->BOXID==18) {
+            $query->whereIn('BOXID', ['18','19']);
+        }else{
+            $query->where('BOXID', 1);
         }
     })
     ->orderBy('id', 'DESC')
@@ -190,7 +195,7 @@ class LeadController extends Controller
                 })->addColumn('leadId', function ($row) {
                     return Helpers::leadId_fromat($row->id);
                 })->addColumn('lead_status', function ($row) {
-                    return Helpers::lead_status_badge($row->status);
+                    return Helpers::lead_status_badge($row->BOXID);
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group">

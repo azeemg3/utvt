@@ -60,7 +60,7 @@
     @if($boxVal->BOXID==17)
         @php $box17=$boxVal->count; @endphp
     @endif
-    @if($boxVal->BOXID==18)
+    @if($boxVal->BOXID==18 || $boxVal->BOXID==19)
         @php $box18=$boxVal->count; @endphp
     @endif
 @endforeach
@@ -78,6 +78,7 @@
                         <x-lead-box :lead="[$unSuccessfull_leads, 'bg-danger', 'UnSuccessfull Leads','far fa-thumbs-down']" />
                         <x-lead-box :lead="[$pending_leads, 'bg-yellow', 'All Leads','fas fa-shopping-cart']" /> --}}
                         @foreach (Helpers::lead_boxes() as $key=>$val)
+                        @if($key!=19 && $key!=18)
                             <x-lead-box :lead="['icon'=>'bullhorn','name'=>$val,'key'=>$key,
                             'box1'=>Helpers::leadId_fromat($box1),
                             'box2'=>Helpers::leadId_fromat($box2),
@@ -96,9 +97,12 @@
                             'box15'=>Helpers::leadId_fromat($box15),
                             'box16'=>Helpers::leadId_fromat($box16),
                             'box17'=>Helpers::leadId_fromat($box17),
+                            ]" />
+                            @endif
+                        @endforeach
+                        <x-lead-box :lead="['icon'=>'bullhorn','name'=>'Closed Leads','key'=>'18',
                             'box18'=>Helpers::leadId_fromat($box18),
                             ]" />
-                        @endforeach
                     </div>
                     <!--row-->
                 </div>
