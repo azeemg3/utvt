@@ -167,23 +167,21 @@ class LeadController extends Controller
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
         $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->select('BOXID', DB::raw('count(*) as count'))
-                ->groupBy('BOXID')->orderBy('id','DESC')->get();
+                ->groupBy('BOXID')->get();
         if ($request->ajax()) {
+            \DB::enableQueryLog();
             $res = Lead::select('*')
-    ->with(['leadSpo'])
-    ->where(function($query) {
-        $query->where('spo', Auth::user()->id)
-              ->orWhere('created_by', Auth::user()->id);
-    })
-    ->where(function($query) use ($request) {
-        if(isset($request->BOXID) && $request->BOXID==18) {
-            $query->whereIn('BOXID', ['18','19']);
-        }else{
-            $query->where('BOXID', 1);
-        }
-    })
-    ->orderBy('id', 'DESC')
-    ->get();
+            ->with(['leadSpo'])
+            ->where(function($query) {
+                $query->where('spo', Auth::user()->id)
+                    ->orWhere('created_by', Auth::user()->id);
+            })->where(function($query) use ($request) {
+                if(isset($request->BOXID) && $request->BOXID==18) {
+                    $query->whereIn('BOXID', ['18','19']);
+                }else{
+                    $query->where('BOXID', 1);
+                }
+            })->orderBy('leads.id', 'DESC')->get();
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {
