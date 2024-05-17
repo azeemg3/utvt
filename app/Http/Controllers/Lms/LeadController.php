@@ -167,7 +167,7 @@ class LeadController extends Controller
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
         $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->select('BOXID', DB::raw('count(*) as count'))
-                ->groupBy('BOXID')->get();
+                ->groupBy('BOXID')->orderBy('id','DESC')->get();
         if ($request->ajax()) {
             $res = Lead::select('*')
     ->with(['leadSpo'])
