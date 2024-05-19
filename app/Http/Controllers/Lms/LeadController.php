@@ -179,7 +179,7 @@ class LeadController extends Controller
                 if(isset($request->BOXID) && $request->BOXID==18) {
                     $query->whereIn('BOXID', ['18','19']);
                 }else{
-                    $query->where('BOXID', 1);
+                    $query->where('BOXID', $request->BOXID);
                 }
             })->orderBy('leads.id', 'DESC')->get();
             return DataTables::of($res)
