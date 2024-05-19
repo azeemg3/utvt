@@ -176,10 +176,13 @@ class LeadController extends Controller
                 $query->where('spo', Auth::user()->id)
                     ->orWhere('created_by', Auth::user()->id);
             })->where(function($query) use ($request) {
-                if(isset($request->BOXID) && $request->BOXID==18) {
+                if(isset($request->BOXID)) {
+                    $query->where('BOXID', $request->BOXID);
+                }
+                elseif(isset($request->BOXID) && $request->BOXID==18) {
                     $query->whereIn('BOXID', ['18','19']);
                 }else{
-                    $query->where('BOXID', $request->BOXID);
+                    $query->where('BOXID', 1);
                 }
             })->orderBy('leads.id', 'DESC')->get();
             return DataTables::of($res)
