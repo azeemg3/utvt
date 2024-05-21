@@ -199,7 +199,7 @@ class LeadController extends Controller
                     return Helpers::lead_status_badge($row->BOXID);
                 })->addColumn('remarks',function($row){
                     // return htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES);
-                        return substr($row->latestConversation->conversation,0,50)."...."??"";
+                        return substr($row->latestConversation->conversation??"",0,50);
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group">
