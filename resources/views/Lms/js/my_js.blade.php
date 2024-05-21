@@ -45,6 +45,14 @@
                     name: 'lead_status',
                 },
                 {
+                data: 'remarks',
+                name: 'remarks',
+                render: function(data, type, row, meta) {
+                    // Ensure the data is returned as HTML
+                    return type === 'display' && data ? data : data;
+                }
+            },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,

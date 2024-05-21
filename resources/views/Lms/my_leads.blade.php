@@ -117,8 +117,9 @@
                                         <th>{{ __('lms.contact_name') }}</th>
                                         <th>{{ __('lms.mobile') }}</th>
                                         <th>{{ __('lms.spo_name') }}</th>
-                                        <th>{{ __('lms.departure_date') }}</th>
-                                        <th>{{ __('lms.arrival_date') }}</th>
+                                        <th>{{__('lms.created_at')}}</th>
+                                        <th>{{__('lms.status')}}</th>
+                                        <th>Remarks</th>
                                         <th>{{ __('file.action') }}</th>
                                     </tr>
                                 </thead>

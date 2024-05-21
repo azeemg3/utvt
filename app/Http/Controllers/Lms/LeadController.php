@@ -171,7 +171,7 @@ class LeadController extends Controller
         if ($request->ajax()) {
             \DB::enableQueryLog();
             $res = Lead::select('*')
-            ->with(['leadSpo'])
+            ->with(['leadSpo','latestConversation'])
             ->where(function($query) {
                 $query->where('spo', Auth::user()->id)
                     ->orWhere('created_by', Auth::user()->id);
@@ -197,6 +197,9 @@ class LeadController extends Controller
                     return Helpers::leadId_fromat($row->id);
                 })->addColumn('lead_status', function ($row) {
                     return Helpers::lead_status_badge($row->BOXID);
+                })->addColumn('remarks',function($row){
+                    // return htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES);
+                        return substr($row->latestConversation->conversation,0,50)."...."??"";
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group">
@@ -219,7 +222,7 @@ class LeadController extends Controller
                           </div>';
                     return $btn;
                 })
-                ->rawColumns(['action', 'spo_name','lead_status'])
+                ->rawColumns(['action', 'spo_name','lead_status','remarks'])
                 ->make(true);
         }
         return view('Lms.my_leads',compact('pending_leads','takenover_leads',
