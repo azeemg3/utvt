@@ -2,10 +2,17 @@
     /*Client conversation*/
     function lead_conversation() {
         $("#loader").show();
+        var message=$("#lead-conversation-form textarea[name~='message']").val();
+        var leadId=$("#lead-conversation-form input[name~='leadId']").val();
+        var contact_via=$("#lead-conversation-form select[name~='contact_via']").val();
+        var BOXID=$("#lead-conversation-form select[name~='BOXID']").val();
+        var reminder_date=$("#lead-conversation-form input[name~='reminder_date']").val();
+        var reminder_time=$("#lead-conversation-form input[name~='reminder_time']").val();
         $.ajax({
             url: "{{ route('lead.conversation') }}",
             type: "POST",
-            data: $("#lead-conversation-form").serialize(),
+            // data: $("#lead-conversation-form").serialize(),
+            data: {message:message,leadId:leadId,contact_via:contact_via,BOXID:BOXID,reminder_date:reminder_date,reminder_time:reminder_time},
             dataType: "JSON",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
