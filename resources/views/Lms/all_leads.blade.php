@@ -119,6 +119,7 @@
                                         <th>{{ __('lms.spo_name') }}</th>
                                         <th>{{ __('lms.created_at') }}</th>
                                         <th>{{ __('lms.status') }}</th>
+                                        <th>Remarks</th>
                                         <th>{{ __('file.action') }}</th>
                                     </tr>
                                 </thead>

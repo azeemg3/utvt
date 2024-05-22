@@ -15,6 +15,7 @@ use Helpers;
 use Twilio\Rest\Client;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LeadController extends Controller
 {
@@ -134,6 +135,12 @@ class LeadController extends Controller
                 })->addColumn('lead_status', function ($row) {
                     return Helpers::lead_status_badge($row->BOXID);
                 })
+                ->addColumn('remarks',function($row){
+                    // return htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES);!=
+                    if(isset($row->latestConversation)){
+                        return substr($row->latestConversation->conversation??"",0,50);
+                    }
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group">
                             <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
@@ -160,31 +167,34 @@ class LeadController extends Controller
     //my Leads
     public function my_leads(Request $request)
     {
+        \DB::enableQueryLog();
         $pending_leads=$this->leadInterface->lead_boxes(1);
         $takenover_leads=$this->leadInterface->lead_boxes(2);
         $inprocess_leads=$this->leadInterface->lead_boxes(3);
         $successfull_leads=$this->leadInterface->lead_boxes(4);
         $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
         $all_leads=$this->leadInterface->lead_boxes(0);
-        $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)->select('BOXID', DB::raw('count(*) as count'))
-                ->groupBy('BOXID')->get();
+        $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)
+        ->select('BOXID', DB::raw('count(*) as count'))->groupBy('BOXID')->get();
+                // dd($boxCounts);
+                // Log::debug(DB::getQueryLog());
         if ($request->ajax()) {
-            \DB::enableQueryLog();
             $res = Lead::select('*')
             ->with(['leadSpo','latestConversation'])
             ->where(function($query) {
                 $query->where('spo', Auth::user()->id)
                     ->orWhere('created_by', Auth::user()->id);
             })->where(function($query) use ($request) {
-                if(isset($request->BOXID)) {
+                if(isset($request->BOXID) && $request->BOXID!=18) {
                     $query->where('BOXID', $request->BOXID);
                 }
                 elseif(isset($request->BOXID) && $request->BOXID==18) {
                     $query->whereIn('BOXID', ['18','19']);
                 }else{
-                    $query->where('BOXID', 1)->orWhere("status",1);
+                    $query->where("status",'1');
                 }
-            })->orderBy('leads.id', 'DESC')->get();
+            })->orderByRaw('leads.id DESC')->get();
+            Log::debug(DB::getQueryLog());
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {

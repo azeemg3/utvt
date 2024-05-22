@@ -20,9 +20,9 @@ $(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },
                 className: 'dt-control',
-            orderable: false,
-            data: null,
-            defaultContent: ''
+                orderable: false,
+                data: null,
+                defaultContent: ''
             },
             {
                 data: 'leadId',
@@ -47,6 +47,14 @@ $(function() {
             {
                 data: 'lead_status',
                 name: 'lead_status',
+            },
+            {
+                data: 'remarks',
+                name: 'remarks',
+                render: function(data, type, row, meta) {
+                    // Ensure the data is returned as HTML
+                    return type === 'display' && data ? data : data;
+                }
             },
             {
                 data: 'action',

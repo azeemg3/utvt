@@ -6,7 +6,7 @@
         $breadcrumb[] = ['title' => 'Home'];
         $breadcrumb[] = ['title' => 'Lms'];
         $breadcrumb[] = ['title' => __('lms.my_leads')];
-        $box1=$box2=$box3=$box4=$box5=$box6=$box7=$box8=$box9=$box10=$box11=$box12=$box13=$box14=$box15=$box16=$box17=$box18=0;
+        $box1=$box2=$box3=$box4=$box5=$box6=$box7=$box8=$box9=$box10=$box11=$box12=$box13=$box14=$box15=$box16=$box17=$box18=$box19=0;
     @endphp
     @foreach ($boxCounts as $boxID=>$boxVal)
     @if($boxVal->BOXID==1)
@@ -52,7 +52,7 @@
         @php $box14=$boxVal->count; @endphp
     @endif
     @if($boxVal->BOXID==15)
-        @php $box16=$boxVal->count; @endphp
+        @php $box15=$boxVal->count; @endphp
     @endif
     @if($boxVal->BOXID==16)
         @php $box16=$boxVal->count; @endphp
@@ -60,8 +60,11 @@
     @if($boxVal->BOXID==17)
         @php $box17=$boxVal->count; @endphp
     @endif
-    @if($boxVal->BOXID==18 || $boxVal->BOXID==19)
+    @if($boxVal->BOXID==18)
         @php $box18=$boxVal->count; @endphp
+    @endif
+    @if($boxVal->BOXID==19)
+        @php $box19=$boxVal->count; @endphp
     @endif
 @endforeach
     <x-content-header :breadcrumb="$breadcrumb" />
@@ -101,7 +104,7 @@
                             @endif
                         @endforeach
                         <x-lead-box :lead="['icon'=>'bullhorn','name'=>'Closed Leads','key'=>'18',
-                            'box18'=>Helpers::leadId_fromat($box18),
+                            'box18'=>Helpers::leadId_fromat($box18+$box19),
                             ]" />
                     </div>
                     <!--row-->
