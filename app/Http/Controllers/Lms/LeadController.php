@@ -137,8 +137,10 @@ class LeadController extends Controller
                 })
                 ->addColumn('remarks',function($row){
                     // return htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES);!=
-                    if(isset($row->latestConversation)){
-                        return substr($row->latestConversation->conversation??"",0,50);
+                    if (isset($row->latestConversation)) {
+                        $conversation = $row->latestConversation->conversation ?? "";
+                        $cleanConversation = strip_tags($conversation);
+                        return substr($cleanConversation, 0, 50);
                     }
                 })
                 ->addColumn('action', function ($row) {
@@ -208,8 +210,11 @@ class LeadController extends Controller
                 })->addColumn('lead_status', function ($row) {
                     return Helpers::lead_status_badge($row->BOXID);
                 })->addColumn('remarks',function($row){
-                    // return htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES);
-                        return substr($row->latestConversation->conversation??"",0,50);
+                    if (isset($row->latestConversation)) {
+                        $conversation = $row->latestConversation->conversation ?? "";
+                        $cleanConversation = strip_tags($conversation);
+                        return substr($cleanConversation, 0, 50);
+                    }
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="btn-group">
