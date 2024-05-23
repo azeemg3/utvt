@@ -79,7 +79,7 @@
                 <table>
                     <tr>
                         <th>LeadID:</th>
-                        <td>#101123-{{  $data->id }}</td>
+                        <td>{{  $data->id }}</td>
                     </tr>
                     <tr>
                         <th>{{ __('lms.status') }}:</th>

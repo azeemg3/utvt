@@ -27,4 +27,5 @@ return [
     'close_lead'=>'Close Lead',
     'reopen_lead'=>'Reopen Lead',
     'lead_reminder'=>'Lead Reminders',
+    'pending_remiders'=>'Pending Reminders',
 ];

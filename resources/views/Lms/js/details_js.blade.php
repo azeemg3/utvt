@@ -206,3 +206,77 @@
         });
     });
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js" defer></script>
+   <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js" defer></script>
+<script>
+    //Lead reminders
+    var table2;
+    $(function () {
+        var table2 = $('.data-table2').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax:{
+                url:"{{ route('lead.lead_reminder') }}",
+                data:{type:3,
+                    leadId:{{$data->id}}
+            },
+            },
+            "dataSrc": "",
+            columns: [
+                {data: 'message',
+                render: function(data, type, row) {
+                    return $('<div/>').html(data).text();
+                }
+                },
+                {data: 'reminder_date', name: 'reminder_date'},
+                {data: 'status', name: 'status'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+        });
+
+    });
+    $(document).on("click",".reminder-read",function(){
+        id=$(this).data("id");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Mark as read!"
+        }).then((result) => {
+            console.log(result.value);
+            if (result.value==true) {
+                $.ajax({
+                    url:"{{route('lead.reminder_read')}}",
+                    type: 'GET',
+                    data:{id:id},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        $('.data-table2').DataTable().ajax.reload();
+                    },
+                });
+            }
+        });
+    });
+    $(document).on("click",".lead-reminder-update",function () {
+        $("#lead-reminder-modal").modal("show");
+        id=$(this).data("id");
+        $.ajax({
+                    url:"{{route('lead.edit_reminder')}}",
+                    type: 'GET',
+                    data:{id:id},
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        $("#lead-reminder-modal input[name~='reminder_date']").val(data.reminder_date);
+                        $("#lead-reminder-modal input[name~='reminder_time']").val(data.reminder_time);
+                    },
+                });
+    });
+</script>

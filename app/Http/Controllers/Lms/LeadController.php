@@ -303,6 +303,9 @@ class LeadController extends Controller
             if($request->type==1){
                 $res=$res->where("status",0);
             }
+            if($request->type==3 && isset($request->leadId)){
+                $res=$res->where("status",0)->where('leadId',$request->leadId);
+            }
             return DataTables::of($res)
                 ->addIndexColumn()
                ->addColumn('status', function ($row) {
