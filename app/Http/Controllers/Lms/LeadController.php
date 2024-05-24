@@ -70,12 +70,13 @@ class LeadController extends Controller
         $data=$this->leadInterface->show($id);
         $lead_conversation=LeadConversation::where('leadId',$id)->latest()->first();
         $lead_activity=LeadActivity::where("LID",$id)->orderBy('id','DESC')->get();
+        $recent_reminder=LeadReminder::where('leadId',$id)->first();
         if($lead_conversation){
             $conversation=$lead_conversation;
         }else{
             $conversation='';
         }
-        return view('Lms.show',compact('data','conversation','lead_activity'));
+        return view('Lms.show',compact('data','conversation','lead_activity','recent_reminder'));
     }
 
     /**

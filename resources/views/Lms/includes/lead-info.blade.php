@@ -93,7 +93,7 @@
                         <th>{{ __('lms.takenover_by') }}:</th>
                         <td>{{ $data->leadSpo->name??"" }}</td>
                     </tr>
-                    @if($data->status!=5)
+                    {{-- @if($data->status!=5)
                     <tr>
                         <th>Change Manual Status:</th>
                         <td>
@@ -105,14 +105,24 @@
                             </select>
                         </td>
                     </tr>
-                    @endif
+                    @endif --}}
                     <tr>
                         <th>Transfer To:</th>
                         <td>
-                            <select class="form-control form-control-sm" id="lead-transfer" data-leadid="{{ $data->id }}">
+                            <select class="form-control form-control-sm select2" id="lead-transfer" data-leadid="{{ $data->id }}">
                                 <option value="">Select Spo</option>
                                 {!! App\Models\User::dropdown() !!}
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Recent Reminer:</th>
+                        <td><span class="badge badge-pill bg-primary">
+                            @if(isset($recent_reminder))
+                            {{Helpers::date_format($recent_reminder->reminder_date)}} {{$recent_reminder->reminder_time}}</span>
+                            @else
+                            N/A
+                            @endif
                         </td>
                     </tr>
                     <tr>
