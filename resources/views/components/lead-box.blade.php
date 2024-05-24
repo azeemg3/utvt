@@ -50,6 +50,7 @@
             @elseif($lead['key']==16) {{$lead['box16']}}
             @elseif($lead['key']==17) {{$lead['box17']}}
             @elseif($lead['key']==18) {{$lead['box18']}}
+            @elseif($lead['key']==20) {{$lead['box20']}}
             @else 0
             @endif
         </span>

@@ -118,7 +118,11 @@ class LeadController extends Controller
             $res = Lead::select('*')->with(['leadSpo','latestConversation'])->orderBy('id','DESC');
             if(isset($request->BOXID) && $request->BOXID=='18'){
                 $res->whereIn("BOXID",['18','19']);
-            }else{
+            }
+            elseif(isset($request->BOXID) && $request->BOXID=='20'){
+                
+            }
+            else{
                 if(isset($request->BOXID)){
                     $res->where("BOXID",$request->BOXID);
                 }
