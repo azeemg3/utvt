@@ -1,3 +1,8 @@
+<style>
+    table{
+        font-size:16px;
+    }
+</style>
 <div class="col-md-12">
     <div class="invoice p-3 mb-3">
         <!-- title row -->
@@ -83,7 +88,7 @@
                     </tr>
                     <tr>
                         <th>{{ __('lms.status') }}:</th>
-                        <td>{!! Helpers::lead_status_badge($data->status) !!}</td>
+                        <td>{!! Helpers::lead_status_badge($data->BOXID) !!}</td>
                     </tr>
                     <tr>
                         <th>{{ __('lms.created_by') }}:</th>

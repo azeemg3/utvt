@@ -43,13 +43,13 @@ class Helpers{
             return '<span class="badge badge-pill bg-primary">Working Leads WhatsApp</span>';
         }
         elseif($status==3){
-            return '<span class="badge badge-pill bg-success">Pax Confirm Call Later</span>';
+            return '<span class="badge badge-pill bg-dark">Pax Confirm Call Later</span>';
         }
         elseif($status==4){
-            return '<span class="badge badge-pill bg-danger">Booking Confirm Pax Confirm Soon</span>';
+            return '<span class="badge badge-pill bg-teal">Booking Confirm Pax Confirm Soon</span>';
         }
         elseif($status==5){
-            return '<span class="badge badge-pill bg-danger">Pax Confirm Working for Low Fares</span>';
+            return '<span class="badge badge-pill bg-secondary">Pax Confirm Working for Low Fares</span>';
         }
         elseif($status==6){
             return '<span class="badge badge-pill bg-danger">Pax will Visit branch</span>';

@@ -72,6 +72,10 @@ class LeadRepository implements LeadRepositoryInterface
                     $leadAc['action_status'] = '2';
                     LeadActivity::create($leadAc);
                 }
+                $con['leadId'] = $ret->id;
+                $con['conversation'] = $data['other_details'];
+                $con['contact_via'] ='phone';
+                $ret = LeadConversation::create($con);
                 $message="Thanks You ".strtoupper($data['contact_name']).",\nTour Vision Travel thankfull and appreciates your support and trust on us.\nYou can be confident that we are committed to your satisfaction. For further details & query please do'nt hesitate to call 03111381888 or visit www.toursvision.com";
                 $mailData = [
                     'title' => 'Mail from Webappfix',

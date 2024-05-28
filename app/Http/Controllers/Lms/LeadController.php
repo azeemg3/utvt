@@ -120,11 +120,17 @@ class LeadController extends Controller
                 $res->whereIn("BOXID",['18','19']);
             }
             elseif(isset($request->BOXID) && $request->BOXID=='20'){
-                
+
             }
             else{
                 if(isset($request->BOXID)){
                     $res->where("BOXID",$request->BOXID);
+                }
+                if(isset($request->leadId)){
+                    $res->where("id",$request->leadId);
+                }
+                if(isset($request->mobile)){
+                    $res->where("mobile",'LIKE',"%{$request->mobile}%");
                 }
             }
             return DataTables::of($res)
