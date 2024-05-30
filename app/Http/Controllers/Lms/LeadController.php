@@ -204,7 +204,17 @@ class LeadController extends Controller
                 elseif(isset($request->BOXID) && $request->BOXID==18) {
                     $query->whereIn('BOXID', ['18','19']);
                 }else{
-                    $query->where("status",'1');
+                    if(isset($request->BOXID)){
+                        $query->where("BOXID",$request->BOXID);
+                    }
+                    if(isset($request->leadId)){
+                        $query->where("id",$request->leadId);
+                    }
+                    if(isset($request->mobile)){
+                        $query->where("mobile",'LIKE',"%{$request->mobile}%");
+                    }else{
+                        $query->where("status",'1');
+                    }
                 }
             })->orderByRaw('leads.id DESC')->get();
             Log::debug(DB::getQueryLog());

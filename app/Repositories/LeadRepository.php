@@ -30,7 +30,7 @@ class LeadRepository implements LeadRepositoryInterface
     public function store($data)
     {
         DB::beginTransaction();
-        $mobile=$data['mobile'];
+        $mobile=str_replace(' ','',$data['mobile']);
         $service_date_from=Helpers::db_date_format($data['service_date_from']);
         $service_date_to=Helpers::db_date_format($data['service_date_to']);
         $data['service_date_from']=$service_date_from;
@@ -95,6 +95,7 @@ class LeadRepository implements LeadRepositoryInterface
     }
     public function check_lead($mobile_number)
     {
+        $mobile_number=str_replace(' ','',$mobile_number);
         $res = Lead::with('leadSpo')->where("mobile", $mobile_number)->orWhere('id', $mobile_number);
         if ($res->first()) {
             return $res->first();
