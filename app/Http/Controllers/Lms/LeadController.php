@@ -114,6 +114,7 @@ class LeadController extends Controller
         $all_leads=$this->leadInterface->lead_boxes(0);
         $boxCounts = Lead::select('BOXID', DB::raw('count(*) as count'))
                 ->groupBy('BOXID')->get();
+                
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo','latestConversation'])->orderBy('id','DESC');
             if(isset($request->BOXID) && $request->BOXID=='18'){

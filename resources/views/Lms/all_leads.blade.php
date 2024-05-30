@@ -50,8 +50,8 @@
         @if ($boxVal->BOXID == 14)
             @php $box14=$boxVal->count; @endphp
         @endif
-        @if ($boxVal->BOXID == 15)
-            @php $box16=$boxVal->count; @endphp
+        @if ($boxVal->BOXID ==15)
+            @php $box15=$boxVal->count; @endphp
         @endif
         @if ($boxVal->BOXID == 16)
             @php $box16=$boxVal->count; @endphp
