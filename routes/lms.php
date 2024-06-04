@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get("lead-reminder/{type?}/{leadId?}",[LeadController::class,'lead_reminder'])->name('lead.lead_reminder');
         Route::get("reminder-read",[LeadController::class,'reminder_read'])->name('lead.reminder_read');
         Route::get("edit-reminder",[LeadController::class,'edit_reminder'])->name('lead.edit_reminder');
+        Route::post("save-reminder",[LeadController::class,'save_reminder'])->name('lead.save_reminder');
     });
 });
 

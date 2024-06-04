@@ -74,4 +74,5 @@
     </section>
     @include('Lms.js.all_js')
     @include('Lms.js.details_js')
+    @include('Lms.modals.lead-reminder')
 @endsection

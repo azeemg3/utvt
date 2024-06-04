@@ -122,9 +122,10 @@
                     </tr>
                     <tr>
                         <th>Recent Reminer:</th>
-                        <td><span class="badge badge-pill bg-primary">
+                        <td><span class="badge badge-pill bg-primary lead-reminder-update" data-id="{{$recent_reminder->id}}">
                             @if(isset($recent_reminder))
-                            {{Helpers::date_format($recent_reminder->reminder_date)}} {{$recent_reminder->reminder_time}}</span>
+                            {{Helpers::date_format($recent_reminder->reminder_date)}} {{$recent_reminder->reminder_time}}
+                            </span>
                             @else
                             N/A
                             @endif

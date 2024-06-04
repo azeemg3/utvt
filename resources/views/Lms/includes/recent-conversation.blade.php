@@ -48,7 +48,7 @@
                         <label>Add in Box</label>
                         <select class="form-control form-control-sm select2" name="BOXID">
                             @foreach (Helpers::lead_boxes() as $key=>$val)
-                                <option value="{{$key}}">{{strtoupper($val)}}</option>
+                                <option value="{{$key}}" @if($data->BOXID==$key) selected @endif>{{strtoupper($val)}}</option>
                             @endforeach
                         </select>
                     </div>

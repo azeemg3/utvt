@@ -70,7 +70,7 @@ class LeadController extends Controller
         $data=$this->leadInterface->show($id);
         $lead_conversation=LeadConversation::where('leadId',$id)->latest()->first();
         $lead_activity=LeadActivity::where("LID",$id)->orderBy('id','DESC')->get();
-        $recent_reminder=LeadReminder::where('leadId',$id)->first();
+        $recent_reminder=LeadReminder::where('leadId',$id)->latest()->first();
         if($lead_conversation){
             $conversation=$lead_conversation;
         }else{
@@ -114,7 +114,7 @@ class LeadController extends Controller
         $all_leads=$this->leadInterface->lead_boxes(0);
         $boxCounts = Lead::select('BOXID', DB::raw('count(*) as count'))
                 ->groupBy('BOXID')->get();
-                
+
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo','latestConversation'])->orderBy('id','DESC');
             if(isset($request->BOXID) && $request->BOXID=='18'){
@@ -363,5 +363,8 @@ class LeadController extends Controller
     public function edit_reminder(Request $request){
         $id=$request->id;
         return LeadReminder::find($id);
+    }
+    public function save_reminder(Request $request){
+        $this->leadInterface->save_reminder($request);
     }
 }

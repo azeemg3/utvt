@@ -2,8 +2,9 @@
     <div class="modal-dialog">
         <div class="modal-content rounded-0">
             <x-modal-title title="Reminder Update" />
-            <form action="{{ route('lead.takeover') }}" method="POST">
+            <form id="reminder-form">
                 <input type="hidden" id="id" name="id" value="0">
+                <input type="hidden" id="" name="leadId" value="{{$data->id}}">
                 @CSRF
                 <div class="modal-body">
                     <div class="row">
@@ -19,12 +20,18 @@
                                 <input type="time" class="form-control form-control-sm" name="reminder_time">
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea class="form-control form-control-sm textarea" name="message"></textarea>
+                            </div>
+                        </div>
                     </div>
                     <!--row-->
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary save">Update</button>
+                    <button type="button" class="btn btn-primary save_reminder">Update</button>
                 </div>
             </form>
         </div>

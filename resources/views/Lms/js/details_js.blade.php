@@ -310,9 +310,26 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
+                        $('.textarea').summernote('destroy');
                         $("#lead-reminder-modal input[name~='reminder_date']").val(data.reminder_date);
                         $("#lead-reminder-modal input[name~='reminder_time']").val(data.reminder_time);
+                        $("#lead-reminder-modal .note-editable").html(data.message);
+
                     },
                 });
+    });
+    $(document).on("click",".save_reminder",function(){
+        $.ajax({
+            url:"{{route('lead.save_reminder')}}",
+            type: 'POST',
+            data:$("#reminder-form").serialize(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                $("#lead-reminder-modal").modal("hide");
+                $('.data-table2').DataTable().ajax.reload();
+            }
+        });
     });
 </script>

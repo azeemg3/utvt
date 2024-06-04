@@ -262,4 +262,14 @@ class LeadRepository implements LeadRepositoryInterface
         $dataa['action_by'] = Auth::user()->id;
         LeadActivity::create($dataa);
     }
+    public function save_reminder($data){
+        if(!empty($data->reminder_date)){
+            LeadReminder::where('leadId',$data->leadId)->update(['status'=>1]);
+            $rem['leadId']=$data->leadId;
+            $rem['message']=$data->message;
+            $rem['reminder_date']=date('Y-m-d',strtotime($data->reminder_date));
+            $rem['reminder_time']=date('h:i:s',strtotime($data->reminder_time));
+            LeadReminder::create($rem);
+        }
+    }
 }
