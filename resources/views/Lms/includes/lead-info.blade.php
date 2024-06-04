@@ -122,8 +122,9 @@
                     </tr>
                     <tr>
                         <th>Recent Reminer:</th>
-                        <td><span class="badge badge-pill bg-primary lead-reminder-update" data-id="{{$recent_reminder->id}}">
+                        <td>
                             @if(isset($recent_reminder))
+                            <span class="badge badge-pill bg-primary lead-reminder-update" data-id="{{$recent_reminder->id}}">
                             {{Helpers::date_format($recent_reminder->reminder_date)}} {{$recent_reminder->reminder_time}}
                             </span>
                             @else
