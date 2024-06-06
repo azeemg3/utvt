@@ -4,7 +4,9 @@
             <x-modal-title title="Reminder Update" />
             <form id="reminder-form">
                 <input type="hidden" id="id" name="id" value="0">
+                @if(isset($data))
                 <input type="hidden" id="" name="leadId" value="{{$data->id}}">
+                @endif
                 @CSRF
                 <div class="modal-body">
                     <div class="row">
