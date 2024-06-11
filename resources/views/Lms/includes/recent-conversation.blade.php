@@ -78,12 +78,12 @@
                       </div>
                 </div>
                 <!--col-->
+                <div class="input-group input-group-sm mb-0">
+                    <textarea class="form-control form-control-sm textarea" name="message" placeholder="Type Message....."></textarea>
+                </div><br>
+                <button type="button" onClick="lead_conversation()" class="btn btn-success float-right">Send</button>
             </div>
             <!--row-->
-            <div class="input-group input-group-sm mb-0">
-                <textarea class="form-control form-control-sm textarea" name="message" placeholder="Type Message....."></textarea>
-            </div><br>
-            <button type="button" onClick="lead_conversation()" class="btn btn-success float-right">Send</button>
         </form>
     </div>
     <!-- /.post -->
