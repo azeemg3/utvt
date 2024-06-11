@@ -63,6 +63,7 @@
             ]
         });
         $("#search_lead").click(function(){
+            $(".lead_action").removeClass("selected");
             table.ajax.reload();
         });
     });

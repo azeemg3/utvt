@@ -192,7 +192,7 @@ class LeadController extends Controller
         $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)
         ->select('BOXID', DB::raw('count(*) as count'))->groupBy('BOXID')->get();
                 // dd($boxCounts);
-                // Log::debug(DB::getQueryLog());
+                Log::debug(DB::getQueryLog());
         if ($request->ajax()) {
             $res = Lead::select('*')
             ->with(['leadSpo','latestConversation'])
@@ -215,7 +215,8 @@ class LeadController extends Controller
                     if(isset($request->mobile)){
                         $mobile=str_replace(' ','',$request->mobile);
                         $query->where("mobile",'LIKE',"%{$mobile}%");
-                    }else{
+                    }
+                    if(!isset($request->BOXID) && !isset($request->leadId) && !isset($request->mobile)){
                         $query->where("status",'1');
                     }
                 }
