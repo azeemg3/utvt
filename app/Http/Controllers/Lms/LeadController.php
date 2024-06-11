@@ -131,7 +131,8 @@ class LeadController extends Controller
                     $res->where("id",$request->leadId);
                 }
                 if(isset($request->mobile)){
-                    $res->where("mobile",'LIKE',"%{$request->mobile}%");
+                    $mobile=str_replace(' ','',$request->mobile);
+                    $res->where("mobile",'LIKE',"%{$mobile}%");
                 }
             }
             return DataTables::of($res)
@@ -212,7 +213,8 @@ class LeadController extends Controller
                         $query->where("id",$request->leadId);
                     }
                     if(isset($request->mobile)){
-                        $query->where("mobile",'LIKE',"%{$request->mobile}%");
+                        $mobile=str_replace(' ','',$request->mobile);
+                        $query->where("mobile",'LIKE',"%{$mobile}%");
                     }else{
                         $query->where("status",'1');
                     }
