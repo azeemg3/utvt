@@ -237,7 +237,7 @@ class LeadController extends Controller
                 })->addColumn('remarks',function($row){
                     if (isset($row->latestConversation)) {
                         $conversation = $row->latestConversation->conversation ?? "";
-                        $cleanConversation = strip_tags($conversation);
+                        $cleanConversation = mb_check_encoding(strip_tags($conversation),'UTF-8');
                         return substr($cleanConversation, 0, 50);
                     }
                 })
