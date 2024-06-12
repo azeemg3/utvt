@@ -47,6 +47,10 @@
                     name: 'lead_status',
                 },
                 {
+                    data: 'remarks',
+                    name: 'remarks',
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
