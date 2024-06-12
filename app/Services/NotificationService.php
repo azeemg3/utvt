@@ -71,6 +71,7 @@ class NotificationService
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch); //This is the result from SMS4CONNECT cu
-        $xml=simplexml_load_string($result) or die("Error: Cannot create object");
+        $xml=simplexml_load_string($result);
+        // $xml=simplexml_load_string($result) or die("Error: Cannot create object");
     }
 }
