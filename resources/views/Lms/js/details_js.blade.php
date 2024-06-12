@@ -2,12 +2,12 @@
     /*Client conversation*/
     function lead_conversation() {
         $("#loader").show();
-        var message=$("#lead-conversation-form textarea[name~='message']").val();
-        var leadId=$("#lead-conversation-form input[name~='leadId']").val();
-        var contact_via=$("#lead-conversation-form select[name~='contact_via']").val();
-        var BOXID=$("#lead-conversation-form select[name~='BOXID']").val();
-        var reminder_date=$("#lead-conversation-form input[name~='reminder_date']").val();
-        var reminder_time=$("#lead-conversation-form input[name~='reminder_time']").val();
+        var message=$("#message").val();
+        var leadId=$("#leadId").val();
+        var contact_via=$("#contact_via").val();
+        var BOXID=$("#BOXID").val();
+        var reminder_date=$("#reminder_date").val();
+        var reminder_time=$("#reminder_time").val();
         $.ajax({
             url: "{{ route('lead.conversation') }}",
             type: "POST",
