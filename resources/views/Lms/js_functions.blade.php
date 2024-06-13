@@ -124,7 +124,7 @@
                     keyboard: false});
                     $("#leadId").text(data.id);
                     $("#form input[name~='id']").val(data.id);
-                    if(data.status==4 || data.status==5){
+                    if(data.BOXID==18 || data.BOXID==19){
                         $("#reopen-lead").show().attr("href","{{ url('lms/reopen/') }}/"+data.id);
                     }
                     $("#lead_view").attr("href","{{ url('lms/lead') }}/"+data.id);
