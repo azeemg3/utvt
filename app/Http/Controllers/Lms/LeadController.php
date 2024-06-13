@@ -165,7 +165,7 @@ class LeadController extends Controller
                               if (auth()->user()->can('lead_edit')){
                                 $btn.='<a class="dropdown-item" href="' . route('lead.edit', $row->id) . '"><i class="fas fa-edit"></i> Edit</a>';
                             }
-                    $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
+                    $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
                                 '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>
                               </div>
@@ -251,7 +251,7 @@ class LeadController extends Controller
                               if(auth()->user()->can('lead_edit')){
                                 $btn.='<a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>';
                               }
-                            $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
+                            $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
                             $btn.='
                                 '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 ';
