@@ -240,6 +240,7 @@ class LeadRepository implements LeadRepositoryInterface
         $SPO = $data['spo'];
         $data['spo'] = $SPO;
         $data['status'] = '1';
+        $data['BOXID'] = '0';
         $data['reopen_by']=Auth::user()->id;
         $data['reopen_at']=date('Y-m-d h:i:s');
         $data=$data->except(['airline']);

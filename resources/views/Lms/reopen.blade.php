@@ -157,11 +157,20 @@
                                     </div>
                                 </div>
                                 <!--end-column-->
-                                <div class="col-xs-12 col-sm-12 col-md-6">
+                                <div class="col-xs-12 col-sm-12 col-md-3">
                                     <div class="form-group">
                                         <label>Sector:</label>
                                         <select class="form-control form-control-sm select2" name="sectors[]" multiple>
                                             {!! App\Models\Sector::dropdown($data->sectors) !!}
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end-columns-->
+                                <div class="col-xs-12 col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>Sector:</label>
+                                        <select class="form-control form-control-sm select2" name="sectorss[]" multiple>
+                                            {!! App\Models\Sector::dropdown() !!}
                                         </select>
                                     </div>
                                 </div>
@@ -208,6 +217,16 @@
                                     </div>
                                 </div>
                                 <!--end-column-->
+                                <div class="col-xs-12 col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>Class Of Travel:</label>
+                                        <select class="form-control form-control-sm" name="class_travel">
+                                            <option value="1" @if($data->class_travel==1) selected @endif>Economy</option>
+                                            <option value="2" @if($data->class_travel==2) selected @endif>Business</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end-columns-->
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <textarea rows="20" class="form-control textarea" placeholder="Other Details" name="other_details">{{ $data->other_details }}</textarea>
