@@ -18,6 +18,10 @@ use App\Notifications\PushNotification;
 |
  */
 //require __DIR__.'/auth.php';
+Route::get('test', function () {
+    event(new App\Events\NotificationStatus('notification-send'));
+    return "Event has been sent!";
+});
 
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {

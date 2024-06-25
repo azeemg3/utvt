@@ -216,12 +216,12 @@ class LeadController extends Controller
                         $mobile=str_replace(' ','',$request->mobile);
                         $query->where("mobile",'LIKE',"%{$mobile}%");
                     }
-                    if(!isset($request->BOXID) && !isset($request->leadId) && !isset($request->mobile)){
-                        $query->where("status",'1');
-                    }
+                    // if(!isset($request->BOXID) && !isset($request->leadId) && !isset($request->mobile)){
+                    //     // $query->where("status",'1');
+                    // }
                 }
-            })->orderByRaw('leads.id DESC')->get();
-            Log::debug(DB::getQueryLog());
+            })->get();
+            // Log::debug(DB::getQueryLog());
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {
