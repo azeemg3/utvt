@@ -1,7 +1,6 @@
 <?php
 return [
     'lead_boxes'=>[
-        0=>'Pending Leads',
         1=>'Working Leads',
         2=>'Working Leads WhatsApp',
         3=>'Pax Confirm Call Later',

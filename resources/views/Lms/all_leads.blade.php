@@ -5,14 +5,11 @@
         $breadcrumb[] = ['title' => 'Home'];
         $breadcrumb[] = ['title' => 'Lms'];
         $breadcrumb[] = ['title' => __('lms.all_leads')];
-        $box0=$box1 = $box2 = $box3 = $box4 = $box5 = $box6 = $box7 = $box8 = $box9 = $box10 = $box11 = $box12 = $box13 = $box14 = $box15 = $box16 = $box17 = $box18 = $box19 = $box20 = 0;
+        $box1 = $box2 = $box3 = $box4 = $box5 = $box6 = $box7 = $box8 = $box9 = $box10 = $box11 = $box12 = $box13 = $box14 = $box15 = $box16 = $box17 = $box18 = $box19 = $box20 = 0;
     @endphp
     @foreach ($boxCounts as $boxID => $boxVal)
-        @if ($boxVal->BOXID == 0)
-            @php $box0=$boxVal->count; @endphp
-        @endif
         @if ($boxVal->BOXID == 1)
-        @php $box1=$boxVal->count; @endphp
+            @php $box1=$boxVal->count; @endphp
         @endif
         @if ($boxVal->BOXID == 2)
             @php $box2=$boxVal->count; @endphp
@@ -82,7 +79,6 @@
                                     'icon' => 'bullhorn',
                                     'name' => $val,
                                     'key' => $key,
-                                    'box0' => Helpers::leadId_fromat($box0),
                                     'box1' => Helpers::leadId_fromat($box1),
                                     'box2' => Helpers::leadId_fromat($box2),
                                     'box3' => Helpers::leadId_fromat($box3),

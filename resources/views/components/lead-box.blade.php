@@ -12,7 +12,6 @@
 <!--col--> --}}
 <div class="col-md-3 col-sm-6 col-12">
     <a data-id="{{$lead['key']}}" class="btn lead_action btn-app
-    @if($lead['key']==0) bg-secondary @endif
     @if($lead['key']==1) bg-info @endif
     @if($lead['key']==2) bg-primary @endif
     @if($lead['key']==3) bg-dark @endif
@@ -33,8 +32,7 @@
     @if($lead['key']==18) bg-gradient-maroon @endif
     " style="width: 100%">
         <span class="badge bg-teal">
-            @if($lead['key']==0) {{$lead['box0']}}
-            @elseif($lead['key']==1) {{$lead['box1']}}
+            @if($lead['key']==1) {{$lead['box1']}}
             @elseif($lead['key']==2) {{$lead['box2']}}
             @elseif($lead['key']==3) {{$lead['box3']}}
             @elseif($lead['key']==4) {{$lead['box4']}}
