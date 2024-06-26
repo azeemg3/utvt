@@ -166,7 +166,7 @@ class LeadController extends Controller
                                 $btn.='<a class="dropdown-item" href="' . route('lead.edit', $row->id) . '"><i class="fas fa-edit"></i> Edit</a>';
                             }
                     $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
-                                '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                '.(($row->BOXID==0)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>
                               </div>
 
@@ -217,7 +217,7 @@ class LeadController extends Controller
                         $query->where("mobile",'LIKE',"%{$mobile}%");
                     }
                     if(!isset($request->BOXID) && !isset($request->leadId) && !isset($request->mobile)){
-                        $query->where("status",'1');
+                        //$query->where("BOXID",'0');
                     }
                 }
             })->orderByRaw('leads.id DESC')->get();
@@ -253,7 +253,7 @@ class LeadController extends Controller
                               }
                             $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
                             $btn.='
-                                '.(($row->status==1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                '.(($row->BOXID==0)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 ';
                             if(auth()->user()->can('lead_delete')){
                                 $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';
