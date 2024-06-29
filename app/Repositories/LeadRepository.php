@@ -19,6 +19,7 @@ use DB;
 use Helpers;
 use Illuminate\Database\QueryException;
 use Mail;
+use Route;
 
 class LeadRepository implements LeadRepositoryInterface
 {
@@ -106,7 +107,7 @@ class LeadRepository implements LeadRepositoryInterface
         if ($status != 0) {
             $res = Lead::where("status", $status)->count();
         } else {
-            if(Auth::user()->role->name== 'Admin'){
+            if(Auth::user()->role->name== 'Admin' && Route::currentRouteName()!='lead.my_leads'){
                 $res = Lead::all()->count();
             }else{
                 $res = Lead::where('spo', Auth::user()->id)
