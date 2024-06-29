@@ -16,6 +16,7 @@ use Twilio\Rest\Client;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Str;
 
 class LeadController extends Controller
 {
@@ -217,7 +218,7 @@ class LeadController extends Controller
                         $query->where("mobile",'LIKE',"%{$mobile}%");
                     }
                     if(!isset($request->BOXID) && !isset($request->leadId) && !isset($request->mobile)){
-                        //$query->where("BOXID",'0');
+                        $query->where("BOXID",'0');
                     }
                 }
             })->orderByRaw('leads.id DESC')->get();
@@ -236,9 +237,14 @@ class LeadController extends Controller
                     return Helpers::lead_status_badge($row->BOXID);
                 })->addColumn('remarks',function($row){
                     if (isset($row->latestConversation)) {
-                        $conversation = $row->latestConversation->conversation ?? "";
-                        $cleanConversation = utf8_encode(strip_tags($conversation));
-                        return substr($cleanConversation, 0, 50);
+                        return $conversation = Str::limit($row->latestConversation->conversation,50) ?? "";
+                        // // $cleanConversation = utf8_encode(strip_tags($conversation));
+                        // $cleanConversation=mb_convert_encoding($conversation, 'UTF-8', 'UTF-8');
+                        // if($cleanConversation){
+                        //     return substr($cleanConversation, 0, 50);
+                        // }else{
+                        //     return 'N/A';
+                        // }
                     }
                 })
                 ->addColumn('action', function ($row) {

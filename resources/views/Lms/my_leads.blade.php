@@ -110,6 +110,12 @@
                             'key' => '18',
                             'box18' => Helpers::leadId_fromat($box18 + $box19),
                         ]" />
+                        <x-lead-box :lead="[
+                            'icon' => 'bullhorn',
+                            'name' => 'All Leads',
+                            'key' => '20',
+                            'box20' => Helpers::leadId_fromat($all_leads),
+                        ]" />
                     </div>
                     <!--row-->
                 </div>

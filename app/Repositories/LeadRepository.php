@@ -106,7 +106,13 @@ class LeadRepository implements LeadRepositoryInterface
         if ($status != 0) {
             $res = Lead::where("status", $status)->count();
         } else {
-            $res = Lead::all()->count();
+            if(Auth::user()->role->name== 'Admin'){
+                $res = Lead::all()->count();
+            }else{
+                $res = Lead::where('spo', Auth::user()->id)
+                ->orWhere('created_by', Auth::user()->id)
+                ->count();
+            }
         }
         return Helpers::leadId_fromat($res);
     }
@@ -128,7 +134,7 @@ class LeadRepository implements LeadRepositoryInterface
                 LeadActivity::create(['LID' => $leadId, 'action_by' => Auth::user()->id, 'action_status' => 2]);
             }
             $lead=Lead::find($leadId);
-            $notiArray=["title"=>'Lead Takenover','body'=>'Lead Takenover by '.Auth::user()->name.''];
+            $notiArray=["title"=>'Lead Takenover','body'=>'Lead No:'.$leadId.' Takenover by '.Auth::user()->name.''];
             $this->notificationService->send_notification($notiArray,$lead->created_by);
             User::find($lead->created_by)->notify(new PushNotification(['message'=>$notiArray['body']]));
             $message='Dear '.$lead->contact_name.' Your Sale Person is '.Auth::user()->name.'
