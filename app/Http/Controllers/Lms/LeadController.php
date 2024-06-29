@@ -201,8 +201,11 @@ class LeadController extends Controller
                 $query->where('spo', Auth::user()->id)
                     ->orWhere('created_by', Auth::user()->id);
             })->where(function($query) use ($request) {
-                if(isset($request->BOXID) && $request->BOXID!=18) {
+                if(isset($request->BOXID) && $request->BOXID!=18 && $request->BOXID!=20) {
                     $query->where('BOXID', $request->BOXID);
+                }
+                elseif(isset($request->BOXID) && $request->BOXID=='20'){
+
                 }
                 elseif(isset($request->BOXID) && $request->BOXID==18) {
                     $query->whereIn('BOXID', ['18','19']);
