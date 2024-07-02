@@ -23,7 +23,10 @@
                     <table>
                         <thead>
                             <tr>
-                            <th> Mobile:</th><td><strong>{{ $data->mobile }}</strong></td>
+                                <th> Mobile:</th><td><strong>{{ $data->mobile }}</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Secondary  Mobile:</th><td><strong>{{ $data->secondary_mobile??"N/A" }}</strong></td>
                             </tr>
                             <tr>
                                 <th>Email:</th><td>{{ $data->email }}</td>
@@ -38,6 +41,10 @@
                             <tr>
                                 <th>Customer Type:</th>
                                 <td> @if(!empty($data->reopen_at)) Repeat @else Fresh @endif</td>
+                            </tr>
+                            <tr>
+                                <th>PAX Details:</th>
+                                <td>Adult:{{$data->adult??0}}, Child:{{$data->child??0}}, Infant: {{$data->infant??0}}</td>
                             </tr>
                         </thead>
                     </table>
