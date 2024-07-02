@@ -379,4 +379,58 @@ class LeadController extends Controller
     public function save_reminder(Request $request){
         $this->leadInterface->save_reminder($request);
     }
+    public function reopen_leads(Request $request){
+        if ($request->ajax()) {
+            $res = Lead::select('*')
+            ->with(['leadSpo','latestConversation'])
+            ->where(function($query) {
+                $query->where('spo', Auth::user()->id)
+                    ->orWhere('created_by', Auth::user()->id);
+            })->where(function($query) use ($request) {
+                $query->whereNotNull('reopen_at');
+            })->orderByRaw('leads.id DESC')->get();
+            // Log::debug(DB::getQueryLog());
+            return DataTables::of($res)
+                ->addIndexColumn()
+                ->addColumn('spo_name', function ($row) {
+                    if ($row->leadSpo != null) {
+                        return $row->leadSpo->name;
+                    } else {
+                        return 'N/A';
+                    }
+                })->addColumn('leadId', function ($row) {
+                    return Helpers::leadId_fromat($row->id);
+                })->addColumn('lead_status', function ($row) {
+                    return Helpers::lead_status_badge($row->BOXID);
+                })->addColumn('remarks',function($row){
+                    if (isset($row->latestConversation)) {
+                        return $conversation = Str::limit($row->latestConversation->conversation,50) ?? "";
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                Action
+                              <span class="sr-only">Toggle Dropdown</span></button>';
+                              $btn.='
+                              <div class="dropdown-menu" role="menu" style="">';
+                              if(auth()->user()->can('lead_edit')){
+                                $btn.='<a class="dropdown-item" onClick="edit_rec(this)" data-action="' . route('source.edit', $row->id) . '" href="#" data-modal="add-new" data-id="' . $row->id . '"><i class="fas fa-edit"></i> Edit</a>';
+                              }
+                            $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
+                            $btn.='
+                                '.(($row->BOXID==0)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                ';
+                            if(auth()->user()->can('lead_delete')){
+                                $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';
+                            }
+                              $btn.='</div>
+                          </div>';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'spo_name','lead_status','remarks'])
+                ->make(true);
+        }
+        return view('Lms.reopen_leads');
+    }
 }

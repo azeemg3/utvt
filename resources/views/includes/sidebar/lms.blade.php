@@ -1,5 +1,5 @@
 <?php
-$lms=['lead','my_leads','all_leads','lead-reminder'];
+$lms=['lead','my_leads','all_leads','lead-reminder','reopen_leads'];
 ?>
 <li class="nav-item has-treeview @if(in_array(Request::segment(2),$lms)) menu-open @endif">
     <a href="#" class="nav-link">
@@ -40,7 +40,7 @@ $lms=['lead','my_leads','all_leads','lead-reminder'];
         </li>
         @endcan
         <li class="nav-item">
-            <a href="pages/layout/fixed-footer.html" class="nav-link">
+            <a href="{{ route('leads.reopen_leads') }}" class="nav-link @if(Request::segment(2)=='reopen_leads') active @endif">
                 <i class="nav-icon fas fa-angle-double-right fa-xs"></i>
                 <p>Reopen Leads</p>
             </a>
