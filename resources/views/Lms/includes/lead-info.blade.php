@@ -10,7 +10,7 @@
             <div class="col-12">
                 <h4>
                     <i class="fas fa-user"></i> {{  $data->contact_name }}
-                    <small class="float-right"><strong>Created Date</strong> {{ Helpers::date_format($data->created_at) }}</small>
+                    <small class="float-right"><strong>Created Date</strong>@if(!@empty($data->reopen_at)) {{ Helpers::date_format($data->reopen_at) }}@else {{ Helpers::date_format($data->created_at) }} @endif</small>
                 </h4>
             </div>
             <!-- /.col -->
