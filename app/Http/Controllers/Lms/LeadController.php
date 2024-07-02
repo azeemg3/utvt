@@ -387,6 +387,13 @@ class LeadController extends Controller
                 $query->where('spo', Auth::user()->id)
                     ->orWhere('created_by', Auth::user()->id);
             })->where(function($query) use ($request) {
+                if(isset($request->leadId)){
+                    $query->where("id",$request->leadId);
+                }
+                if(isset($request->mobile)){
+                    $mobile=str_replace(' ','',$request->mobile);
+                    $query->where("mobile",'LIKE',"%{$mobile}%");
+                }
                 $query->whereNotNull('reopen_at');
             })->orderByRaw('leads.id DESC')->get();
             // Log::debug(DB::getQueryLog());
