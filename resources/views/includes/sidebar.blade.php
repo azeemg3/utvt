@@ -33,6 +33,15 @@
                     </a>
                 </li>
                 @include('includes.sidebar.lms')
+                @include('includes.sidebar.accounts')
+                {{-- <li class="nav-item has-treeview menu-open">
+                    <a href="{{  route('dashboard') }}" class="nav-link">
+                        <i class="nav-icon fas fa-book-alt"></i>
+                        <p>
+                            Working Diary
+                        </p>
+                    </a>
+                </li> --}}
                 @include('includes.sidebar.setting')
             </ul>
             </li>
