@@ -1,4 +1,8 @@
 <?php
+
+use App\Http\Controllers\Accounts\AccountDashboardController;
+use App\Http\Controllers\Accounts\RootController;
+use App\Http\Controllers\FinancialYearController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +21,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::prefix('Accounts')->group(function () {
         Route::resource('financial_year',FinancialYearController::class);
         Route::post('get_financial_year','FinancialYearController@get_data');
-        Route::resource('root_accounts', Accounts\RootController::class);
+        Route::resource('root_accounts', RootController::class);
         Route::post('get_root_accounts', 'Accounts\RootController@get_data');
-        Route::resource('dashboard', Accounts\AccountDashboardController::class);
+        Route::resource('dashboard', AccountDashboardController::class);
         Route::resource('head_accounts', Accounts\HeadAccountController::class);
         Route::post('get_head_accounts', 'Accounts\HeadAccountController@get_data');
         Route::resource('subhead_accounts', Accounts\SubHeadAccountController::class);
