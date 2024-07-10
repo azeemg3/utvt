@@ -1,6 +1,11 @@
 @extends('layout.master')
 @section('mytitle', __('lms.all_leads'))
 @section('content')
+<style>
+    #loader{
+        top:50% !important;
+    }
+</style>
     @php
         $breadcrumb[] = ['title' => 'Home'];
         $breadcrumb[] = ['title' => 'Lms'];

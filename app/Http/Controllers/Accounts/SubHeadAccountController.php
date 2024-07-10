@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounts\SubHeadAccount;
 use Illuminate\Http\Request;
 use DB;
+use Yajra\DataTables\DataTables;
 
 class SubHeadAccountController extends Controller
 {
@@ -14,8 +15,29 @@ class SubHeadAccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = SubHeadAccount::select('*')->with('head_acc');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="group-checkable" value="">';
+                })->addColumn('action', function ($row) {
+                    $btn = '<div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                        Action
+                      <span class="sr-only">Toggle Dropdown</span></button>
+                      <div class="dropdown-menu" role="menu" style="">
+                        <a class="dropdown-item" onClick="edit('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>
+                        <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.route('airline.store').'"><i class="fas fa-trash"></i> Delete</a>
+                      </div>
+                  </div>';
+                  return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
         return view('Accounts.subhead_accounts.index');
     }
 
@@ -46,8 +68,7 @@ class SubHeadAccountController extends Controller
             'name.required'=>'Subhead Account Required',
         ];
         $this->validate($request, $rules, $message);
-        $data=$request->except(['_token', 'password', 'roles']);
-        $data['editable']=1;
+        $data=$request->except(['_token']);
         $id=$request->id;
         DB::beginTransaction();
         try {
@@ -94,7 +115,7 @@ class SubHeadAccountController extends Controller
      */
     public function edit($id)
     {
-        //
+        return SubHeadAccount::find($id);
     }
 
     /**

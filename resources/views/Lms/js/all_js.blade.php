@@ -5,7 +5,8 @@
 <script type="text/javascript">
     var table;
 $(function() {
-    $('body').append('<div id="custom-loading" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">Loading...</div>');
+    $("#loader").show();
+    // $('body').append('<div id="custom-loading" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">Loading...</div>');
     table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
@@ -29,7 +30,7 @@ $(function() {
             },
             {
                 data: 'leadId',
-                name: 'leadId'
+                name: 'leadId',
             },
             {
                 data: 'contact_name',
@@ -37,11 +38,12 @@ $(function() {
             },
             {
                 data: 'mobile',
-                name: 'mobile'
+                name: 'mobile',
+                searchable: true,
             },
             {
                 data: 'spo_name',
-                name: 'spo_name'
+                name: 'spo_name',
             },
             {
                 data: 'created_at',
@@ -72,6 +74,15 @@ $(function() {
     });
     $("#search_lead").click(function(){
         table.ajax.reload();
+    });
+    table.on('preXhr.dt', function() {
+        // Show the loader before an Ajax request
+        $("#loader").show();
+    });
+
+    table.on('xhr.dt', function() {
+        // Hide the loader after an Ajax request has completed
+        $("#loader").hide();
     });
 });
 

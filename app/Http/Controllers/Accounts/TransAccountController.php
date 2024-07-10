@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Accounts\TransactionAccount;
 use DB;
 use Config;
+use Yajra\DataTables\DataTables;
 class TransAccountController extends Controller
 {
     /**
@@ -15,10 +16,30 @@ class TransAccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $code=TransactionAccount::orderBy('id','DESC')->first()->code+1;
-        return view('Accounts.trans_accounts.index',compact('code'));
+        if ($request->ajax()) {
+            $data = TransactionAccount::select('*')->with('subhead');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="group-checkable" value="">';
+                })->addColumn('action', function ($row) {
+                    $btn = '<div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                        Action
+                      <span class="sr-only">Toggle Dropdown</span></button>
+                      <div class="dropdown-menu" role="menu" style="">
+                        <a class="dropdown-item" onClick="edit('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>
+                        <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.route('airline.store').'"><i class="fas fa-trash"></i> Delete</a>
+                      </div>
+                  </div>';
+                  return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
+        return view('Accounts.trans_accounts.index');
     }
 
     /**

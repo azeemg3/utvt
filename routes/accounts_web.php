@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Accounts\AccountDashboardController;
+use App\Http\Controllers\Accounts\HeadAccountController;
 use App\Http\Controllers\Accounts\RootController;
+use App\Http\Controllers\Accounts\SubHeadAccountController;
+use App\Http\Controllers\Accounts\TransAccountController;
 use App\Http\Controllers\FinancialYearController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -22,13 +25,11 @@ Route::group(['middleware' => ['auth']], function() {
         Route::resource('financial_year',FinancialYearController::class);
         Route::post('get_financial_year','FinancialYearController@get_data');
         Route::resource('root_accounts', RootController::class);
-        Route::post('get_root_accounts', 'Accounts\RootController@get_data');
         Route::resource('dashboard', AccountDashboardController::class);
-        Route::resource('head_accounts', Accounts\HeadAccountController::class);
-        Route::post('get_head_accounts', 'Accounts\HeadAccountController@get_data');
-        Route::resource('subhead_accounts', Accounts\SubHeadAccountController::class);
+        Route::resource('head_accounts', HeadAccountController::class);
+        Route::resource('subhead_accounts', SubHeadAccountController::class);
         Route::post('get_subhead_accounts', 'Accounts\SubHeadAccountController@get_data');
-        Route::resource('trans_accounts', Accounts\TransAccountController::class);
+        Route::resource('trans_accounts', TransAccountController::class);
         Route::post('get_trans_accounts', 'Accounts\TransAccountController@get_data');
         Route::prefix('vouchers')->group(function (){
             Route::resource('receipt_vouchers', Accounts\ReceiptVoucherController::class);

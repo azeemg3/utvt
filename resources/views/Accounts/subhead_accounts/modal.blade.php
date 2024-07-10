@@ -11,13 +11,6 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-6">
-                            <label for="exampleInputEmail1">Root Account</label>
-                            <select name="" class="form-control form-control-sm select2">
-                                <option value="">Select</option>
-                                {!! App\Models\Accounts\RootAccount::dropdown() !!}
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
                             <label for="exampleInputEmail1">Head Account</label>
                             <select name="HID" class="form-control form-control-sm select2">
                                 <option value="">Select</option>

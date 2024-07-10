@@ -70,35 +70,6 @@
                 }
             })
         }
-        get_data();
-        function get_data(page){
-            //$("#loader").show();
-            $.ajax({
-                url:"{{ url('Accounts/get_financial_year') }}?page="+page,
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                type:"POST",
-                dataType:"JSON",
-                data:$("#search-form").serialize(),
-                success:function (data) {
-                    htmlData='';
-                    for(i in data){
-                        htmlData+='<tr id="'+data[i].id+'">';
-                        htmlData+='<td>'+(Number(i)+1)+'</td>';
-                        htmlData+='<td>'+data[i].start_year+'</td>';
-                        htmlData+='<td>'+data[i].end_year+'</td>';
-                        htmlData+='<td>'+data[i].created_at+'</td>';
-                        htmlData+='<td>';
-                        htmlData += '<a  class="btn btn-primary btn-xs" href="javascript:void(0)" onclick="edit(' + data[i].id + ')"><i class="fa fa-edit"></i> </a>';
-
-                        htmlData+=' <a  class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="del_rec(\''+data[i].id+'\', \'{{ url('Accounts/financial_year/') }}/'+data[i].id+'\')"><i class="fa fa-trash"></i> </a>';
-                        htmlData+='</td>';
-                        htmlData+='</tr>';
-                    }
-                    $("#get_data").html(htmlData);
-                    $("#loader").hide();
-                }
-            })
-        }
         function edit(id) {
             $("#new").modal();
             $.ajax({
@@ -115,4 +86,5 @@
             })
         }
     </script>
+    @include('Accounts.Root_accounts.js_func')
 @endsection

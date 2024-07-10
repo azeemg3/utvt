@@ -1,6 +1,6 @@
 <div class="modal" id="new">
     <div class="modal-dialog">
-        <form id="wherehouse-form">
+        <form id="form">
             <input type="hidden" name="id" value="0">
             <div class="modal-content rounded-0">
                 <!-- Modal Header -->
@@ -12,13 +12,14 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="exampleInputEmail1">Root Account</label>
-                            <select name="" class="form-control form-control-sm">
+                            <select name="RID" class="form-control form-control-sm select2">
                                 <option value="">Select</option>
+                                {!! App\Models\Accounts\HeadAccount::dropdown() !!}
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="exampleInputEmail1">Head Account</label>
-                            <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" placeholder="Head Account">
+                            <input type="text" name="name" class="form-control form-control-sm" id="exampleInputEmail1" placeholder="Head Account">
                         </div>
 
                     </div>
