@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Accounts\AccountDashboardController;
 use App\Http\Controllers\Accounts\HeadAccountController;
+use App\Http\Controllers\Accounts\JournalVoucherController;
+use App\Http\Controllers\Accounts\PaymentVoucherController;
+use App\Http\Controllers\Accounts\ReceiptVoucherController;
 use App\Http\Controllers\Accounts\RootController;
 use App\Http\Controllers\Accounts\SubHeadAccountController;
 use App\Http\Controllers\Accounts\TransAccountController;
@@ -32,14 +35,13 @@ Route::group(['middleware' => ['auth']], function() {
         Route::resource('trans_accounts', TransAccountController::class);
         Route::post('get_trans_accounts', 'Accounts\TransAccountController@get_data');
         Route::prefix('vouchers')->group(function (){
-            Route::resource('receipt_vouchers', Accounts\ReceiptVoucherController::class);
-            Route::post('get_receipt_vouchers', 'Accounts\ReceiptVoucherController@get_data');
-            Route::get('fetch_client_inv/{id}', 'Accounts\ReceiptVoucherController@fetch_client_inv');
-            Route::get('fetch_inv_balance/{id}', 'Accounts\ReceiptVoucherController@fetch_inv_balance');
-            Route::resource('payment_vouchers', Accounts\PaymentVoucherController::class);
-            Route::post('get_payment_vouchers', 'Accounts\PaymentVoucherController@get_data');
-            Route::resource('journal_vouchers', Accounts\JournalVoucherController::class);
-            Route::post('get_journal_vouchers', 'Accounts\JournalVoucherController@get_data');
+        Route::resource('receipt_vouchers', ReceiptVoucherController::class);
+        Route::get('fetch_client_inv/{id}', 'Accounts\ReceiptVoucherController@fetch_client_inv');
+        Route::get('fetch_inv_balance/{id}', 'Accounts\ReceiptVoucherController@fetch_inv_balance');
+        Route::resource('payment_vouchers', PaymentVoucherController::class);
+        // Route::post('get_payment_vouchers', 'Accounts\PaymentVoucherController@get_data');
+        Route::resource('journal_vouchers', JournalVoucherController::class);
+        Route::post('get_journal_vouchers', 'Accounts\JournalVoucherController@get_data');
         });
         Route::get('ledger', 'Accounts\Reports\LedgerController@index');
         Route::prefix('reports')->group(function(){

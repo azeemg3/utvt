@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class Transaction extends Model
 {
@@ -25,5 +26,12 @@ class Transaction extends Model
 
     public function trans_acc(){
         return $this->belongsTo(TransactionAccount::class,'trans_acc_id','id');
+    }
+    public function setTransDateAttribute($value){
+        $this->attributes['trans_date'] = date('Y-m-d', strtotime($value));
+    }
+    public function setPostingDateAttribute($value)
+    {
+        $this->attributes['posting_date'] =Carbon::parse($value)->format('Y-m-d');
     }
 }

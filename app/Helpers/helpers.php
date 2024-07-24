@@ -208,4 +208,12 @@ class Helpers{
         $boxes=config('constant.lead_boxes');
         return $boxes;
     }
+    public static function pax_type(){
+        $list='';
+        $array=[1=>'Adult', 2=>'Child', 3=>'Infant'];
+        foreach ($array as $key=>$val) {
+            $list.='<option value="'.$key.'">'.$val.'</option>';
+        }
+        return $list;
+    }
 }

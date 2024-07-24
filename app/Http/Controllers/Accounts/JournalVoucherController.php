@@ -3,26 +3,50 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\Agent;
 use Illuminate\Http\Request;
 use App\Models\Accounts\Transaction;
 use App\Helpers\Account;
 use App\Models\Accounts\JournalVoucher;
+use App\Models\Accounts\TransactionAccount;
 use DB;
 use Auth;
+use Yajra\DataTables\DataTables;
 
 class JournalVoucherController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:jv_view', ['only' => ['index']]);
+        // $this->middleware('permission:jv_view', ['only' => ['index']]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = JournalVoucher::select('*')->with('trans_acc');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="group-checkable" value="">';
+                })->addColumn('action', function ($row) {
+                    $btn = '<div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                        Action
+                      <span class="sr-only">Toggle Dropdown</span></button>
+                      <div class="dropdown-menu" role="menu" style="">
+                        <a class="dropdown-item" onClick="edit('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>
+                        <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.route('journal_vouchers.store').'"><i class="fas fa-trash"></i> Delete</a>
+                      </div>
+                  </div>';
+                  return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
         return view('Accounts.vouchers.journal_vouchers.index');
     }
 
@@ -64,6 +88,7 @@ class JournalVoucherController extends Controller
         $tData['payment_from']=$request->payment_from;
         $tData['narration']=$request->narration;
         $tData['amount']=$request->amount;
+        $tData['payment_type']=$request->payment_type;
         $tData['status']=1;
         $tData['vt']=2;
         $tData['trans_code']=Account::trans_code();
@@ -126,7 +151,7 @@ class JournalVoucherController extends Controller
      */
     public function edit($id)
     {
-        //
+        return JournalVoucher::find($id);
     }
 
     /**

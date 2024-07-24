@@ -1,5 +1,5 @@
 <script>
-    var table;
+     var table;
     function add_new() {
         $("#new").modal();
         $(".select2").select2();
@@ -7,10 +7,11 @@
         $("#form input[name~='id']").val(0);
         $("#new").find('.btn-success').text('Submit');
     }
+    tostr_options('toast-top-right');
     function save_rec() {
         $("#loader").show();
         $.ajax({
-            url:"{{ route('trans_accounts.store') }}",
+            url:"{{ route('payment_vouchers.store') }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -19,9 +20,9 @@
                 $("#form input[name~='id']").val(0);
                 toastr.success('Operation Successfully..');
                 document.getElementById("form").reset();
-                table.ajax.reload();
                 $("#new").modal('hide');
                 $("#loader").hide();
+                table.ajax.reload();
             },error:function(ajaxcontent) {
                 vali=ajaxcontent.responseJSON.errors;
                 var errors='';
@@ -36,15 +37,15 @@
     function edit(id) {
         $("#new").modal();
         $.ajax({
-            url: "{{ url('Accounts/trans_accounts') }}/" + id + "/edit",
+            url: "{{ url('Accounts/vouchers/payment_vouchers') }}/" + id + "/edit",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) {
                 for (i=0; i<Object.keys(data).length; i++){
                     $("#form input[name~='"+Object.keys(data)[i]+"']").val(Object.values(data)[i]);
                     $("#form select[name~='"+Object.keys(data)[i]+"']").val(Object.values(data)[i]);
+                    $("#form textarea[name~='narration'").val(Object.values(data)[i]);
                 }
                 $('.select2').select2();
-                $("#new").find(".btn-success").text('Update');
             }
         })
     }
@@ -58,13 +59,15 @@
       table = $('.data-table').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('trans_accounts.index') }}",
+          ajax: "{{ route('payment_vouchers.index') }}",
           columns: [
               {data: 'id', name: 'id'},
-              {data: 'code', name: 'code'},
-              {data: 'Trans_Acc_Name', name: 'Trans_Acc_Name'},
-              {data: 'subhead.name', name: 'subhead.name'},
-              {data: 'OB', name: 'OB'},
+              {data: 'trans_code', name: 'trans_code'},
+              {data: 'trans_acc.Trans_Acc_Name', name: 'trans_acc.Trans_Acc_Name'},
+              {data: 'trans_date', name: 'trans_date'},
+              {data: 'remarks', name: 'remarks'},
+              {data: 'amount', name: 'amount'},
+              {data: 'amount', name: 'amount'},
               {data: 'action', name: 'action', orderable: false, searchable: false},
           ]
       });

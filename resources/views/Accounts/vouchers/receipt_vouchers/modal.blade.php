@@ -87,7 +87,7 @@
                     <!-- Modal footer -->
                     <div class="clearfix"></div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success btn-xs">Submit</button>
+                        <button type="button" onclick="save_rec()" class="btn btn-success btn-xs">Submit</button>
                         <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Close</button>
                     </div>
                 </div>

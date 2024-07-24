@@ -10,24 +10,48 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\Accounts\ReceiptVoucher;
 use App\Models\Accounts\Transaction;
+use App\Models\Accounts\TransactionAccount;
 use Auth;
 use DB;
 use Config;
 use PDF;
+use Yajra\DataTables\DataTables;
+use Helpers;
 
 class ReceiptVoucherController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:rv_view', ['only' => ['index']]);
+        // $this->middleware('permission:rv_view', ['only' => ['index']]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = ReceiptVoucher::select('*')->with('trans_acc');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="group-checkable" value="">';
+                })->addColumn('action', function ($row) {
+                    $btn = '<div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                        Action
+                      <span class="sr-only">Toggle Dropdown</span></button>
+                      <div class="dropdown-menu" role="menu" style="">
+                        <a class="dropdown-item" onClick="edit('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>
+                        <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.route('receipt_vouchers.store').'"><i class="fas fa-trash"></i> Delete</a>
+                      </div>
+                  </div>';
+                  return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
         return view('Accounts.vouchers.receipt_vouchers.index');
     }
 
@@ -61,11 +85,13 @@ class ReceiptVoucherController extends Controller
         ];
         $this->validate($request, $rules, $message);
         $data=$request->except(['_token','narration','OB','SID']);
+        $data['trans_date']=Helpers::db_date_format($request->trans_date);
+        $data['posting_date']=Helpers::db_date_format($request->posting_date);
         $id=$request->id;
         //account entry
-        $tData['trans_date']=$request->trans_date;
+        $tData['trans_date']=Helpers::db_date_format($request->trans_date);
         $tData['payment_type']=$request->payment_type;
-        $tData['posting_date']=$request->posting_date;
+        $tData['posting_date']=Helpers::db_date_format($request->posting_date);
         $tData['payment_to']=$request->payment_to;
         $tData['payment_from']=$request->payment_from;
         $tData['narration']=$request->narration;
@@ -183,8 +209,9 @@ class ReceiptVoucherController extends Controller
      */
     public function destroy($id)
     {
-        ReceiptVoucher::where('trans_code', $id)->delete();
-        Transaction::where('trans_code', $id)->delete();
+        // ReceiptVoucher::where('trans_code', $id)->delete();
+        // Transaction::where('trans_code', $id)->delete();
+        ReceiptVoucher::destroy($id);
     }
     //@fetch invoices against client id
     public function fetch_client_inv($id){

@@ -47,6 +47,8 @@
                                         <li class="nav-item"><a class="nav-link" href="#whatsapp-conversation"
                                                 onclick="get_lead_conversation({{ $data->id }})" data-toggle="tab"><i
                                                     class="fab fa-whatsapp bg-success"></i> What's App Conversation</a></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#posting" data-toggle="tab"><i class="fas fa-ticket-alt"></i> Sale Posting</a></li>
                                     </ul>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
@@ -56,6 +58,7 @@
                                         @include('Lms.includes.lead-conversation')
                                         @include('Lms.includes.lead-reminders')
                                         @include('Lms.includes.whatsapp-conversation')
+                                        @include('Lms.includes.posting')
                                     </div>
                                     <!-- /.tab-content -->
                                 </div><!-- /.card-body -->
@@ -72,7 +75,7 @@
         <!-- /.container-fluid -->
         @include('Lms.modals.unsuccessfull-reason')
     </section>
-    @include('Lms.js.all_js')
+    {{-- @include('Lms.js.all_js') --}}
     @include('Lms.js.details_js')
     @include('Lms.modals.lead-reminder')
 @endsection

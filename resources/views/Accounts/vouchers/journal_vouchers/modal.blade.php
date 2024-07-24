@@ -12,11 +12,11 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label for="exampleInputEmail1">Transaction Date</label>
-                            <input name="trans_date" class="form-control form-control-sm date" placeholder="Transaction Date">
+                            <input name="trans_date" autocomplete="off" class="form-control form-control-sm date" placeholder="Transaction Date">
                         </div>
                         <div class="form-group col-md-3">
                             <label for="exampleInputEmail1">Posting Date</label>
-                            <input name="posting_date" class="form-control form-control-sm date" placeholder="Posting Date">
+                            <input name="posting_date" autocomplete="off" class="form-control form-control-sm date" placeholder="Posting Date">
                         </div>
                         <div class="form-group col-md-3">
                             <label for="exampleInputEmail1">Payment Type</label>

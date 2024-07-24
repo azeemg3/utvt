@@ -31,7 +31,7 @@ class TransAccountController extends Controller
                       <span class="sr-only">Toggle Dropdown</span></button>
                       <div class="dropdown-menu" role="menu" style="">
                         <a class="dropdown-item" onClick="edit('.$row->id.')"><i class="fas fa-edit"></i> Edit</a>
-                        <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.route('airline.store').'"><i class="fas fa-trash"></i> Delete</a>
+                        <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.route('trans_accounts.store').'"><i class="fas fa-trash"></i> Delete</a>
                       </div>
                   </div>';
                   return $btn;
@@ -142,6 +142,6 @@ class TransAccountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return TransactionAccount::destroy($id);
     }
 }

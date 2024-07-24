@@ -4,10 +4,12 @@ namespace App\Models\Accounts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TransactionAccount extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable=['Trans_Acc_Name', 'PID', 'Parent_Type', 'OB', 'OB_Type',
         'BID', 'Created_BY', 'Updated_By', 'Last_Activity','code'];
 

@@ -252,5 +252,22 @@
                 }
             });
         });
+        function tostr_options(position){
+            toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": position,
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "3000000",
+                        "hideDuration": "10000000",
+                        "timeOut": "250000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn"
+                    };
+        }
     </script>
     <!--<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>-->

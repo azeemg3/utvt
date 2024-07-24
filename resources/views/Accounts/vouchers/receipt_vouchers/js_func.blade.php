@@ -1,5 +1,4 @@
 <script>
-    var table;
     function add_new() {
         $("#new").modal();
         $(".select2").select2();
@@ -7,10 +6,11 @@
         $("#form input[name~='id']").val(0);
         $("#new").find('.btn-success').text('Submit');
     }
+    tostr_options('toast-top-right');
     function save_rec() {
         $("#loader").show();
         $.ajax({
-            url:"{{ route('trans_accounts.store') }}",
+            url:"{{ route('receipt_vouchers.store') }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -19,7 +19,6 @@
                 $("#form input[name~='id']").val(0);
                 toastr.success('Operation Successfully..');
                 document.getElementById("form").reset();
-                table.ajax.reload();
                 $("#new").modal('hide');
                 $("#loader").hide();
             },error:function(ajaxcontent) {
@@ -36,7 +35,7 @@
     function edit(id) {
         $("#new").modal();
         $.ajax({
-            url: "{{ url('Accounts/trans_accounts') }}/" + id + "/edit",
+            url: "{{ url('Accounts/subhead_accounts') }}/" + id + "/edit",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) {
                 for (i=0; i<Object.keys(data).length; i++){
@@ -53,18 +52,20 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js" defer></script>
    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js" defer></script>
     <script type="text/javascript">
-
+    var table;
     $(function () {
       table = $('.data-table').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('trans_accounts.index') }}",
+          ajax: "{{ route('receipt_vouchers.index') }}",
           columns: [
               {data: 'id', name: 'id'},
-              {data: 'code', name: 'code'},
-              {data: 'Trans_Acc_Name', name: 'Trans_Acc_Name'},
-              {data: 'subhead.name', name: 'subhead.name'},
-              {data: 'OB', name: 'OB'},
+              {data: 'trans_code', name: 'trans_code'},
+              {data: 'trans_acc.Trans_Acc_Name', name: 'trans_acc.Trans_Acc_Name'},
+              {data: 'trans_date', name: 'trans_date'},
+              {data: 'remarks', name: 'remarks'},
+              {data: 'amount', name: 'amount'},
+              {data: 'amount', name: 'amount'},
               {data: 'action', name: 'action', orderable: false, searchable: false},
           ]
       });
