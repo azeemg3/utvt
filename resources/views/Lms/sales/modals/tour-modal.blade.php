@@ -1,7 +1,7 @@
 <div class="modal" id="tour-modal">
     <div class="modal-dialog modal-xl">
             <input type="hidden" class="SID" name="SID" value="0">
-            <input type="hidden" class="leadID" name="leadID" value="{{ $result[0]->id }}">
+            <input type="hidden" class="leadID" name="leadID" value="{{ $data->id }}">
             <div class="modal-content rounded-0">
                 <!-- Modal Header -->
                 <div class="modal-header rounded-0 bg-gradient-warning">
@@ -12,12 +12,12 @@
                     <div class="row">
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Inv Date*</label>
-                            <input name="inv_date" class="form-control form-control-sm date inv_date" placeholder="Invice Date" value="{{ \App\Helpers\CommonHelper::current_date() }}">
+                            <input name="inv_date" class="form-control form-control-sm date inv_date" placeholder="Invice Date" value="{{ Helpers::current_date() }}">
                         </div>
                         <!--col-->
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Due Date*</label>
-                            <input name="due_date" class="form-control form-control-sm date due_date" placeholder="Due Date" value="{{ \App\Helpers\CommonHelper::current_date() }}">
+                            <input name="due_date" class="form-control form-control-sm date due_date" placeholder="Due Date" value="{{ Helpers::current_date() }}">
                         </div>
                         <!--col-->
                         <div class="form-group col-md-2">

@@ -2,8 +2,8 @@
     <div class="modal-dialog modal-xl">
         <form id="receipt-form">
             <input type="hidden" name="id" value="0">
-            <input type="hidden" name="leadId" value="{{ $result[0]->id }}">
-            <input type="hidden" name="account_code" value="{{ $result[0]->ledger }}">
+            <input type="hidden" name="leadId" value="{{ $data->id }}">
+            <input type="hidden" name="account_code" value="{{ $data->ledger }}">
             <div class="modal-content rounded-0">
                 <!-- Modal Header -->
                 <div class="modal-header rounded-0 bg-gradient-warning">
@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Transaction Date*</label>
-                            <input type="text" name="transaction_date" class="form-control form-control-sm date" placeholder="Transaction Date" value="{{ \App\Helpers\CommonHelper::current_date() }}">
+                            <input type="text" name="transaction_date" class="form-control form-control-sm date" placeholder="Transaction Date" value="{{ Helpers::current_date() }}">
                         </div>
                         <!--col-->
                         <div class="form-group col-md-2">

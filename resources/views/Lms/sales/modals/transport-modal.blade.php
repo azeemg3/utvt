@@ -3,8 +3,8 @@
         <form id="transport-form">
             <input type="hidden" name="SID" value="0">
             <input type="hidden" name="id" value="0">
-            <input type="hidden" name="leadID" value="{{ $result[0]->id }}">
-            <input type="hidden" name="account_code" value="{{ $result[0]->ledger }}">
+            <input type="hidden" name="leadID" value="{{ $data->id }}">
+            <input type="hidden" name="account_code" value="{{ $data->ledger }}">
             <div class="modal-content rounded-0">
                 <!-- Modal Header -->
                 <div class="modal-header rounded-0 bg-gradient-warning">
@@ -15,18 +15,18 @@
                     <div class="row">
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Inv Date*</label>
-                            <input name="inv_date" class="form-control form-control-sm date" placeholder="Invice Date" value="{{ \App\Helpers\CommonHelper::current_date() }}">
+                            <input name="inv_date" class="form-control form-control-sm date" placeholder="Invice Date" value="{{ Helpers::current_date() }}">
                         </div>
                         <!--col-->
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Due Date*</label>
-                            <input name="due_date" class="form-control form-control-sm date" placeholder="Due Date" value="{{ \App\Helpers\CommonHelper::current_date() }}">
+                            <input name="due_date" class="form-control form-control-sm date" placeholder="Due Date" value="{{ Helpers::current_date() }}">
                         </div>
                         <!--col-->
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Payment Type</label>
                             <select name="payment_type" class="form-control form-control-sm">
-                                {!! App\Helpers\Account::payment_type() !!}
+                                {{-- {!! App\Helpers\Account::payment_type() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -48,14 +48,14 @@
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Pax Type</label>
                             <select name="pax_type" class="form-control form-control-sm">
-                                {!! App\Helpers\CommonHelper::pax_type() !!}
+                                {{-- {!! App\Helpers\Helpers::pax_type() !!} --}}
                             </select>
                         </div>
                         <!--col-->
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Vehicle Type</label>
                             <select name="vehicle_type" class="form-control form-control-sm select2">
-                                {!! App\Helpers\CommonHelper::vehicle_types() !!}
+                                {{-- {!! App\Helpers\Helpers::vehicle_types() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -90,7 +90,7 @@
                     <!-- Modal footer -->
                     <div class="clearfix"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success btn-xs" onclick="save_rec('{{ route('lead_transport.store') }}','transport-form','transport')">Submit</button>
+                        {{-- <button type="button" class="btn btn-success btn-xs" onclick="save_rec('{{ route('lead_transport.store') }}','transport-form','transport')">Submit</button> --}}
                         <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal" onclick="close_form(4)">Close</button>
                     </div>
                     <div class="modal-footer">

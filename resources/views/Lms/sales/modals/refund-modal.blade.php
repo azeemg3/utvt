@@ -3,8 +3,8 @@
         <form id="refund-form">
             <input type="hidden" name="id" value="0">
             <input type="hidden" name="rec_id" value="0">
-            <input type="hidden" name="leadId" value="{{ $result[0]->id }}">
-            <input type="hidden" name="account_code" value="{{ $result[0]->ledger }}">
+            <input type="hidden" name="leadId" value="{{ $data->id }}">
+            <input type="hidden" name="account_code" value="{{ $data->ledger }}">
             <div class="modal-content rounded-0">
                 <!-- Modal Header -->
                 <div class="modal-header rounded-0 bg-gradient-warning">
@@ -16,7 +16,7 @@
                         <div class="form-group col-md-1">
                             <label for="exampleInputEmail1">Refund To</label>
                             <select name="refund_to" class="form-control form-control-sm refund_to">
-                                {!! App\Helpers\CommonHelper::sale_types() !!}
+                                {{-- {!! App\Helpers\CommonHelper::sale_types() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -28,7 +28,7 @@
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Payment Type</label>
                             <select name="payment_type" class="form-control form-control-sm">
-                               {!! App\Helpers\Account::payment_type() !!}
+                               {{-- {!! App\Helpers\Account::payment_type() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -60,7 +60,7 @@
                             <label for="exampleInputEmail1">Source</label>
                             <select name="source" class="form-control form-control-sm">
                                 <option value="">Select Gds</option>
-                                {!! App\Models\TicketSource::dropdown() !!}
+                                {{-- {!! App\Models\TicketSource::dropdown() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -68,7 +68,7 @@
                             <label for="exampleInputEmail1">Airline</label>
                             <select name="airline" class="form-control form-control-sm">
                                 <option value="">Select Airline</option>
-                                {!! App\Models\Airline::dropdown() !!}
+                                {{-- {!! App\Models\Airline::dropdown() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -100,7 +100,7 @@
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Currency</label>
                             <select name="currency" class="form-control form-control-sm currency_type">
-                                {!! App\Models\Currency::dropdown() !!}
+                                {{-- {!! App\Models\Currency::dropdown() !!} --}}
                             </select>
                         </div>
                         <!--col-->

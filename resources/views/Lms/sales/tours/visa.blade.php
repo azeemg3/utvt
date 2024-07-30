@@ -1,7 +1,7 @@
 <div class="tab-pane fade" id="tour-visa" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
     <form id="tour-visa-form">
         <input type="hidden" name="id" value="0">
-        <input type="hidden" name="account_code" value="{{ $result[0]->ledger }}">
+        <input type="hidden" name="account_code" value="{{ $data->ledger }}">
                 <div class="row">
                     <div class="form-group col-md-12">
                         <select name="pax_name[]" class="form-control form-control-sm select2 tour_pax_list" multiple></select>
@@ -10,7 +10,7 @@
                     <div class="form-group col-md-2">
                         <label for="exampleInputEmail1">Visa Type</label>
                         <select name="visa_type" class="form-control form-control-sm select2">
-                            {!! App\Helpers\CommonHelper::visa_type() !!}
+                            {{-- {!! App\Helpers\CommonHelper::visa_type() !!} --}}
                         </select>
                     </div>
                     <!--col-->
@@ -22,7 +22,7 @@
                     <div class="form-group col-md-2">
                         <label for="exampleInputEmail1">Visa Country</label>
                         <select name="visa_country" class="form-control form-control-sm select2">
-                            {!! App\Models\Country::dropdown() !!}
+                            {{-- {!! App\Models\Country::dropdown() !!} --}}
                         </select>
                     </div>
                     <!--col-->

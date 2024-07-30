@@ -71,12 +71,13 @@
 </div>
 <!-- /.tab-pane -->
 @include('Lms.sales.modals.ticket-modal')
-    {{-- @include('Lms.sales.modals.hotel-modal') --}}
-    {{-- @include('Lms.sales.modals.visa-modal') --}}
-    {{-- @include('Lms.sales.modals.transport-modal') --}}
-    {{-- @include('Lms.sales.modals.tour-modal') --}}
-    {{-- @include('Lms.sales.modals.other-modal') --}}
-    {{-- @include('Lms.sales.modals.refund-modal') --}}
-    {{-- @include('Lms.sales.modals.receipt-modal') --}}
-    {{-- @include('Lms.sales.modals.document-modal') --}}
+    @include('Lms.sales.modals.hotel-modal')
+    @include('Lms.sales.modals.visa-modal')
+    @include('Lms.sales.modals.transport-modal')
+    @include('Lms.sales.modals.tour-modal')
+    @include('Lms.sales.modals.other-modal')
+    @include('Lms.sales.modals.refund-modal')
+    @include('Lms.sales.modals.receipt-modal')
+    @include('Lms.sales.modals.document-modal')
     {{-- @include('Lms.sales.modals.pcr-modal') --}}
+    @include('Lms.sales.sale_js_func')

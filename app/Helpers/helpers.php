@@ -216,4 +216,7 @@ class Helpers{
         }
         return $list;
     }
+    public static function current_date(){
+        return date('d-m-Y');
+    }
 }

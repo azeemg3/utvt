@@ -1,7 +1,7 @@
 <div class="tab-pane fade" id="tour-hotel" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
     <form id="tour-hotel-form">
         <input type="hidden" name="id" value="0">
-        <input type="hidden" name="account_code" value="{{ $result[0]->ledger }}">
+        <input type="hidden" name="account_code" value="{{ $data->ledger }}">
         <div class="row">
             <div class="form-group col-md-12">
                 <select name="pax_name[]" class="form-control form-control-sm select2 tour_pax_list" multiple data-placeholder="Select Passengers">
@@ -13,14 +13,14 @@
                 <label for="exampleInputEmail1">Hotel Name</label>
                 <select name="hotel" class="form-control form-control-sm select2">
                     <option value="">Search Hotel Name</option>
-                    {!! App\Models\Hotel::dropdown() !!}
+                    {{-- {!! App\Models\Hotel::dropdown() !!} --}}
                 </select>
             </div>
             <!--col-->
             <div class="form-group col-md-2">
                 <label for="exampleInputEmail1">Room Type</label>
                 <select name="room_type" class="form-control form-control-sm select2">
-                    {!! App\Helpers\CommonHelper::room_type() !!}
+                    {{-- {!! App\Helpers\CommonHelper::room_type() !!} --}}
                 </select>
             </div>
             <!--col-->
@@ -62,7 +62,7 @@
             <div class="form-group col-md-2">
                 <label for="exampleInputEmail1">Currency</label>
                 <select name="currency" class="form-control form-control-sm">
-                    {!! \App\Models\Currency::dropdown() !!}
+                    {{-- {!! \App\Models\Currency::dropdown() !!} --}}
                 </select>
             </div>
             <!--col-->

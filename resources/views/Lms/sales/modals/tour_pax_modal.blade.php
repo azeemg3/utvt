@@ -27,7 +27,7 @@
                         <div class="form-group col-md-2">
                             <label for="exampleInputEmail1">Pax Type</label>
                             <select name="pax_type[]" class="form-control form-control-sm">
-                                {!! App\Helpers\CommonHelper::pax_type() !!}
+                                {{-- {!! App\Helpers\CommonHelper::pax_type() !!} --}}
                             </select>
                         </div>
                         <!--col-->
@@ -39,7 +39,7 @@
                     <!-- Modal footer -->
                     <div class="clearfix"></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success btn-xs" onclick="save_tour_pax('{{ route('lead_ticket.store') }}','ticket-form','ticket')">Submit</button>
+                        {{-- <button type="button" class="btn btn-success btn-xs" onclick="save_tour_pax('{{ route('lead_ticket.store') }}','ticket-form','ticket')">Submit</button> --}}
                         <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Close</button>
                     </div>
                 </div>

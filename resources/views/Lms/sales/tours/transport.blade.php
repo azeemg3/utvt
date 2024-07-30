@@ -1,7 +1,7 @@
 <div class="tab-pane fade" id="tour-transport" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
     <form id="tour-transport-form">
         <input type="hidden" name="id" value="0">
-        <input type="hidden" name="account_code" value="{{ $result[0]->ledger }}">
+        <input type="hidden" name="account_code" value="{{ $data->ledger }}">
         <div class="row">
             <div class="form-group col-md-12">
                 <select name="pax_name[]" class="form-control form-control-sm select2 tour_pax_list" multiple data-placeholder="Select Passengers">
@@ -11,7 +11,7 @@
             <div class="form-group col-md-2">
                 <label for="exampleInputEmail1">Vehicle Type</label>
                 <select name="vehicle_type" class="form-control form-control-sm select2">
-                    {!! App\Helpers\CommonHelper::vehicle_types() !!}
+                    {{-- {!! Helpers::vehicle_types() !!} --}}
                 </select>
             </div>
             <!--col-->

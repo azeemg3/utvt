@@ -110,9 +110,9 @@
     get_ticket_invoice(1);
     //fetch ticket invoice data
     function get_ticket_invoice(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_lead_ticket_inv') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_lead_ticket_inv') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -211,9 +211,9 @@
     }
     //fetch hotel invoices as well invoices records
     function get_hotel_invoice(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_lead_hotel_inv') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_lead_hotel_inv') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -273,9 +273,9 @@
     }
     //fetch visa invoice detials
     function get_visa_invoice(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_lead_visa_inv') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_lead_visa_inv') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -333,9 +333,9 @@
     }
     //fetch transport details.........
     function get_transport_invoice(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_lead_transport_inv') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_lead_transport_inv') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -392,9 +392,9 @@
     }
     //fetch other invoice and ohter invoice details
     function get_other_invoice(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_lead_other_inv') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_lead_other_inv') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -453,7 +453,7 @@
     function get_pcr_invoice(page) {
         $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_pcr_invoice') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_pcr_invoice') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -604,7 +604,7 @@
             '            <!--col-->' +
             '<div class="form-group col-md-2">' +
             '       <select name="pax_type[]" class="form-control form-control-sm">' +
-            '   {!! App\Helpers\CommonHelper::pax_type() !!}'+
+
             '</select>            </div>'+
 
             '<!--col-->'+
@@ -698,9 +698,9 @@
     }
     //get tour hotel invoice
     function get_tour_invoice(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_lead_tour') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_lead_tour') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -731,7 +731,7 @@
     function save_refund() {
         $("#loader").show();
         $.ajax({
-            url:'{{ route('refund.store') }}',
+            url:'{{ url('refund.store') }}',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -793,9 +793,9 @@
     });
     //fetch refunds
     function get_refunds(page) {
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_refunds') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_refunds') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -827,7 +827,7 @@
     function save_receipt() {
         $("#loader").show();
         $.ajax({
-            url:'{{ route('receipt.store') }}',
+            url:'{{ url('receipt.store') }}',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -855,9 +855,9 @@
     }
     //fetch receipts details
     function get_receipts(page){
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_receipts') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_receipts') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",
@@ -895,7 +895,7 @@
             var formData = new FormData(this);
             $.ajax({
                 type: 'POST',
-                url: "{{ route('client_doc.store')}}",
+                url: "{{ url('client_doc.store')}}",
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -919,9 +919,9 @@
     });
     //get client fiels
     function get_client_doc(page){
-        $("#loader").show();
+        // $("#loader").show();
         $.ajax({
-            url:"{{ url('lms/get_client_doc') }}?page="+page+"&leadID={{ $result[0]->id }}",
+            url:"{{ url('lms/get_client_doc') }}?page="+page+"&leadID={{ $data->id }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type:"POST",
             dataType:"JSON",

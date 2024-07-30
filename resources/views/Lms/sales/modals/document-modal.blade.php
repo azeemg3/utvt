@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <form id="file-upload" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="0">
-            <input type="hidden" name="leadId" value="{{ $result[0]->id }}">
+            <input type="hidden" name="leadId" value="{{ $data->id }}">
             <div class="modal-content rounded-0">
                 <!-- Modal Header -->
                 <div class="modal-header rounded-0 bg-gradient-warning">
@@ -15,7 +15,7 @@
                             <label for="exampleInputEmail1">Document Type</label>
                             <select name="doc_type" class="form-control form-control-sm">
                                 <option value="">Select Type</option>
-                                {!! App\Helpers\CommonHelper::doc_type() !!}
+                                {{-- {!! App\Helpers\CommonHelper::doc_type() !!} --}}
                             </select>
                         </div>
                         <!--col-->
