@@ -263,7 +263,9 @@ class LeadRepository implements LeadRepositoryInterface
     public function transfer_lead($data){
         $leadId=$data->leadId;
         $spo=$data->spo;
-        Lead::where('id',$leadId)->update(['spo'=>$spo,'status'=>'1']);
+        Lead::where('id',$leadId)->update(['spo'=>$spo,'status'=>'1','BOXID'=>0]);
+        $notiArray=["title"=>'Lead Transfered','body'=>'Lead No:'.$leadId.' Transfer by '.Auth::user()->name.''];
+        User::find($spo)->notify(new PushNotification(['message'=>$notiArray['body']]));
         $dataa['LID'] = $leadId;
         $dataa['action_status'] =1;
         $dataa['comments']="Lead Transfer";
