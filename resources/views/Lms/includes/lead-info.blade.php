@@ -95,7 +95,10 @@
                     </tr>
                     <tr>
                         <th>{{ __('lms.status') }}:</th>
-                        <td>{!! Helpers::lead_status_badge($data->BOXID) !!}</td>
+                        <td>
+                            <select class="form-control form-control-sm select2">
+                                {!! Helpers::primary_status($data->status) !!}
+                            </td>
                     </tr>
                     <tr>
                         <th>{{ __('lms.created_by') }}:</th>

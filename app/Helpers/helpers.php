@@ -31,6 +31,14 @@ class Helpers{
            }
         }
     }
+    public static function primary_status($status=''){
+        $array=[0=>'Pending',1=>'New',2=>'Qualified',3=>'Negotiation',4=>'Won',5=>'Lost'];
+        $list='';
+       foreach($array as $k=>$v){
+                 $list.='<option value="'.$k.'">'.$v.'</option>';
+        }
+        return $list;
+    }
     /**status badges */
     public static function lead_status_badge($status= ''){
         if($status==0){
