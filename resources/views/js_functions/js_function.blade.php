@@ -165,92 +165,438 @@
         };
         firebase.initializeApp(firebaseConfig);
         const messaging = firebase.messaging();
-        <?php if(Auth::user()->device_token==''){ ?>
-        $(function(){
-            startFCM();
-        });
-        <?php } ?>
+        const reminderNotifyIcon = '{{ asset("dist/img/AdminLTELogo.png") }}';
+        var shownReminderIds = {};
+        var shownLeadNotifyIds = {};
+        var genericToastShown = false;
+        var refreshInFlight = false;
+        var leadSoundReady = false;
+        var markReadInFlight = {};
+
+        try {
+            shownReminderIds = JSON.parse(sessionStorage.getItem('shown_lead_reminders') || '{}');
+        } catch (e) {
+            shownReminderIds = {};
+        }
+        try {
+            shownLeadNotifyIds = JSON.parse(sessionStorage.getItem('shown_lead_notifies') || '{}');
+        } catch (e) {
+            shownLeadNotifyIds = {};
+        }
+
+        function markLeadNotifyShown(id) {
+            if (!id) return;
+            shownLeadNotifyIds[String(id)] = Date.now();
+            try {
+                sessionStorage.setItem('shown_lead_notifies', JSON.stringify(shownLeadNotifyIds));
+            } catch (e) {}
+        }
+
+        function wasLeadNotifyShown(id) {
+            return !!id && !!shownLeadNotifyIds[String(id)];
+        }
+
+        function markNotificationsRead(ids) {
+            if (!ids) return;
+            if (!Array.isArray(ids)) ids = [ids];
+            ids = ids.map(String).filter(function(id) {
+                if (!id || markReadInFlight[id]) return false;
+                markReadInFlight[id] = true;
+                markLeadNotifyShown(id);
+                return true;
+            });
+            if (!ids.length) return;
+
+            $.ajax({
+                url: "{{ route('notification.mark_read') }}",
+                type: 'POST',
+                data: {
+                    ids: ids,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res) {
+                    if (res && typeof res.unread !== 'undefined') {
+                        $(".count_notify").text(Math.max(Number(res.unread), 0));
+                    }
+                },
+                complete: function() {
+                    ids.forEach(function(id) { delete markReadInFlight[String(id)]; });
+                }
+            });
+        }
+
+        var leadAudioCtx = null;
+
+        function unlockLeadAudio() {
+            try {
+                var Ctx = window.AudioContext || window.webkitAudioContext;
+                if (!Ctx) return;
+                if (!leadAudioCtx) {
+                    leadAudioCtx = new Ctx();
+                }
+                if (leadAudioCtx.state === 'suspended') {
+                    leadAudioCtx.resume();
+                }
+                leadSoundReady = true;
+            } catch (e) {}
+        }
+
+        function playLeadAlertSound() {
+            try {
+                unlockLeadAudio();
+                if (!leadAudioCtx) return;
+                var ctx = leadAudioCtx;
+                var now = ctx.currentTime;
+                [0, 0.18, 0.36].forEach(function(offset, i) {
+                    var osc = ctx.createOscillator();
+                    var gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = i === 2 ? 980 : 740;
+                    gain.gain.setValueAtTime(0.0001, now + offset);
+                    gain.gain.exponentialRampToValueAtTime(0.22, now + offset + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.15);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + offset);
+                    osc.stop(now + offset + 0.16);
+                });
+            } catch (e) {}
+        }
+
+        function showLeadAlertPopup(item) {
+            var title = (item && item.title) || 'New Lead';
+            var body = (item && item.body) || 'A new lead is available.';
+            var clickAction = (item && item.url) || '{{ url("lms/all_leads") }}';
+            var notifyId = item && item.id ? String(item.id) : '';
+            var nType = (item && item.type) || '';
+
+            if (notifyId && wasLeadNotifyShown(notifyId)) {
+                return false;
+            }
+            if (notifyId) {
+                markLeadNotifyShown(notifyId);
+                markNotificationsRead([notifyId]);
+            }
+
+            playLeadAlertSound();
+
+            if (typeof Swal !== 'undefined' && (nType === 'lead_transfer' || nType === 'lead_assigned' || nType === 'lead_available')) {
+                Swal.fire({
+                    icon: 'info',
+                    title: title,
+                    html: body + '<br><br><a href="' + clickAction + '">Open Lead</a>',
+                    confirmButtonText: 'Open',
+                    showCancelButton: true,
+                    cancelButtonText: 'Dismiss'
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        window.location.href = clickAction;
+                    }
+                });
+            }
+
+            if (window.Notification && Notification.permission === 'granted') {
+                try {
+                    var n = new Notification(title, {
+                        body: body,
+                        icon: reminderNotifyIcon,
+                        tag: 'lead-alert-' + (notifyId || Date.now()),
+                        requireInteraction: false
+                    });
+                    n.onclick = function(event) {
+                        event.preventDefault();
+                        window.focus();
+                        if (clickAction) {
+                            window.location.href = clickAction;
+                        }
+                    };
+                } catch (e) {}
+            }
+
+            if (typeof toastr !== 'undefined') {
+                toastr.options = {
+                    closeButton: true,
+                    newestOnTop: true,
+                    progressBar: true,
+                    positionClass: 'toast-top-right',
+                    preventDuplicates: true,
+                    timeOut: 10000
+                };
+                toastr.info('<a href="' + clickAction + '"><strong>' + title + '</strong><br>' + body + '</a>');
+            }
+            return true;
+        }
+
+        function markReminderShown(reminderId) {
+            if (!reminderId) {
+                return;
+            }
+            shownReminderIds[String(reminderId)] = Date.now();
+            try {
+                sessionStorage.setItem('shown_lead_reminders', JSON.stringify(shownReminderIds));
+            } catch (e) {}
+        }
+
+        function wasReminderShown(reminderId) {
+            return !!reminderId && !!shownReminderIds[String(reminderId)];
+        }
+
+        function showLeadReminderPopup(item) {
+            var reminderId = item && item.reminder_id ? String(item.reminder_id) : '';
+            if (wasReminderShown(reminderId)) {
+                return;
+            }
+            if (reminderId) {
+                markReminderShown(reminderId);
+            }
+
+            var title = (item && item.title) || 'Lead Reminder Due';
+            var body = (item && item.body) || 'You have a follow-up reminder.';
+            var clickAction = (item && item.url) || '{{ url("lms/lead-reminder") }}';
+
+            // One channel only: browser notification when allowed, otherwise toast.
+            if (window.Notification && Notification.permission === 'granted') {
+                var n = new Notification(title, {
+                    body: body,
+                    icon: reminderNotifyIcon,
+                    tag: 'lead-reminder-' + (reminderId || Date.now())
+                });
+                n.onclick = function(event) {
+                    event.preventDefault();
+                    window.focus();
+                    if (clickAction) {
+                        window.location.href = clickAction;
+                    }
+                };
+            } else if (typeof toastr !== 'undefined') {
+                toastr.warning('<a href="' + clickAction + '">' + title + ': ' + body + '</a>');
+            }
+        }
+
+        function scheduleLeadReminderNotification(dueIso, meta) {
+            if (!dueIso) {
+                return;
+            }
+            try {
+                var items = JSON.parse(localStorage.getItem('lead_reminder_timers') || '[]');
+                var reminderId = meta && meta.reminder_id ? String(meta.reminder_id) : '';
+                items = items.filter(function(i) {
+                    if (reminderId && String(i.reminder_id) === reminderId) {
+                        return false;
+                    }
+                    return new Date(i.due).getTime() > Date.now() - 60000;
+                });
+                items.push(Object.assign({ due: dueIso }, meta || {}));
+                localStorage.setItem('lead_reminder_timers', JSON.stringify(items));
+            } catch (e) {}
+            var ms = new Date(dueIso).getTime() - Date.now();
+            if (isNaN(ms)) {
+                return;
+            }
+            if (ms < 0) {
+                ms = 0;
+            }
+            setTimeout(function() {
+                refreshNotifications();
+            }, Math.min(ms + 800, 2147483647));
+        }
+
+        function armStoredReminderTimers() {
+            try {
+                var items = JSON.parse(localStorage.getItem('lead_reminder_timers') || '[]');
+                var now = Date.now();
+                items.forEach(function(item) {
+                    if (item.reminder_id && wasReminderShown(item.reminder_id)) {
+                        return;
+                    }
+                    var ms = new Date(item.due).getTime() - now;
+                    if (isNaN(ms)) {
+                        return;
+                    }
+                    if (ms <= 0) {
+                        refreshNotifications();
+                    } else {
+                        setTimeout(function() {
+                            refreshNotifications();
+                        }, Math.min(ms + 800, 2147483647));
+                    }
+                });
+            } catch (e) {}
+        }
+
         function startFCM() {
-            messaging
-                .requestPermission()
-                .then(function() {
-                    return messaging.getToken();
-                })
-                .then(function(response) {
-                    $.ajaxSetup({
+            if (!window.Notification) {
+                return;
+            }
+            var swUrl = "{{ url('firebase-messaging-sw.js') }}";
+            var permissionPromise = Notification.permission === 'granted'
+                ? Promise.resolve('granted')
+                : Notification.requestPermission();
+
+            permissionPromise.then(function(permission) {
+                if (permission !== 'granted') {
+                    return;
+                }
+                var ready = navigator.serviceWorker
+                    ? navigator.serviceWorker.register(swUrl).then(function(reg) {
+                        try {
+                            messaging.useServiceWorker(reg);
+                        } catch (e) {}
+                        return messaging.getToken();
+                    })
+                    : messaging.requestPermission().then(function() {
+                        return messaging.getToken();
+                    });
+
+                return ready.then(function(token) {
+                    if (!token) {
+                        return;
+                    }
+                    $.ajax({
+                        url: '{{ url('store_token') }}',
+                        type: 'POST',
+                        data: { token: token },
+                        dataType: 'JSON',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
-                    $.ajax({
-                        url: '{{ url('store_token') }}',
-                        type: 'POST',
-                        data: {
-                            token: response
-                        },
-                        dataType: 'JSON',
-                        success: function(response) {
-                                alert('Toke Saved');
-                        },
-                        error: function(error) {
-
-                        },
-                    });
-                }).catch(function(error) {
-
                 });
+            }).catch(function() {});
         }
+
         messaging.onMessage(function(payload) {
-            const title = payload.notification.title;
-            const options = {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-            };
-            new Notification(title, options);
+            var type = (payload.data && payload.data.type) || '';
+            var playSound = (payload.data && payload.data.play_sound) === '1'
+                || type === 'lead_assigned'
+                || type === 'lead_available'
+                || type === 'lead_transfer';
+
+            if (playSound || type.indexOf('lead_') === 0) {
+                showLeadAlertPopup({
+                    id: (payload.data && (payload.data.lead_id || payload.messageId)) || ('fcm-' + Date.now()),
+                    title: (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || 'New Lead',
+                    body: (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || '',
+                    url: (payload.data && payload.data.url) || (payload.data && payload.data.click_action) || '{{ url("lms/all_leads") }}'
+                });
+            } else {
+                showLeadReminderPopup({
+                    title: (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || 'Notification',
+                    body: (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || '',
+                    url: (payload.data && payload.data.url) || (payload.data && payload.data.click_action) || (payload.notification && payload.notification.click_action) || '',
+                    reminder_id: payload.data && payload.data.reminder_id
+                });
+            }
+            $(".count_notify").text(Number($(".count_notify").text() || 0) + 1);
         });
-        $(document).ready(function(){
+
+        function refreshNotifications() {
+            if (refreshInFlight) {
+                return;
+            }
+            refreshInFlight = true;
             $.ajax({
-                url:"{{ route('fetch-notification.index') }}",
-                dataType:"JSON",
-                success:function(data){
-                    $(".count_notify").text(Number(data.count_notify)+Number(data.reminder_count));
-                    var lead_notify='';
-                    if(data.reminder_count>0){
-                    lead_notify+=`<div class="dropdown-divider"></div>
-                        <a href="{{url('lms/lead-reminder')}}" class="dropdown-item">
+                url: "{{ url('fetch-notification') }}",
+                dataType: "JSON",
+                cache: false,
+                success: function(data) {
+                    $(".count_notify").text(Number(data.count_notify || 0) + Number(data.reminder_count || 0));
+                    var lead_notify = '';
+                    if (data.reminder_count > 0) {
+                        lead_notify += `<div class="dropdown-divider"></div>
+                        <a href="{{ url('lms/lead-reminder') }}" class="dropdown-item">
                             <i class="fas fa-bullhorn mr-2"></i> Please click here for reminders
                             <span class="float-right text-muted text-sm"></span>
                         </a>`;
                     }
-                    for(i in data.notify_data){
-                        lead_notify+=`<div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-bullhorn mr-2"></i> `+data.notify_data[i].data.data+`
-                            <span class="float-right text-muted text-sm">3 mins</span>
+
+                    var list = data.notify_data || [];
+                    for (var i in list) {
+                        if (!Object.prototype.hasOwnProperty.call(list, i)) continue;
+                        var row = list[i];
+                        var payload = row.data || {};
+                        var msg = payload.data || '';
+                        var link = payload.url || '{{ url("lms/all_leads") }}';
+                        lead_notify += `<div class="dropdown-divider"></div>
+                        <a href="` + link + `" class="dropdown-item js-notification-item" data-notify-id="` + row.id + `">
+                            <i class="fas fa-bullhorn mr-2"></i> ` + msg + `
+                            <span class="float-right text-muted text-sm">Just now</span>
                         </a>`;
                     }
                     $("#lead-notification").html(lead_notify);
-                    toastr.options = {
-                        "closeButton": true,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": false,
-                        "positionClass": "toast-bottom-left",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "3000000",
-                        "hideDuration": "10000000",
-                        "timeOut": "250000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn"
-                    };
-                    if(data.count_notify>0)
-                    toastr.success('<a href="{{ route('all-notifications')}}">You have ' + data.count_notify + ' Notifications!</a>');
-                    if(data.reminder_count>0)
-                    toastr.warning('<a href="{{ route('lead.lead_reminder',1)}}">You have ' + data.reminder_count + ' Unread Reminder!</a>');
+
+                    // Dedicated lead alerts — show once, then mark read so they never repeat
+                    if (data.lead_alerts && data.lead_alerts.length) {
+                        var alreadySeen = [];
+                        data.lead_alerts.forEach(function(item) {
+                            if (item.id && wasLeadNotifyShown(item.id)) {
+                                alreadySeen.push(item.id);
+                                return;
+                            }
+                            showLeadAlertPopup(item);
+                        });
+                        if (alreadySeen.length) {
+                            markNotificationsRead(alreadySeen);
+                        }
+                    }
+
+                    var showedDue = false;
+                    if (data.due_notifications && data.due_notifications.length) {
+                        data.due_notifications.forEach(function(item) {
+                            showLeadReminderPopup(item);
+                            showedDue = true;
+                        });
+                    }
+
+                    if (!showedDue && !genericToastShown) {
+                        if (data.reminder_count > 0) {
+                            toastr.warning('<a href="{{ route('lead.lead_reminder', 1) }}">You have ' + data.reminder_count + ' Unread Reminder!</a>');
+                            genericToastShown = true;
+                        } else if ((data.lead_alerts || []).length === 0 && data.count_notify > 0) {
+                            toastr.success('<a href="{{ route('all-notifications') }}">You have ' + data.count_notify + ' Notifications!</a>');
+                            genericToastShown = true;
+                        }
+                    }
+                },
+                complete: function() {
+                    refreshInFlight = false;
                 }
             });
+        }
+
+        $(document).ready(function() {
+            startFCM();
+            armStoredReminderTimers();
+            $(document).one('click keydown touchstart', unlockLeadAudio);
+
+            // Hover or click on bell notification => mark as read (won't show again)
+            $(document).on('mouseenter click', '.js-notification-item', function() {
+                var id = $(this).data('notify-id');
+                if (id) {
+                    markNotificationsRead([id]);
+                    $(this).addClass('text-muted');
+                }
+            });
+
+            // Opening the bell dropdown also marks visible items as read after short hover time
+            $(document).on('shown.bs.dropdown', '.nav-item.dropdown', function() {
+                var ids = [];
+                $(this).find('.js-notification-item').each(function() {
+                    var id = $(this).data('notify-id');
+                    if (id) ids.push(id);
+                });
+                if (ids.length) {
+                    // slight delay so accidental open without looking doesn't clear instantly
+                    var self = this;
+                    clearTimeout(self._markReadTimer);
+                    self._markReadTimer = setTimeout(function() {
+                        markNotificationsRead(ids);
+                    }, 800);
+                }
+            });
+
+            refreshNotifications();
+            setInterval(refreshNotifications, 5000);
         });
     </script>
     <!--<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>-->

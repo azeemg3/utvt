@@ -12,7 +12,6 @@ $(function() {
         ajax: {
             url: "{{ route('lead.all_leads') }}",
             data: function (d) {
-                d.BOXID = $(".selected").data("id");
                 d.leadId=$("#lead_number").val();
                 d.mobile=$("#lead_mobile").val();
             }
@@ -87,11 +86,6 @@ function customRowCallback(row, data, dataIndex) {
     $('.data-table').append(childRow);
 }
 
-    $(".lead_action").on("click",function(){
-            $(".lead_action").removeClass("selected");
-            $(this).addClass("selected");
-            table.ajax.reload();
-        });
     /*Lead Takeover*/
     $(document).on("click", "#lead-takeover", function() {
         $("#lead-details-modal").modal();

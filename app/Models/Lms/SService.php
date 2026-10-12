@@ -27,7 +27,7 @@ class SService extends Model
 
     public static function dropdown($ids=''){
         $ids=json_decode($ids,true);
-        $res=self::all();
+        $res=self::orderBy('id')->get();
         $list='';
         foreach ($res as $item){
             if(is_array($ids) && count($ids)>0){

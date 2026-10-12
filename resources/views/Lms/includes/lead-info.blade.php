@@ -3,6 +3,15 @@
         font-size:16px;
     }
 </style>
+@php
+    $budgetLabels = [
+        1 => 'Under AED 25,000',
+        2 => 'AED 25,000 – 75,000',
+        3 => 'AED 75,000 – 150,000',
+        4 => 'Above AED 150,000',
+        5 => 'Not specified',
+    ];
+@endphp
 <div class="col-md-12">
     <div class="invoice p-3 mb-3">
         <!-- title row -->
@@ -23,7 +32,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th> Mobile:</th><td><strong>{{ $data->mobile }}</strong></td>
+                                <th> Mobile / WhatsApp:</th><td><strong>{{ $data->mobile }}</strong></td>
                             </tr>
                             <tr>
                                 <th>Secondary  Mobile:</th><td><strong>{{ $data->secondary_mobile??"N/A" }}</strong></td>
@@ -32,19 +41,15 @@
                                 <th>Email:</th><td>{{ $data->email }}</td>
                             </tr>
                             <tr>
-                                <th>CNIC:</th><td>{{ $data->cnic }}</td>
+                                <th>Project Address:</th><td>{{ $data->cnic ?: 'N/A' }}</td>
                             </tr>
                             <tr>
-                                <th>Address:</th>
-                                <td>{{ $data->city->name }} {{ $data->country->name }}</td>
+                                <th>Location:</th>
+                                <td>{{ optional($data->city)->name }} {{ optional($data->country)->name }}</td>
                             </tr>
                             <tr>
                                 <th>Customer Type:</th>
                                 <td> @if(!empty($data->reopen_at)) Repeat @else Fresh @endif</td>
-                            </tr>
-                            <tr>
-                                <th>PAX Details:</th>
-                                <td>Adult:{{$data->adult??0}}, Child:{{$data->child??0}}, Infant: {{$data->infant??0}}</td>
                             </tr>
                         </thead>
                     </table>
@@ -52,36 +57,36 @@
             </div>
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
-                Services Details:
+                Project Details:
                 <address>
                     <table>
                         <tr>
-                            <th>{{ __('lms.service_date_from') }}:</th>
+                            <th>Consultation Date:</th>
                             <td>{{ Helpers::date_format($data->service_date_from) }}</td>
                         </tr>
                         <tr>
-                            <th>{{ __('lms.service_date_to') }}:</th>
+                            <th>Target Completion:</th>
                             <td>{{ Helpers::date_format($data->service_date_to) }}</td>
                         </tr>
                         <tr>
                             <th>{{ __('settings.source_of_query') }}:</th>
-                            <td>{{ $data->source->name??"" }}</td>
+                            <td>{{ optional($data->source)->name }}</td>
                         </tr>
                         <tr>
                             <th>{{ __('settings.services') }}:</th>
-                            <td>{!! Helpers::lead_services(json_decode($data->services)) !!}</td>
+                            <td>{!! Helpers::lead_services(json_decode($data->services) ?: []) !!}</td>
                         </tr>
                         <tr>
-                            <th>Airlines:</th>
-                            <td>{!! Helpers::airlines(json_decode($data->airlines)) !!}</td>
+                            <th>Property Type:</th>
+                            <td>{!! Helpers::sectors(json_decode($data->sectors) ?: []) !!}</td>
                         </tr>
                         <tr>
-                            <th>{{ __('settings.sector') }}:</th>
-                            <td>{!! Helpers::sectors(json_decode($data->sectors)) !!}-{!! Helpers::sectors(json_decode($data->sectorss)) !!}</td>
+                            <th>Project Emirate:</th>
+                            <td>{!! Helpers::sectors(json_decode($data->sectorss) ?: []) !!}</td>
                         </tr>
                         <tr>
-                            <th>{{ __('settings.route') }}:</th>
-                            <td>{{ ($data->service_date_to=="" || $data->service_date_to=="1970-01-01" ?"One Way":"Return") }}</td>
+                            <th>Budget Range:</th>
+                            <td>{{ $budgetLabels[$data->class_travel] ?? 'N/A' }}</td>
                         </tr>
                     </table>
                 </address>
@@ -95,29 +100,16 @@
                     </tr>
                     <tr>
                         <th>{{ __('lms.status') }}:</th>
-                        <td>{!! Helpers::lead_status_badge($data->BOXID) !!}</td>
+                        <td>{!! Helpers::lead_status_badge($data->status) !!}</td>
                     </tr>
                     <tr>
                         <th>{{ __('lms.created_by') }}:</th>
-                        <td>{{ $data->createdBy->name??"" }}</td>
+                        <td>{{ optional($data->createdBy)->name }}</td>
                     </tr>
                     <tr>
                         <th>{{ __('lms.takenover_by') }}:</th>
-                        <td>{{ $data->leadSpo->name??"" }}</td>
+                        <td>{{ optional($data->leadSpo)->name }}</td>
                     </tr>
-                    {{-- @if($data->status!=5)
-                    <tr>
-                        <th>Change Manual Status:</th>
-                        <td>
-                            <select class="form-control form-control-sm" id="manual-status">
-                                <option valiue="">Select Status</option>
-                                <option value="3">In Process</option>
-                                <option value="4">Successfull</option>
-                                <option value="5">UnSuccessfull</option>
-                            </select>
-                        </td>
-                    </tr>
-                    @endif --}}
                     <tr>
                         <th>Transfer To:</th>
                         <td>
@@ -142,10 +134,6 @@
                     <tr>
                         <th>Priority:</th>
                         <td>{!! Helpers::lead_priority($data->priority)!!}</td>
-                    </tr>
-                    <tr>
-                        <th>Class of Travel:</th>
-                        <td>{{($data->class_travel==1?"Economy":"Business")}}</td>
                     </tr>
                 </table>
             </div>

@@ -23,7 +23,7 @@
                                 <div class="inner">
                                     <h3>{{ $pending_leads }}</h3>
 
-                                    <p>Pending Leads</p>
+                                    <p>Pending</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-bag"></i>
@@ -39,7 +39,7 @@
                                 <div class="inner">
                                     <h3>{{ $takenover_leads }}</h3>
 
-                                    <p>Takenover Leads</p>
+                                    <p>Taken Over</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-stats-bars"></i>
@@ -55,7 +55,7 @@
                                 <div class="inner">
                                     <h3>{{ $inprocess_leads }}</h3>
 
-                                    <p>In Process Leads</p>
+                                    <p>Working on Leads</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-person-add"></i>
@@ -71,7 +71,7 @@
                                 <div class="inner">
                                     <h3>{{ $successfull_leads }}</h3>
 
-                                    <p>Successfull Leads</p>
+                                    <p>Successful</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>
@@ -87,7 +87,7 @@
                                 <div class="inner">
                                     <h3>{{ $unSuccessfull_leads }}</h3>
 
-                                    <p>Unsuccessfull Leads</p>
+                                    <p>Unsuccessful</p>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-pie-graph"></i>

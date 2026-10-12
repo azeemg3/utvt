@@ -24,6 +24,16 @@ Route::get('test', function () {
 });
 
 Auth::routes();
+Route::get('firebase-messaging-sw.js', function () {
+    $path = public_path('firebase-messaging-sw.js');
+    if (!is_file($path)) {
+        $path = base_path('firebase-messaging-sw.js');
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/javascript',
+        'Service-Worker-Allowed' => '/',
+    ]);
+});
 Route::group(['middleware' => ['auth']], function () {
     Route::get('dashboard', function () {
         return view('index');
@@ -43,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/send-web-notification', [UserController::class, 'sendNotification'])->name('send.web-notification');
     Route::get('/send-whatsapp', [UserController::class, 'sendWhatsAppMessage']);
     Route::resource('fetch-notification',NotificaitonController::class);
+    Route::post('mark-notification-read', [NotificaitonController::class, 'markRead'])->name('notification.mark_read');
     Route::get('queue_run',function(){
         Artisan::call('queue:listen');
         dd('done');

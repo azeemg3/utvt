@@ -28,7 +28,7 @@ class PushNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database','broadcast'];
+        return ['database'];
     }
 
     /**
@@ -56,14 +56,22 @@ class PushNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'data' =>$this->details['message'],
+            'data' => $this->details['message'],
+            'lead_id' => $this->details['lead_id'] ?? null,
+            'url' => $this->details['url'] ?? null,
+            'type' => $this->details['type'] ?? null,
+            'play_sound' => $this->details['play_sound'] ?? null,
         ];
     }
     public function toBroadcast($notifiable)
     {
 
         return [
-            'data' =>$this->details['message'],
+            'data' => $this->details['message'],
+            'lead_id' => $this->details['lead_id'] ?? null,
+            'url' => $this->details['url'] ?? null,
+            'type' => $this->details['type'] ?? null,
+            'play_sound' => $this->details['play_sound'] ?? null,
         ];
     }
     public function broadcastOn(){

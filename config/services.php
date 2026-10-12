@@ -31,4 +31,17 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    /*
+    | Website contact-form lead intake (The Royal Closet)
+    | source_id 1 = "Website / Free Quote"
+    | country_id 233 = United Arab Emirates
+    | system_user_id = Administrator used as created_by for anonymous website leads
+    */
+    'website_lead' => [
+        'key' => env('WEBSITE_LEAD_API_KEY', ''),
+        'source_id' => env('WEBSITE_LEAD_SOURCE_ID', 1),
+        'country_id' => env('WEBSITE_LEAD_COUNTRY_ID', 233),
+        'system_user_id' => env('WEBSITE_LEAD_SYSTEM_USER_ID', 12),
+    ],
+
 ];

@@ -107,34 +107,14 @@ class LeadController extends Controller
     //All Leads
     public function all_leads(Request $request)
     {
-        $pending_leads=$this->leadInterface->lead_boxes(1);
-        $takenover_leads=$this->leadInterface->lead_boxes(2);
-        $inprocess_leads=$this->leadInterface->lead_boxes(3);
-        $successfull_leads=$this->leadInterface->lead_boxes(4);
-        $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
-        $all_leads=$this->leadInterface->lead_boxes(0);
-        $boxCounts = Lead::select('BOXID', DB::raw('count(*) as count'))
-                ->groupBy('BOXID')->get();
-
         if ($request->ajax()) {
             $res = Lead::select('*')->with(['leadSpo','latestConversation'])->orderBy('id','DESC');
-            if(isset($request->BOXID) && $request->BOXID=='18'){
-                $res->whereIn("BOXID",['18','19']);
+            if(!empty($request->leadId)){
+                $res->where("id",$request->leadId);
             }
-            elseif(isset($request->BOXID) && $request->BOXID=='20'){
-
-            }
-            else{
-                if(isset($request->BOXID)){
-                    $res->where("BOXID",$request->BOXID);
-                }
-                if(isset($request->leadId)){
-                    $res->where("id",$request->leadId);
-                }
-                if(isset($request->mobile)){
-                    $mobile=str_replace(' ','',$request->mobile);
-                    $res->where("mobile",'LIKE',"%{$mobile}%");
-                }
+            if(!empty($request->mobile)){
+                $mobile=str_replace(' ','',$request->mobile);
+                $res->where("mobile",'LIKE',"%{$mobile}%");
             }
             return DataTables::of($res)
                 ->addIndexColumn()
@@ -147,7 +127,7 @@ class LeadController extends Controller
                 })->addColumn('leadId', function ($row) {
                     return '<button  data-conversation="'.htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES).'" class="lead-remarks btn btn-link">'.Helpers::leadId_fromat($row->id).'</button>';
                 })->addColumn('lead_status', function ($row) {
-                    return Helpers::lead_status_badge($row->BOXID);
+                    return Helpers::lead_status_badge($row->status);
                 })
                 ->addColumn('remarks',function($row){
                     // return htmlspecialchars($row->latestConversation->conversation??"",ENT_QUOTES);!=
@@ -167,7 +147,7 @@ class LeadController extends Controller
                                 $btn.='<a class="dropdown-item" href="' . route('lead.edit', $row->id) . '"><i class="fas fa-edit"></i> Edit</a>';
                             }
                     $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>
-                                '.(($row->BOXID==0)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                '.(((int) $row->status === 1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 <a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>
                               </div>
 
@@ -177,23 +157,11 @@ class LeadController extends Controller
                 ->rawColumns(['action', 'spo_name','lead_status','leadId'])
                 ->make(true);
         }
-        return view('Lms.all_leads',compact('pending_leads','takenover_leads',
-        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads','boxCounts'));
+        return view('Lms.all_leads');
     }
     //my Leads
     public function my_leads(Request $request)
     {
-        \DB::enableQueryLog();
-        $pending_leads=$this->leadInterface->lead_boxes(1);
-        $takenover_leads=$this->leadInterface->lead_boxes(2);
-        $inprocess_leads=$this->leadInterface->lead_boxes(3);
-        $successfull_leads=$this->leadInterface->lead_boxes(4);
-        $unSuccessfull_leads=$this->leadInterface->lead_boxes(5);
-        $all_leads=$this->leadInterface->lead_boxes(0);
-        $boxCounts = Lead::where('spo',Auth::user()->id)->orWhere('created_by',Auth::user()->id)
-        ->select('BOXID', DB::raw('count(*) as count'))->groupBy('BOXID')->get();
-                // dd($boxCounts);
-                Log::debug(DB::getQueryLog());
         if ($request->ajax()) {
             $res = Lead::select('*')
             ->with(['leadSpo','latestConversation'])
@@ -201,31 +169,14 @@ class LeadController extends Controller
                 $query->where('spo', Auth::user()->id)
                     ->orWhere('created_by', Auth::user()->id);
             })->where(function($query) use ($request) {
-                if(isset($request->BOXID) && $request->BOXID!=18 && $request->BOXID!=20) {
-                    $query->where('BOXID', $request->BOXID);
+                if(!empty($request->leadId)){
+                    $query->where("id",$request->leadId);
                 }
-                elseif(isset($request->BOXID) && $request->BOXID=='20'){
-
-                }
-                elseif(isset($request->BOXID) && $request->BOXID==18) {
-                    $query->whereIn('BOXID', ['18','19']);
-                }else{
-                    if(isset($request->BOXID)){
-                        $query->where("BOXID",$request->BOXID);
-                    }
-                    if(isset($request->leadId)){
-                        $query->where("id",$request->leadId);
-                    }
-                    if(isset($request->mobile)){
-                        $mobile=str_replace(' ','',$request->mobile);
-                        $query->where("mobile",'LIKE',"%{$mobile}%");
-                    }
-                    if(!isset($request->BOXID) && !isset($request->leadId) && !isset($request->mobile)){
-                        $query->where("BOXID",'0');
-                    }
+                if(!empty($request->mobile)){
+                    $mobile=str_replace(' ','',$request->mobile);
+                    $query->where("mobile",'LIKE',"%{$mobile}%");
                 }
             })->orderByRaw('leads.id DESC')->get();
-            Log::debug(DB::getQueryLog());
             return DataTables::of($res)
                 ->addIndexColumn()
                 ->addColumn('spo_name', function ($row) {
@@ -237,7 +188,7 @@ class LeadController extends Controller
                 })->addColumn('leadId', function ($row) {
                     return Helpers::leadId_fromat($row->id);
                 })->addColumn('lead_status', function ($row) {
-                    return Helpers::lead_status_badge($row->BOXID);
+                    return Helpers::lead_status_badge($row->status);
                 })->addColumn('remarks',function($row){
                     if (isset($row->latestConversation)) {
                         return $conversation = Str::limit($row->latestConversation->conversation,50) ?? "";
@@ -262,7 +213,7 @@ class LeadController extends Controller
                               }
                             $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
                             $btn.='
-                                '.(($row->BOXID==0)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                '.(((int) $row->status === 1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 ';
                             if(auth()->user()->can('lead_delete')){
                                 $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';
@@ -274,8 +225,7 @@ class LeadController extends Controller
                 ->rawColumns(['action', 'spo_name','lead_status','remarks'])
                 ->make(true);
         }
-        return view('Lms.my_leads',compact('pending_leads','takenover_leads',
-        'inprocess_leads','successfull_leads','unSuccessfull_leads','all_leads','boxCounts'));
+        return view('Lms.my_leads');
     }
     /**
      * show all lead activity
@@ -329,7 +279,8 @@ class LeadController extends Controller
         $this->leadInterface->lead_reopen($request);
     }
     public function transfer_lead(Request $request){
-    $this->leadInterface->transfer_lead($request);
+        $result = $this->leadInterface->transfer_lead($request);
+        return response()->json($result);
     }
     public function lead_reminder(Request $request,$type=null){
         if ($request->ajax()) {
@@ -377,7 +328,7 @@ class LeadController extends Controller
         return LeadReminder::find($id);
     }
     public function save_reminder(Request $request){
-        $this->leadInterface->save_reminder($request);
+        return response()->json($this->leadInterface->save_reminder($request));
     }
     public function reopen_leads(Request $request){
         if ($request->ajax()) {
@@ -408,7 +359,7 @@ class LeadController extends Controller
                 })->addColumn('leadId', function ($row) {
                     return Helpers::leadId_fromat($row->id);
                 })->addColumn('lead_status', function ($row) {
-                    return Helpers::lead_status_badge($row->BOXID);
+                    return Helpers::lead_status_badge($row->status);
                 })->addColumn('remarks',function($row){
                     if (isset($row->latestConversation)) {
                         return $conversation = Str::limit($row->latestConversation->conversation,50) ?? "";
@@ -426,7 +377,7 @@ class LeadController extends Controller
                               }
                             $btn.='<a class="dropdown-item"  tabindex="-1" class="disabled" target="_blank"  href="'.route('lead.show',$row->id).'"><i class="fas fa-eye"></i> View</a>';
                             $btn.='
-                                '.(($row->BOXID==0)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
+                                '.(((int) $row->status === 1)?'<a class="dropdown-item" id="lead-takeover" href="javascript:void(0)" data-id="' . $row->id . '"><i class="fas fa-sync-alt"></i> '. __('lms.takenover').'</a>':'').'
                                 ';
                             if(auth()->user()->can('lead_delete')){
                                 $btn.='<a class="dropdown-item text-danger del_rec" href="javascript:void(0)" data-id="'.$row->id.'" data-action="'.url('lms/lead').'"><i class="fas fa-trash"></i> Delete</a>';

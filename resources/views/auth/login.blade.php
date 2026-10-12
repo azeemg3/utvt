@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tour Vision Travel Pvt Ltd | Log in</title>
+    <title>{{ optional($site_setting)->business_name ?? config('app.name') }} | Log in</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -22,7 +22,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="#" style="font-size: 18px;font-weight:bold">Tour Vision Travel Pvt Ltd</a>
+        <a href="{{ url('/') }}" style="font-size: 18px;font-weight:bold">{{ optional($site_setting)->business_name ?? config('app.name') }}</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">

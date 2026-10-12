@@ -6,8 +6,19 @@
         var leadId=$("#leadId").val();
         var contact_via=$("#contact_via").val();
         var BOXID=$("#BOXID").val();
-        var reminder_date=$("#reminder_date").val();
-        var reminder_time=$("#reminder_time").val();
+        var reminderChecked = $("#reminder-button").is(':checked');
+        var reminder_date = reminderChecked ? $("#reminder_date").val() : '';
+        var reminder_time = reminderChecked ? $("#reminder_time").val() : '';
+        if (reminderChecked && (!reminder_date || !reminder_time)) {
+            $("#loader").hide();
+            toastr.error('Please select reminder date and time');
+            return;
+        }
+        if (String(BOXID) === '5') {
+            $("#loader").hide();
+            $("#unsuccessfull-reason-modal").modal();
+            return;
+        }
         $.ajax({
             url: "{{ route('lead.conversation') }}",
             type: "POST",
@@ -19,11 +30,24 @@
             },
             success: function(data) {
                 document.getElementById("lead-conversation-form").reset();
+                $(".reminder").hide();
                 $("#conversation-by").text(data.user.name);
                 $("#conversation-time").text(data.created_at);
                 $("#conversation-message").html(data.conversation);
                 $("#loader").hide();
                 $('.textarea').summernote('code', '');
+                if (data.reminder_due) {
+                    toastr.success('Reminder scheduled. You will be notified at the selected time.');
+                    scheduleLeadReminderNotification(data.reminder_due, {
+                        title: 'Lead Reminder Due',
+                        body: data.reminder_body || 'You have a follow-up reminder.',
+                        url: '{{ url("lms/lead") }}/' + leadId,
+                        reminder_id: data.reminder_id
+                    });
+                    if ($.fn.DataTable && $('.data-table2').length) {
+                        $('.data-table2').DataTable().ajax.reload();
+                    }
+                }
             },error: function(ajaxcontent) {
                     vali = ajaxcontent.responseJSON.errors;
                     var errors = '';
@@ -209,42 +233,60 @@
     $(document).ready(function() {
         $('#lead-transfer').select2();
         $('#lead-transfer').on('select2:select', function(e) {
-                var spo=$(this).val();
-            var leadId=$(this).data("leadid");
+            var spo = $(this).val();
+            var leadId = $(this).data("leadid");
+            if (!spo) {
+                return;
+            }
             Swal.fire({
                 title: "Are you sure?",
-                text: "You are going to Transfering lead",
+                text: "You are going to transfer this lead",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, Transfer it!"
             }).then((result) => {
-            if (result.value==true) {
-                $.ajax({
-                    url:"{{ route('lead.lead_transfer') }}",
-                    data:{leadId:leadId,spo:spo},
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-
-                    },
-                });
-                Swal.fire({
-                    title: "Transfered!",
-                    text: "Lead has been transfered.",
-                    icon: "success"
-                });
-            }
-        });
+                if (result.isConfirmed || result.value === true) {
+                    $.ajax({
+                        url: "{{ route('lead.lead_transfer') }}",
+                        data: { leadId: leadId, spo: spo },
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(data) {
+                            if (data && data.success) {
+                                Swal.fire({
+                                    title: "Transferred!",
+                                    text: data.message || "Lead has been transferred and notification sent.",
+                                    icon: "success"
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Transfer failed",
+                                    text: (data && data.message) ? data.message : "Unable to transfer lead.",
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: "Transfer failed",
+                                text: "Server error while transferring lead.",
+                                icon: "error"
+                            });
+                        }
+                    });
+                } else {
+                    $('#lead-transfer').val('').trigger('change');
+                }
+            });
         });
     });
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js" defer></script>
-   <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js" defer></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js" defer></script>
+<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js" defer></script>
 <script>
     //Lead reminders
     var table2;
@@ -329,6 +371,15 @@
             success: function(data) {
                 $("#lead-reminder-modal").modal("hide");
                 $('.data-table2').DataTable().ajax.reload();
+                if (data && data.reminder_due) {
+                    toastr.success('Reminder scheduled. You will be notified at the selected time.');
+                    scheduleLeadReminderNotification(data.reminder_due, {
+                        title: 'Lead Reminder Due',
+                        body: data.reminder_body || 'You have a follow-up reminder.',
+                        url: '{{ url("lms/lead") }}/' + (data.lead_id || '{{ $data->id }}'),
+                        reminder_id: data.reminder_id
+                    });
+                }
             }
         });
     });

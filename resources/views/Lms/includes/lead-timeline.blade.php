@@ -101,10 +101,10 @@ $usf=App\Models\Lead::recent_action($data->id,5);
             <div class="timeline-item">
                 <span class="time"><i class="far fa-clock"></i> {{ Helpers::fetch_time($tob->created_at) }} </span>
                 <h3 class="timeline-header">
-                    <a href="#" class="text-primary">Takenover By</a> {{ $tob->user->name??"" }}
+                    <a href="#" class="text-primary">Takenover By</a> {{ optional(optional($tob)->user)->name }}
                 </h3>
                     <div class="timeline-body">
-                        Lead Takenover {{ Helpers::calculateDateTimeDifference($cb->created_at, $tob->created_at) }} ago
+                        Lead Takenover {{ Helpers::calculateDateTimeDifference(optional($cb)->created_at, $tob->created_at) }} ago
                     </div>
             </div>
         </div>
@@ -125,7 +125,7 @@ $usf=App\Models\Lead::recent_action($data->id,5);
                 <span class="time"><i class="far fa-clock"></i> {{ Helpers::fetch_time($data->reopen_at) }}</span>
                 <h3 class="timeline-header">
                     <a class="text-secondary" href="#">Reopen By</a>
-                    {{ $cb->user->name??"" }}
+                    {{ optional(optional($cb)->user)->name }}
                 </h3>
                     <div class="timeline-body">
                         Lead Reopen with the reference of {{ Helpers::fetch_lead_source($data->source_id) }}
@@ -146,10 +146,10 @@ $usf=App\Models\Lead::recent_action($data->id,5);
         <div>
             <i class="fas fa-comment bg-secondary"></i>
             <div class="timeline-item">
-                <span class="time"><i class="far fa-clock"></i> {{ Helpers::fetch_time($cb->created_at) }}</span>
+                <span class="time"><i class="far fa-clock"></i> {{ Helpers::fetch_time(optional($cb)->created_at) }}</span>
                 <h3 class="timeline-header">
                     <a class="text-secondary" href="#">Created By</a>
-                    {{ $cb->user->name??"" }}
+                    {{ optional(optional($cb)->user)->name }}
                 </h3>
                     <div class="timeline-body">
                         Lead Created with the reference of {{ Helpers::fetch_lead_source($data->source_id) }}

@@ -3,7 +3,7 @@
     <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">{{ $site_setting->business_name??"" }}</span>
+        <span class="brand-text font-weight-light">{{ optional($site_setting)->business_name ?? config('app.name') }}</span>
     </a>
 
     <!-- Sidebar -->
@@ -33,6 +33,7 @@
                     </a>
                 </li>
                 @include('includes.sidebar.lms')
+                @include('includes.sidebar.invoice')
                 @include('includes.sidebar.setting')
             </ul>
             </li>

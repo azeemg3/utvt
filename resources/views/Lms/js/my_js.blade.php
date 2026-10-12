@@ -12,7 +12,6 @@
             ajax: {
             url: "{{ route('lead.my_leads') }}",
             data: function (d) {
-                d.BOXID = $(".selected").data("id");
                 d.leadId=$("#lead_number").val();
                 d.mobile=$("#lead_mobile").val();
             }
@@ -59,15 +58,9 @@
             ]
         });
         $("#search_lead").click(function(){
-            $(".lead_action").removeClass("selected");
             table.ajax.reload();
         });
     });
-    $(".lead_action").on("click",function(){
-            $(".lead_action").removeClass("selected");
-            $(this).addClass("selected");
-            table.ajax.reload();
-        });
      /*Lead Takeover*/
      $(document).on("click", "#lead-takeover", function() {
         $("#lead-details-modal").modal();

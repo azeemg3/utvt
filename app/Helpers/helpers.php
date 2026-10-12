@@ -22,76 +22,50 @@ class Helpers{
     public static function create_lead_code($id){
         return date('dmy').'-'.self::leadId_fromat($id);
     }
-    /**Lead status */
+    /**Lead status labels (pipeline) */
     public static function lead_status($status=''){
-        $array=[1=>'Pending',2=>'Taken Over',3=>'In Process',4=>'Successfull',5=>'Unsuccessfull'];
-        foreach($array as $k=>$v){
-           if($k==$status){
-                return $v;
-           }
-        }
+        $array = [
+            1 => 'Pending',
+            2 => 'Taken Over',
+            3 => 'Working on Leads',
+            4 => 'Successful',
+            5 => 'Unsuccessful',
+        ];
+        return $array[(int) $status] ?? 'N/A';
     }
-    /**status badges */
+
+    /** Status badges for all_leads / lead detail (uses leads.status) */
     public static function lead_status_badge($status= ''){
-        if($status==0){
+        $status = (int) $status;
+        if ($status === 0 || $status === 1) {
             return '<span class="badge badge-pill badge-secondary">Pending</span>';
         }
-        elseif($status==1){
-            return '<span class="badge badge-pill bg-info">Working Leads</span>';
+        if ($status === 2) {
+            return '<span class="badge badge-pill bg-primary">Taken Over</span>';
         }
-        elseif($status==2){
-            return '<span class="badge badge-pill bg-primary">Working Leads WhatsApp</span>';
+        if ($status === 3) {
+            return '<span class="badge badge-pill bg-info">Working on Leads</span>';
         }
-        elseif($status==3){
-            return '<span class="badge badge-pill bg-dark">Pax Confirm Call Later</span>';
+        if ($status === 4) {
+            return '<span class="badge badge-pill bg-success">Successful</span>';
         }
-        elseif($status==4){
-            return '<span class="badge badge-pill bg-teal">Booking Confirm Pax Confirm Soon</span>';
+        if ($status === 5) {
+            return '<span class="badge badge-pill bg-danger">Unsuccessful</span>';
         }
-        elseif($status==5){
-            return '<span class="badge badge-pill bg-secondary">Pax Confirm Working for Low Fares</span>';
-        }
-        elseif($status==6){
-            return '<span class="badge badge-pill bg-purple">Pax will Visit branch</span>';
-        }
-        elseif($status==7){
-            return '<span class="badge badge-pill bg-warning">waitig for special fares</span>';
-        }elseif($status==8){
-            return '<span class="badge badge-pill bg-gray">Plan delay call later</span>';
-        }elseif($status==9){
-            return '<span class="badge badge-pill bg-warning">Travel Document/issue/exipire/renew</span>';
-        }elseif($status==10){
-            return '<span class="badge badge-pill bg-dark">Fare & flight information share</span>';
-        }elseif($status==11){
-            return '<span class="badge badge-pill bg-default">Date change/refund issue</span>';
-        }elseif($status==12){
-            return '<span class="badge badge-pill bg-teal">Already buy ticket by us/need flight info</span>';
-        }elseif($status==13){
-            return '<span class="badge badge-pill bg-info">Duplicate lead or engage with other spo</span>';
-        }elseif($status==14){
-            return '<span class="badge badge-pill bg-danger">suggestion & complaint</span>';
-        }elseif($status==15){
-            return '<span class="badge badge-pill bg-primary">User not attended/agent hangup</span>';
-        }elseif($status==16){
-            return '<span class="badge badge-pill bg-success">ticket issued & processing</span>';
-        }elseif($status==17){
-            return '<span class="badge badge-pill bg-success">Umrah Leads</span>';
-        }elseif($status==18 || $status==19){
-            return '<span class="badge badge-pill bg-gradient-maroon">Closed Leads</span>';
-        }
-        else{
-            return 'N/A';
-        }
+        return '<span class="badge badge-pill badge-secondary">N/A</span>';
     }
     //get services naem against array
-    public static function lead_services(array $ids){
+    public static function lead_services($ids){
+        if(empty($ids) || !is_array($ids)){
+            return 'N/A';
+        }
         $res=SService::whereIn('id',$ids)->pluck('name');
         $res=json_decode($res);
         $html='';
         foreach($res as $item){
             $html.= '<span class="badge badge-info">'.$item.'</span> ';
         }
-        return $html;
+        return $html ?: 'N/A';
     }
     public static function airlines($ids=""){
         if(!empty($ids)){
@@ -139,7 +113,7 @@ class Helpers{
     /**Fetch Lead source */
     public static function fetch_lead_source($source){
         if(!empty($source)){
-            return SourceQuery::find($source)->name;
+            return optional(SourceQuery::find($source))->name;
         }
     }
     public static function helper_dropdown($id=''){
@@ -153,8 +127,15 @@ class Helpers{
     /**Lead Closed Reason */
     public static function closed_reason(){
         $list='';
-        $array=[1=>'Client not Intersted',2=>'Client Avail Service from somewhere',3=>'Fake Lead',
-        4=>'Without Info',5=>'Other'];
+        $array=[
+            1=>'Client not interested',
+            2=>'Chose another contractor',
+            3=>'Fake lead',
+            4=>'Incomplete information',
+            5=>'Budget mismatch',
+            6=>'Project postponed',
+            7=>'Other',
+        ];
         foreach($array as $key=>$val){
             $list.='<option value="'.$key.'">'.$val.'</option>';
         }
@@ -165,14 +146,27 @@ class Helpers{
         $date=date('Y-m-d',strtotime($date));
         return $date;
     }
-    //convert sectors to string
+    //convert sectors / property types / emirates to string
     public static function sectors($sectors=''){
-        if(isset($sectors)){
-        $string = implode("-", $sectors);
-        return $string;
-        }else{
-            return "";
+        if(!empty($sectors) && is_array($sectors)){
+            $html = '';
+            foreach ($sectors as $item) {
+                $html .= '<span class="badge badge-info">'.$item.'</span> ';
+            }
+            return $html;
         }
+        return "N/A";
+    }
+
+    public static function budget_range($value=''){
+        $labels = [
+            1 => 'Under AED 25,000',
+            2 => 'AED 25,000 – 75,000',
+            3 => 'AED 75,000 – 150,000',
+            4 => 'Above AED 150,000',
+            5 => 'Not specified',
+        ];
+        return $labels[$value] ?? 'N/A';
     }
     public static function status($status=''){
         $array=[0=>'Inactive',1=>'Active'];
@@ -197,15 +191,63 @@ class Helpers{
     }
     //fetch Reminder notifications
     public static function fetch_reminder_notification(){
-        date_default_timezone_set("Asia/Karachi");
+        date_default_timezone_set(config('app.timezone', 'UTC'));
         $current_date=date("Y-m-d");
-        DB::connection()->enableQueryLog();
-        $count=LeadReminder::where("status",0)->where("created_by",Auth::user()->id)->whereDate("reminder_date",$current_date)
-        ->whereRaw('HOUR(reminder_time) = ? AND MINUTE(reminder_time)<=?', [date('h'),date('i')])->count();
+        $now = date('Y-m-d H:i:s');
+        $count=LeadReminder::where("status",0)
+            ->where("created_by",Auth::user()->id)
+            ->whereDate("reminder_date","<=",$current_date)
+            ->whereRaw("CONCAT(reminder_date, ' ', reminder_time) <= ?", [$now])
+            ->count();
         return $count;
     }
     public static function lead_boxes(){
         $boxes=config('constant.lead_boxes');
         return $boxes;
+    }
+
+    /** Convert number to English words (for invoice totals) */
+    public static function amount_in_words($amount)
+    {
+        $amount = round((float) $amount, 2);
+        $ones = [
+            '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+            'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
+            'Seventeen', 'Eighteen', 'Nineteen',
+        ];
+        $tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+        $convertBelowThousand = function ($n) use (&$convertBelowThousand, $ones, $tens) {
+            $n = (int) $n;
+            if ($n < 20) {
+                return $ones[$n];
+            }
+            if ($n < 100) {
+                return trim($tens[(int) ($n / 10)] . ' ' . $ones[$n % 10]);
+            }
+            return trim($ones[(int) ($n / 100)] . ' Hundred ' . $convertBelowThousand($n % 100));
+        };
+
+        $convert = function ($n) use (&$convert, $convertBelowThousand) {
+            $n = (int) $n;
+            if ($n === 0) {
+                return 'Zero';
+            }
+            if ($n < 1000) {
+                return $convertBelowThousand($n);
+            }
+            if ($n < 1000000) {
+                return trim($convertBelowThousand((int) ($n / 1000)) . ' Thousand ' . $convertBelowThousand($n % 1000));
+            }
+            return trim($convert((int) ($n / 1000000)) . ' Million ' . $convert($n % 1000000));
+        };
+
+        $intPart = (int) floor($amount);
+        $fils = (int) round(($amount - $intPart) * 100);
+        $words = $convert($intPart) . ' Dirhams';
+        if ($fils > 0) {
+            $words .= ' and ' . $convert($fils) . ' Fils';
+        }
+        return $words . ' Only';
     }
 }

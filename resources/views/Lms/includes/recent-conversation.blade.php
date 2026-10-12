@@ -10,7 +10,7 @@
             <div class="user-block">
                 <img class="img-circle img-bordered-sm" src="{{ asset('dist/img/user7-128x128.jpg') }}" alt="User Image">
                 <span class="username">
-                    <a href="#" id="conversation-by">{{ $conversation->user->name }}</a>
+                    <a href="#" id="conversation-by">{{ optional($conversation->user)->name ?? optional($data->createdBy)->name ?? 'System' }}</a>
                 </span>
                 <span class="description"><i class="far fa-clock"></i> - <span
                         id="conversation-time">{{ $conversation->created_at }}</span></span>
@@ -21,7 +21,7 @@
             <div class="user-block">
                 <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
                 <span class="username">
-                    <a href="#" id="conversation-by">{{ $data->createdBy->name??"" }}</a>
+                    <a href="#" id="conversation-by">{{ optional($data->createdBy)->name }}</a>
                 </span>
                 <span class="description"><i class="far fa-clock"></i> - <span
                         id="conversation-time">{{ $data->created_at }}</span></span>
@@ -45,10 +45,20 @@
                 <!--col-->
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Add in Box</label>
+                        <label>Status</label>
+                        @php
+                            $selectedStatus = (int) $data->status;
+                            if ($selectedStatus === 1) {
+                                $selectedBox = 0;
+                            } elseif (in_array($selectedStatus, [2, 3, 4, 5], true)) {
+                                $selectedBox = $selectedStatus;
+                            } else {
+                                $selectedBox = (int) $data->BOXID;
+                            }
+                        @endphp
                         <select class="form-control form-control-sm select2" id="BOXID" name="BOXID">
                             @foreach (Helpers::lead_boxes() as $key=>$val)
-                                <option value="{{$key}}" @if($data->BOXID==$key) selected @endif>{{strtoupper($val)}}</option>
+                                <option value="{{$key}}" @if((int)$key === $selectedBox) selected @endif>{{ $val }}</option>
                             @endforeach
                         </select>
                     </div>

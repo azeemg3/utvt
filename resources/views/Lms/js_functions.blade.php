@@ -108,10 +108,12 @@
         });
     });
     var input = document.querySelector("#phone");
-    window.intlTelInput(input, {
-        nationalMode: false,
-        initialCountry: "PK",
-    });
+    if (input) {
+        window.intlTelInput(input, {
+            nationalMode: false,
+            initialCountry: "AE",
+        });
+    }
     $(document).on("change", "#phone", function() {
         var thisVal = $(this).val();
         $.ajax({
@@ -124,7 +126,7 @@
                     keyboard: false});
                     $("#leadId").text(data.id);
                     $("#form input[name~='id']").val(data.id);
-                    if(data.BOXID==18 || data.BOXID==19){
+                    if(data.status==4 || data.status==5 || data.BOXID==4 || data.BOXID==5 || data.BOXID==18 || data.BOXID==19){
                         $("#reopen-lead").show().attr("href","{{ url('lms/reopen/') }}/"+data.id);
                     }
                     $("#lead_view").attr("href","{{ url('lms/lead') }}/"+data.id);
